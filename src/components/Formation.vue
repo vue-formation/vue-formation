@@ -21,10 +21,10 @@
               {{{ row.content }}}
             </div>
             <div v-if="row.type !== 'section'"
-              v-for="(fIdx, form) in row.forms"
+              v-for="(fIdx, form) in row.columns"
               class="form-group"
-              :class="colClass(row.forms, fIdx, form.model)"
-              :style="{ 'margin-right': $index === row.forms.length - 1 ? '-1px' : null }">
+              :class="colClass(row.columns, fIdx, form.model)"
+              :style="{ 'margin-right': $index === row.columns.length - 1 ? '-1px' : null }">
 
               <!-- Label -->
               <label v-if="form.label"
@@ -125,6 +125,24 @@
               </div>
               <!-- select ./-->
 
+              <!-- vselect -->
+              <v-select v-if="form.type === 'vselect'"
+                :value.sync="formData[rIdx + '_' + fIdx]"
+                :options="form.options"
+                :max-height="form.maxHeight"
+                :searchable="form.searchable"
+                :multiple="form.multiple"
+                :placeholder="form.placeholder"
+                :transition="form.transition"
+                :clear-search-on-select="form.clearSearchOnSelect"
+                :label="form.labelKey"
+                :on-change="form.onChange"
+                :taggable="form.taggable"
+                :push-tags="form.pushTags",
+                :create-option="form.createOption">
+              </v-select>
+              <!-- vselect ./-->
+
             </div>
           </div>
         </div>
@@ -135,8 +153,12 @@
 
 <script type="text/babel">
   import * as _ from '../utils'
+  import vSelect from 'vue-select'
 
   export default {
+    components: {
+      vSelect
+    },
     methods: {
       multiClickaway (evt) {
         this.$broadcast('hide::dropdown')
@@ -163,11 +185,11 @@
           .concat('r').concat(rowIndex)
           .concat('f').concat(formIndex)
       },
-      colClass (forms, index, path) {
-        let cols = Math.floor(12 / forms.length)
-        if (index === 0) cols += 12 % forms.length
+      colClass (columns, index, path) {
+        let cols = Math.floor(12 / columns.length)
+        if (index === 0) cols += 12 % columns.length
         let classes = []
-        if (!this.isTopLabeled(forms[index].type)) {
+        if (!this.isTopLabeled(columns[index].type)) {
           classes.push('focused')
           classes.push('blured')
         }
@@ -182,7 +204,7 @@
         let requiredCount = 0
         let requiredFilled = 0
         _.forEach(this.formConfig, (row, rIdx) => {
-          _.forEach(row.forms, (form, fIdx) => {
+          _.forEach(row.columns, (form, fIdx) => {
             let data = _.get(this.formData, `${rIdx}_${fIdx}`)
             if (form.required) {
               requiredCount++
@@ -205,7 +227,7 @@
         }
         _.forEach(newData, (val, key) => {
           let [ rIdx, fIdx ] = key.split('_')
-          let model = _.get(this.formConfig, `[${rIdx}].forms[${fIdx}].model`)
+          let model = _.get(this.formConfig, `[${rIdx}].columns[${fIdx}].model`)
           if (model) this.$set(`data.${model}`, val)
         })
       }
@@ -255,11 +277,10 @@
         ]
       }
     },
-    beforeCompile () {
+    created () {
       this.$set('uuid', 'form_'.concat((new Date()).valueOf().toString()))
-
       _.forEach(this.config.rows, (row, rIdx) => {
-        _.forEach(row.forms, (form, fIdx) => {
+        _.forEach(row.columns, (form, fIdx) => {
           if (_.has(this.data, form.model)) this.$set(`formData["${rIdx}_${fIdx}"]`, _.get(this.data, form.model))
         })
       })

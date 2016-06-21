@@ -1,0 +1,9 @@
+input:focus, button:focus {
+  outline: none !important;
+}
+
+.v-select.dropdown .dropdown-toggle {
+}
+
+.formation .v-select .selected-tag {
+}
