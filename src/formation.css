@@ -1,4 +1,4 @@
-input:focus, button:focus {
+input:focus, button:focus, button:active {
   outline: none !important;
 }
 

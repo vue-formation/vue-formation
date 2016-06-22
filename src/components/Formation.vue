@@ -143,6 +143,23 @@
               </v-select>
               <!-- vselect ./-->
 
+              <!-- slot -->
+              <slot v-if="form.type === 'slot' && form.name" :name="form.name"></slot>
+              <!-- slot ./-->
+
+              <!-- fselect -->
+              <f-select v-if="form.type === 'fselect'"
+                :width="form.width"
+                :value.sync="formData[rIdx + '_' + fIdx]"
+                :options="form.options"
+                :placeholder="form.placeholder"
+                :store-object="form.storeObject"
+                :multiple="form.multiple"
+                :text-key="form.textKey"
+                :value-key="form.valueKey">
+              </f-select>
+              <!-- fselect ./-->
+
             </div>
           </div>
         </div>
@@ -152,12 +169,14 @@
 </template>
 
 <script type="text/babel">
-  import * as _ from '../utils'
+  import * as _ from '../utils/utils'
   import vSelect from 'vue-select'
+  import fSelect from './FSelect'
 
   export default {
     components: {
-      vSelect
+      vSelect,
+      fSelect
     },
     methods: {
       multiClickaway (evt) {

@@ -16,6 +16,7 @@
 <script type="text/babel">
   import Hello from './components/Hello'
   import Formation from './components/Formation'
+  import FSelect from './components/FSelect'
 
   import 'bootstrap/dist/css/bootstrap.min.css'
   import 'bootswatch/paper/bootstrap.css'
@@ -24,7 +25,8 @@
   export default {
     components: {
       Hello,
-      Formation
+      Formation,
+      FSelect
     },
     computed: {
       formConfig () {
@@ -89,6 +91,24 @@
                   ]
                 },
                 {
+                  label: 'fSelect',
+                  type: 'fselect',
+                  width: '100%',
+                  model: 'fselect',
+                  multiple: true,
+                  placeholder: 'Select something...',
+                  options: [
+                    { id: '1', name: 'One' },
+                    { id: '2', name: 'Two' },
+                    { id: '3', name: 'Three' },
+                    { id: '4', name: 'Four' },
+                    { id: '5', name: 'Five' },
+                    { id: '6', name: 'Six' }
+                  ],
+                  textKey: 'name',
+                  valueKey: 'id'
+                },
+                {
                   label: 'vSelect Multiple',
                   type: 'vselect',
                   model: 'vselect1',
@@ -143,8 +163,11 @@
           text1: 'Has Default Text',
           text2: '',
           select1: '-1',
+          fselect: ['1'],
           format: null,
-          vselect1: null
+          vselect1: null,
+          valueKey: 'id',
+          textKey: 'name'
         }
       }
     }
