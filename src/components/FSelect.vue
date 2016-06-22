@@ -3,12 +3,18 @@
     <div type="text"
       class="dropdown-toggle form-control"
       @click="open = !open"
+      style="height: auto; padding-bottom: 4px;"
       :style="{ 'width': width, 'text-align': align !== 'center' ? 'left' : null }"
       style="position: relative; font-weight: normal;">
-      <div>
+      <div style="padding-right: 15px;">
         <span v-if="value.length === 0">{{ placeholder }}</span>
         <span v-if="value.length > 0 && !multiple">{{ singleValueText }}</span>
-        <span v-if="value.length > 0 && multiple">{{ multiValueText }}</span>
+        <span v-if="value.length > 0 && multiple"
+        v-for="item in multiValue"
+        class="select-tag">
+          <span v-if="!disabled" class="glyphicon glyphicon-remove" style="font-size: 10px;"></span>
+            <span>{{ item[textKey] }}</span>
+        </span>
       </div>
       <span class="caret" style="position: absolute; right: 4px; top: 50%"></span>
     </div>
@@ -49,6 +55,13 @@
           this.textKey
         )
       },
+      multiValue () {
+        return this.storeObject ? this.value : map(this.value, (val) => {
+          return find(this.options, (opt) => {
+            return opt[this.valueKey] === val
+          })
+        })
+      },
       multiValueText () {
         return map(
           filter(this.options, (opt) => {
@@ -58,10 +71,11 @@
             })
           }),
           val => val[this.textKey]
-        )
+        ).join(', ')
       }
     },
     props: {
+      disabled: { type: Boolean, default: false },
       multiple: { type: Boolean, default: false },
       options: { type: Array },
       placeholder: { type: String, default: '' },
@@ -88,5 +102,14 @@
   .fselect .dropdown-toggle {
     cursor: default;
     padding-left: 8px;
+  }
+  .fselect .select-tag {
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.6);
+    background-color: #e4e4e4;
+    border-radius: 16px;
+    padding: 4px 12px;
+    margin-right: 4px;
+    font-size: 12px;
   }
 </style>
