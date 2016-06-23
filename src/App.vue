@@ -96,6 +96,7 @@
                   width: '100%',
                   model: 'fselect',
                   multiple: true,
+                  storeObject: true,
                   placeholder: 'Select something...',
                   options: [
                     { id: '1', name: 'One' },
@@ -136,6 +137,7 @@
                   type: 'radio',
                   label: 'Format',
                   model: 'format',
+                  bind: { disabled () { return true } },
                   radios: [
                     {
                       label: 'None',
@@ -163,7 +165,7 @@
           text1: 'Has Default Text',
           text2: '',
           select1: '-1',
-          fselect: ['1'],
+          fselect: '1',
           format: null,
           vselect1: null,
           valueKey: 'id',

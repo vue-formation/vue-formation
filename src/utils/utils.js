@@ -11,6 +11,11 @@ export function isString (obj) {
 export function isArray (obj) {
   return Array.isArray(obj)
 }
+
+export function ensureArray (obj) {
+  return !obj ? [] : isArray(obj) ? obj : [obj]
+}
+
 export function isBoolean (obj) {
   return typeof obj === 'boolean'
 }
@@ -33,6 +38,34 @@ export function includes (obj, key) {
   } catch (err) {
     return false
   }
+}
+
+export function contains (list, obj) {
+  let found = false
+  forEach(list, (item) => {
+    if (item === obj) {
+      found = true
+      return false
+    }
+  })
+  return found
+}
+
+export function uniq (list) {
+  let newList = []
+  forEach(list, (item) => {
+    if (!contains(newList, item)) newList.push(item)
+  })
+  return newList
+}
+
+export function union () {
+  let args = Array.prototype.slice.call(arguments)
+  let newList = []
+  forEach(args, (list) => {
+    newList = newList.concat(list)
+  })
+  return uniq(newList)
 }
 
 export function keys (obj) {
