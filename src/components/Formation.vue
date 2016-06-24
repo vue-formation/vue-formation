@@ -124,24 +124,6 @@
                 </div>
                 <!-- select ./-->
 
-                <!-- vselect -->
-                <v-select v-if="form.type === 'vselect'"
-                  :value.sync="formData[rIdx + '_' + fIdx]"
-                  :options="form.options"
-                  :max-height="form.maxHeight"
-                  :searchable="form.searchable"
-                  :multiple="form.multiple"
-                  :placeholder="form.placeholder"
-                  :transition="form.transition"
-                  :clear-search-on-select="form.clearSearchOnSelect"
-                  :label="form.labelKey"
-                  :on-change="form.onChange"
-                  :taggable="form.taggable"
-                  :push-tags="form.pushTags",
-                  :create-option="form.createOption">
-                </v-select>
-                <!-- vselect ./-->
-
                 <!-- slot -->
                 <slot v-if="form.type === 'slot' && form.name" :name="form.name"></slot>
                 <!-- slot ./-->
@@ -170,12 +152,10 @@
 
 <script type="text/babel">
   import * as _ from '../utils/utils'
-  import vSelect from 'vue-select'
   import fSelect from './FSelect'
 
   export default {
     components: {
-      vSelect,
       fSelect
     },
     methods: {

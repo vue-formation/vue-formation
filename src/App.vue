@@ -60,9 +60,9 @@
               columns: [
                 {
                   type: 'button',
-                  text: 'Test',
+                  text: 'Print Data',
                   class: 'btn-primary',
-                  iconClass: 'glyphicon glyphicon-ok',
+                  iconClass: 'glyphicon glyphicon-console',
                   onClick (event, data) {
                     console.log(JSON.stringify(data, null, '  '))
                   }
@@ -107,7 +107,7 @@
                   ],
                   textKey: 'name',
                   valueKey: 'id'
-                },
+                } /*
                 {
                   label: 'vSelect Multiple',
                   type: 'vselect',
@@ -123,7 +123,7 @@
                     { value: '5', text: 'Five' },
                     { value: '6', text: 'Six' }
                   ]
-                }
+                } */
               ]
             },
             {

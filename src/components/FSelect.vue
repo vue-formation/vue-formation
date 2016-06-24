@@ -23,11 +23,21 @@
         :class="caretClass"
         @click="multiple && allowClear ? value = [] : null"></span>
     </div>
-    <ul class="dropdown-menu" :style="{ 'width': width }">
+    <ul class="dropdown-menu scrollable-dropdown" :style="{ 'width': width }">
       <li class="search-field">
-        <input type="text" class="form-control" style="width: 100%" placeholder="Search...">
+        <input v-show="searchable" v-el:search
+          @keydown="searchHandler"
+          type="text"
+          v-model="search"
+          class="form-control"
+          style="width: 100%; margin-bottom: 5px;"
+          placeholder="Search...">
+        <span v-if="searchable && !searchResults.length">
+          <i>No Results Found...</i>
+        </span>
       </li>
-      <li v-for="opt in options | selectable">
+      <li v-for="opt in options | selectable" :class="{ 'active': $index === activeOption }"
+        @mouseover="activeOption = $index">
         <a @click="addItem(opt[valueKey])">{{ opt[textKey] }}</a>
       </li>
     </ul>
@@ -36,6 +46,7 @@
 <script type="text/babel">
   import * as _ from '../utils/utils'
   import { onEvent } from '../utils/helpers'
+  import { isKey } from '../utils/events'
 
   function validateClassProp (value) {
     return _.isString(value) || _.isArray(value) || _.isHash(value)
@@ -49,7 +60,10 @@
     data () {
       return {
         open: false,
-        removeClickAway: () => {}
+        removeClickAway: () => {},
+        search: '',
+        searchResults: [],
+        activeOption: 0
       }
     },
     methods: {
@@ -65,8 +79,9 @@
           this.closeDropdown()
         }
       },
-      closeDropdown () {
-        if (this.closeOnSelect) this.open = false
+      closeDropdown (force) {
+        if (this.closeOnSelect || force) this.open = false
+        this.search = ''
       },
       removeItem (id) {
         this.value = _.filter(this.value, (v) => {
@@ -75,15 +90,32 @@
       },
       clickAway (event) {
         if (this.$el && !this.$el.contains(event.target) && this.open) this.open = false
+        this.search = ''
       },
       getValue (id) {
         return !this.storeObject ? id : _.find(this.options, (v) => {
           return v[this.valueKey] === id
         })
       },
+      searchHandler (event) {
+        if (isKey(event, 'ArrowDown') && this.activeOption < this.searchResults.length - 1) {
+          this.activeOption++
+        } else if (isKey(event, 'ArrowUp') && this.activeOption > 0) {
+          this.activeOption--
+        } else if (isKey(event, 'Enter')) {
+          event.preventDefault()
+          let item = this.searchResults[this.activeOption]
+          if (item) this.addItem(item[this.valueKey])
+        } else if (isKey(event, 'Escape')) {
+          this.closeDropdown(true)
+        } else {
+          this.activeOption = 0
+        }
+      },
       toggleDropdown (event) {
         let clickAreas = [ this.$els.selectcontainer, this.$els.selectbody, this.$els.placeholder ]
         if (_.contains(clickAreas, event.target)) this.open = !this.open
+        if (this.open && this.searchable) { setTimeout(() => { this.$els.search.focus() }, 10) }
       }
     },
     computed: {
@@ -127,13 +159,22 @@
     },
     filters: {
       selectable (options) {
-        if (!this.removeSelectedOptions) return options
+        let newOptions = options
+        let rx = /.*/
         let ids = _.map(this.value, (val) => {
           return this.storeObject ? val[this.valueKey] : val
         })
-        return _.filter(options, (opt) => {
-          return !_.includes(ids, opt[this.valueKey])
+        newOptions = _.filter(options, (opt) => {
+          try {
+            rx = new RegExp(this.search, 'i')
+          } catch (err) {}
+          let searchMatch = opt[this.textKey].match(rx) || this.search === ''
+          if (!this.removeSelectedOptions && searchMatch) return true
+          if (this.removeSelectedOptions && (_.includes(ids, opt[this.valueKey]) || !searchMatch)) return false
+          return true
         })
+        this.searchResults = newOptions.slice(0, this.optionLimit)
+        return newOptions.slice(0, this.optionLimit)
       }
     },
     props: {
@@ -142,11 +183,13 @@
       allowMultiple: { type: Boolean, default: false },
       closeOnSelect: { type: Boolean, default: true },
       disabled: { type: Boolean, default: false },
+      optionLimit: { type: Number, default: 5 },
       multiple: { type: Boolean, default: false },
       options: { type: Array },
       placeholder: { type: String, default: '' },
       removeClass: { validator: validateClassProp, default: 'glyphicon glyphicon-remove x-remove' },
       removeSelectedOptions: { type: Boolean, default: true },
+      searchable: { type: Boolean, default: true },
       storeObject: { type: Boolean, default: false },
       tagClass: { validator: validateClassProp, default: 'default-tag-style' },
       textKey: { type: String, default: 'text' },
@@ -207,5 +250,11 @@
   }
   .fselect .dropdown-menu .search-field {
     padding: 0px 20px;
+  }
+  .fselect .scrollable-dropdown {
+    height: auto;
+    max-height: 165px;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 </style>

@@ -13,7 +13,6 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
-    "vue-select": "^1.2.0"
   },
   "devDependencies": {
     "vue": "^1.0.21",
