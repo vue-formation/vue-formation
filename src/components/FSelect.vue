@@ -2,14 +2,12 @@
   <div class="dropdown fselect" :class="{ 'open': open }">
     <div type="text" v-el:selectcontainer
       class="dropdown-toggle form-control"
-      @click="toggleDropdown"
-      style="height: auto;"
-      :style="{ 'width': width, 'text-align': align !== 'center' ? 'left' : null,
-       'padding-top': (topWidth + topBorder) + 'px' }"
+      @click="toggleDropdown" style="height: auto;"
+      :style="{ 'width': width, 'text-align': align !== 'center' ? 'left' : null }"
       style="position: relative; font-weight: normal;">
       <div class="select-body" v-el:selectbody>
-        <span v-if="value.length === 0" v-el:placeholder>{{ placeholder }}</span>
-        <span v-if="value.length > 0 && !multiple">{{ singleValueText }}</span>
+        <span v-if="value.length === 0" v-el:placeholder class="placeholder-text">{{ placeholder }}</span>
+        <span v-if="value.length > 0 && !multiple" class="placeholder-text">{{ singleValueText }}</span>
         <span v-if="value.length > 0 && multiple"
         v-for="item in multiValue"
         track-by="$index"
@@ -17,34 +15,30 @@
         :class="tagClass">
           <span v-if="!disabled"
             :class="removeClass"
-            @click="removeItem(item[valueKey])"
-            style="font-size: 10px;"></span>
+            @click="removeItem(item[valueKey])"></span>
           <span>{{ item[textKey] }}</span>
         </span>
       </div>
-      <span style="position: absolute; right: 4px; top: 50%; font-size: 10px;"
+      <span class="caret-position"
         :class="caretClass"
         @click="multiple && allowClear ? value = [] : null"></span>
     </div>
     <ul class="dropdown-menu" :style="{ 'width': width }">
-      <li style="padding: 5px;">
-        <input type="text" class="form-control" style="width: 100%">
+      <li class="search-field">
+        <input type="text" class="form-control" style="width: 100%" placeholder="Search...">
       </li>
-      <li v-for="opt in options">
+      <li v-for="opt in options | selectable">
         <a @click="addItem(opt[valueKey])">{{ opt[textKey] }}</a>
       </li>
     </ul>
   </div>
 </template>
 <script type="text/babel">
-  import {
-    find, filter, get, map, isArray, isHash,
-    isString, without, contains, ensureArray
-  } from '../utils/utils'
-  import { onEvent, getStyle, pxToInt } from '../utils/helpers'
+  import * as _ from '../utils/utils'
+  import { onEvent } from '../utils/helpers'
 
   function validateClassProp (value) {
-    return isString(value) || isArray(value) || isHash(value)
+    return _.isString(value) || _.isArray(value) || _.isHash(value)
   }
 
   function validateValue (value) {
@@ -55,25 +49,27 @@
     data () {
       return {
         open: false,
-        removeClickAway: () => {},
-        topBorder: 0,
-        topWidth: 4
+        removeClickAway: () => {}
       }
     },
     methods: {
       addItem (id) {
         let val = this.getValue(id)
         if (this.multiple) {
-          if (this.allowMultiple || (!this.allowMultiple && !contains(this.value, val))) {
+          if (this.allowMultiple || (!this.allowMultiple && !_.contains(this.value, val))) {
             this.value.push(val)
+            this.closeDropdown()
           }
         } else {
           this.value = [val]
-          this.open = false
+          this.closeDropdown()
         }
       },
+      closeDropdown () {
+        if (this.closeOnSelect) this.open = false
+      },
       removeItem (id) {
-        this.value = filter(this.value, (v) => {
+        this.value = _.filter(this.value, (v) => {
           return (this.storeObject && v[this.valueKey] !== id) || (!this.storeObject && v !== id)
         })
       },
@@ -81,13 +77,13 @@
         if (this.$el && !this.$el.contains(event.target) && this.open) this.open = false
       },
       getValue (id) {
-        return !this.storeObject ? id : find(this.options, (v) => {
+        return !this.storeObject ? id : _.find(this.options, (v) => {
           return v[this.valueKey] === id
         })
       },
       toggleDropdown (event) {
         let clickAreas = [ this.$els.selectcontainer, this.$els.selectbody, this.$els.placeholder ]
-        if (contains(clickAreas, event.target)) this.open = !this.open
+        if (_.contains(clickAreas, event.target)) this.open = !this.open
       }
     },
     computed: {
@@ -102,16 +98,16 @@
         return null
       },
       multiValue () {
-        return this.storeObject ? this.value : map(this.value, (val) => {
-          return find(this.options, (opt) => {
+        return this.storeObject ? this.value : _.map(this.value, (val) => {
+          return _.find(this.options, (opt) => {
             return opt[this.valueKey] === val
           })
         })
       },
       multiValueText () {
-        return map(
-          filter(this.options, (opt) => {
-            return find(this.value, (val) => {
+        return _.map(
+          _.filter(this.options, (opt) => {
+            return _.find(this.value, (val) => {
               let v = this.storeObject ? val[this.valueKey] : val
               return opt[this.valueKey] === v
             })
@@ -120,8 +116,8 @@
         ).join(', ')
       },
       singleValueText () {
-        return get(
-          find(this.options, (opt) => {
+        return _.get(
+          _.find(this.options, (opt) => {
             let v = this.storeObject ? this.value[0][this.valueKey] : this.value[0]
             return opt[this.valueKey] === v
           }),
@@ -129,15 +125,28 @@
         )
       }
     },
+    filters: {
+      selectable (options) {
+        if (!this.removeSelectedOptions) return options
+        let ids = _.map(this.value, (val) => {
+          return this.storeObject ? val[this.valueKey] : val
+        })
+        return _.filter(options, (opt) => {
+          return !_.includes(ids, opt[this.valueKey])
+        })
+      }
+    },
     props: {
       align: { type: String, default: 'left' },
       allowClear: { type: Boolean, default: true },
       allowMultiple: { type: Boolean, default: false },
+      closeOnSelect: { type: Boolean, default: true },
       disabled: { type: Boolean, default: false },
       multiple: { type: Boolean, default: false },
       options: { type: Array },
       placeholder: { type: String, default: '' },
       removeClass: { validator: validateClassProp, default: 'glyphicon glyphicon-remove x-remove' },
+      removeSelectedOptions: { type: Boolean, default: true },
       storeObject: { type: Boolean, default: false },
       tagClass: { validator: validateClassProp, default: 'default-tag-style' },
       textKey: { type: String, default: 'text' },
@@ -152,13 +161,9 @@
     },
     created () {
       this.removeClickAway = onEvent(document, 'click', this.clickAway)
-      this.value = without(map(ensureArray(this.value), (v) => {
-        return this.getValue(isString(v) ? v : get(v, this.valueKey, null))
+      this.value = _.without(_.map(_.ensureArray(this.value), (v) => {
+        return this.getValue(_.isString(v) ? v : _.get(v, this.valueKey, null))
       }), null)
-    },
-    ready () {
-      let style = getStyle(this.$els.selectcontainer, ['border-top-width', 'border-bottom-width'])
-      this.topBorder = pxToInt(style['border-top-width']) + pxToInt(style['border-bottom-width'])
     },
     beforeDestroy () {
       this.removeClickAway()
@@ -177,15 +182,30 @@
     color: rgba(0, 0, 0, 0.6);
     background-color: #e4e4e4;
     border-radius: 14px;
-    padding: 2px 12px;
+    padding: 3px 12px;
     font-size: 13px;
-    margin-right: 2px;
-    margin-bottom: 4px;
+    margin: 2px;
   }
   .fselect .select-body {
-    padding-right: 15px;
+    padding: 2px 0px 2px 0px;
+  }
+  .fselect .x-remove {
+    font-size: 9px;
   }
   .fselect .x-remove:hover {
     color: red;
+  }
+  .fselect .placeholder-text {
+    line-height: 2em;
+  }
+  .fselect .caret-position {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    line-height: 0.5em;
+    font-size: 10px;
+  }
+  .fselect .dropdown-menu .search-field {
+    padding: 0px 20px;
   }
 </style>

@@ -47,7 +47,6 @@
                 },
                 {
                   type: 'text',
-                  label: 'Text2',
                   model: 'text2',
                   placeholder: 'Enter text2'
                 }

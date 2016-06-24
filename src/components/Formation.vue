@@ -27,139 +27,139 @@
               :style="{ 'margin-right': $index === row.columns.length - 1 ? '-1px' : null }">
 
               <!-- Label -->
-              <label v-if="form.label"
-                :for="formId(rIdx, fIdx)"
-                :style="{ 'float': config.alignLabels }">
-                {{ form.label }}
-                <span v-if="config.decorateRequired && form.required" class="required-decoration">*</span>
-              </label>
-              <!-- label ./-->
+              <label :for="formId(rIdx, fIdx)"
+                :style="{ 'float': config.alignLabels, 'width': '100%' }">
+                {{{ getLabel(rIdx, fIdx, form.label) }}}
+                <span v-if="config.decorateRequired && form.required && form.label" class="required-decoration">
+                  *
+                </span>
 
-              <!-- text -->
-              <input v-if="isTextInput(form.type)"
-                :type="form.type"
-                :name="formId(rIdx, fIdx)"
-                :id="formId(rIdx, fIdx)"
-                style="width: 100%"
-                class="form-control"
-                :class="form.class"
-                :style="form.style"
-                :placeholder="form.placeholder"
-                :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                v-model="formData[rIdx + '_' + fIdx]">
-              <!-- text ./-->
-
-              <!-- html -->
-              <div v-if="form.type === 'html'" style="width: 100%;">{{{ form.value }}}</div>
-              <!-- html ./-->
-
-              <!-- button -->
-              <button v-if="form.type === 'button'"
-              class="btn"
-              :class="form.class"
-              :style="form.style"
-              :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-              @click.prevent="form.onClick ? form.onClick($event, data) : null">
-                <span v-if="form.iconClass", :class="form.iconClass"></span>
-                <span v-if="form.iconClass && form.text">&nbsp;</span>
-                <span v-if="form.text">{{ form.text }}</span>
-              </button>
-              <!-- button ./-->
-
-              <!-- buttons -->
-              <div v-if="form.type === 'buttons'"
-                :class="{ 'btn-group': form.group }"
-                :role="form.group ? 'group' : null">
-                <button v-for="btn in form.buttons"
-                  class="btn"
-                  :class="btn.class"
-                  :style="btn.style"
-                  :disabled="has(btn, 'bind.disabled') ? btn.bind.disabled() : formDisabled()"
-                  @click.prevent="btn.onClick ? btn.onClick($event, data) : null">
-                    <span v-if="btn.iconClass", :class="btn.iconClass"></span>
-                    <span v-if="btn.iconClass && btn.label">&nbsp;</span>
-                    <span v-if="btn.label">{{ form.label }}</span>
-                </button>
-              </div>
-              <!-- buttons ./-->
-
-              <!-- checkbox -->
-              <div v-if="form.type === 'checkbox'">
-                <label>
-                  <input type="checkbox"
-                    :id="formId(rIdx, fIdx)"
-                    :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                    v-model="formData[rIdx + '_' + fIdx]">
-                  {{ form.text }}
-                </label>
-              </div>
-              <!-- checkbox ./-->
-
-              <!-- radio -->
-              <div v-if="form.type === 'radio'" class="radio">
-                <label v-for="(oIdx, radio) in form.filter ? form.filter(formData[rIdx + '_' + fIdx], form.radios) : form.radios"
-                  style="display: block;">
-                  <input type="radio"
-                    :name="formId(rIdx, fIdx)"
-                    :id="formId(rIdx, fIdx)"
-                    :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                    :value="radio.value"
-                    v-model="formData[rIdx + '_' + fIdx]">
-                    {{ radio.label }}
-                </label>
-              </div>
-              <!-- radio ./-->
-
-              <!-- select -->
-              <div v-if="form.type === 'select'">
-                <select class="form-control"
+                <!-- text -->
+                <input v-if="isTextInput(form.type)"
+                  :type="form.type"
+                  :name="formId(rIdx, fIdx)"
                   :id="formId(rIdx, fIdx)"
+                  style="width: 100%;"
+                  class="form-control"
+                  :class="form.class"
+                  :style="form.style"
+                  :placeholder="form.placeholder"
                   :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
                   v-model="formData[rIdx + '_' + fIdx]">
-                    <option v-for="opt in form.filter ? form.filter(formData[rIdx + '_' + fIdx], form.options) : form.options"
-                      :value="opt.value"
-                      :hidden="opt.hidden">
-                      {{ opt.text }}
-                    </option>
-                </select>
-              </div>
-              <!-- select ./-->
+                <!-- text ./-->
 
-              <!-- vselect -->
-              <v-select v-if="form.type === 'vselect'"
-                :value.sync="formData[rIdx + '_' + fIdx]"
-                :options="form.options"
-                :max-height="form.maxHeight"
-                :searchable="form.searchable"
-                :multiple="form.multiple"
-                :placeholder="form.placeholder"
-                :transition="form.transition"
-                :clear-search-on-select="form.clearSearchOnSelect"
-                :label="form.labelKey"
-                :on-change="form.onChange"
-                :taggable="form.taggable"
-                :push-tags="form.pushTags",
-                :create-option="form.createOption">
-              </v-select>
-              <!-- vselect ./-->
+                <!-- html -->
+                <div v-if="form.type === 'html'" style="width: 100%;">{{{ form.value }}}</div>
+                <!-- html ./-->
 
-              <!-- slot -->
-              <slot v-if="form.type === 'slot' && form.name" :name="form.name"></slot>
-              <!-- slot ./-->
+                <!-- button -->
+                <button v-if="form.type === 'button'"
+                class="btn"
+                :class="form.class"
+                :style="form.style"
+                :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
+                @click.prevent="form.onClick ? form.onClick($event, data) : null">
+                  <span v-if="form.iconClass", :class="form.iconClass"></span>
+                  <span v-if="form.iconClass && form.text">&nbsp;</span>
+                  <span v-if="form.text">{{ form.text }}</span>
+                </button>
+                <!-- button ./-->
 
-              <!-- fselect -->
-              <f-select v-if="form.type === 'fselect'"
-                :width="form.width"
-                :value.sync="formData[rIdx + '_' + fIdx]"
-                :options="form.options"
-                :placeholder="form.placeholder"
-                :store-object="form.storeObject"
-                :multiple="form.multiple"
-                :text-key="form.textKey"
-                :value-key="form.valueKey">
-              </f-select>
-              <!-- fselect ./-->
+                <!-- buttons -->
+                <div v-if="form.type === 'buttons'"
+                  :class="{ 'btn-group': form.group }"
+                  :role="form.group ? 'group' : null">
+                  <button v-for="btn in form.buttons"
+                    class="btn"
+                    :class="btn.class"
+                    :style="btn.style"
+                    :disabled="has(btn, 'bind.disabled') ? btn.bind.disabled() : formDisabled()"
+                    @click.prevent="btn.onClick ? btn.onClick($event, data) : null">
+                      <span v-if="btn.iconClass", :class="btn.iconClass"></span>
+                      <span v-if="btn.iconClass && btn.label">&nbsp;</span>
+                      <span v-if="btn.label">{{ form.label }}</span>
+                  </button>
+                </div>
+                <!-- buttons ./-->
 
+                <!-- checkbox -->
+                <div v-if="form.type === 'checkbox'">
+                  <label>
+                    <input type="checkbox"
+                      :id="formId(rIdx, fIdx)"
+                      :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
+                      v-model="formData[rIdx + '_' + fIdx]">
+                    {{ form.text }}
+                  </label>
+                </div>
+                <!-- checkbox ./-->
+
+                <!-- radio -->
+                <div v-if="form.type === 'radio'" class="radio">
+                  <label v-for="(oIdx, radio) in form.filter ? form.filter(formData[rIdx + '_' + fIdx], form.radios) : form.radios"
+                    style="display: block;">
+                    <input type="radio"
+                      :name="formId(rIdx, fIdx)"
+                      :id="formId(rIdx, fIdx)"
+                      :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
+                      :value="radio.value"
+                      v-model="formData[rIdx + '_' + fIdx]">
+                      {{ radio.label }}
+                  </label>
+                </div>
+                <!-- radio ./-->
+
+                <!-- select -->
+                <div v-if="form.type === 'select'">
+                  <select class="form-control"
+                    :id="formId(rIdx, fIdx)"
+                    :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
+                    v-model="formData[rIdx + '_' + fIdx]">
+                      <option v-for="opt in form.filter ? form.filter(formData[rIdx + '_' + fIdx], form.options) : form.options"
+                        :value="opt.value"
+                        :hidden="opt.hidden">
+                        {{ opt.text }}
+                      </option>
+                  </select>
+                </div>
+                <!-- select ./-->
+
+                <!-- vselect -->
+                <v-select v-if="form.type === 'vselect'"
+                  :value.sync="formData[rIdx + '_' + fIdx]"
+                  :options="form.options"
+                  :max-height="form.maxHeight"
+                  :searchable="form.searchable"
+                  :multiple="form.multiple"
+                  :placeholder="form.placeholder"
+                  :transition="form.transition"
+                  :clear-search-on-select="form.clearSearchOnSelect"
+                  :label="form.labelKey"
+                  :on-change="form.onChange"
+                  :taggable="form.taggable"
+                  :push-tags="form.pushTags",
+                  :create-option="form.createOption">
+                </v-select>
+                <!-- vselect ./-->
+
+                <!-- slot -->
+                <slot v-if="form.type === 'slot' && form.name" :name="form.name"></slot>
+                <!-- slot ./-->
+
+                <!-- fselect -->
+                <f-select v-if="form.type === 'fselect'"
+                  :close-on-select="form.closeOnSelect"
+                  :width="form.width"
+                  :value.sync="formData[rIdx + '_' + fIdx]"
+                  :options="form.options"
+                  :placeholder="form.placeholder"
+                  :store-object="form.storeObject"
+                  :multiple="form.multiple"
+                  :text-key="form.textKey"
+                  :value-key="form.valueKey">
+                </f-select>
+                <!-- fselect ./-->
+              </label>
             </div>
           </div>
         </div>
@@ -198,6 +198,17 @@
       },
       isTopLabeled (type) {
         return this.noTopLabel.indexOf(type) === -1
+      },
+      getLabel (rIdx, cIdx, label) {
+        let labelCount = 0
+        let row = _.get(this.formConfig, `[${rIdx}]`, [])
+        _.forEach(row.columns, (col, idx) => {
+          let lbl = _.get(col, 'label', null)
+          if (lbl) labelCount++
+        })
+        if (!labelCount) return null
+        if (labelCount && !label) return '&nbsp;'
+        return label
       },
       formId (rowIndex, formIndex) {
         return this.$get('uuid')
