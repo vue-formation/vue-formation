@@ -7,3 +7,7 @@ input:focus, button:focus, button:active {
 
 .formation .v-select .selected-tag {
 }
+
+.has-error > label {
+  color: #e51c23;
+}
