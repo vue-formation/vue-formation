@@ -28,9 +28,15 @@
       Formation,
       FSelect
     },
+    events: {
+      'formation.error': (evt) => {
+        console.log(evt)
+      }
+    },
     computed: {
       formConfig () {
         return {
+          liveValidation: true,
           format: this.formData.format,
           rows: [
             {
@@ -48,7 +54,10 @@
                 {
                   type: 'text',
                   model: 'text2',
-                  placeholder: 'Enter text2'
+                  placeholder: 'Enter text2',
+                  validate (data) {
+                    return data && data.length > 0
+                  }
                 }
               ]
             },
@@ -63,7 +72,8 @@
                   text: 'Print Data',
                   class: 'btn-primary',
                   iconClass: 'glyphicon glyphicon-console',
-                  onClick (event, data) {
+                  onClick (event, data, validate) {
+                    console.log('VALID:', validate())
                     console.log(JSON.stringify(data, null, '  '))
                   }
                 }

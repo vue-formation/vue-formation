@@ -23,7 +23,8 @@
             <div v-if="row.type !== 'section'"
               v-for="(fIdx, form) in row.columns"
               class="form-group"
-              :class="colClass(row.columns, fIdx, form.model)"
+              :id="formGroupId(rIdx, fIdx)"
+              :class="colClass(row.columns, rIdx, fIdx, form.model)"
               :style="{ 'margin-right': $index === row.columns.length - 1 ? '-1px' : null }">
 
               <!-- Label -->
@@ -58,7 +59,7 @@
                 :class="form.class"
                 :style="form.style"
                 :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                @click.prevent="form.onClick ? form.onClick($event, data) : null">
+                @click.prevent="form.onClick ? form.onClick($event, data, validate) : null">
                   <span v-if="form.iconClass", :class="form.iconClass"></span>
                   <span v-if="form.iconClass && form.text">&nbsp;</span>
                   <span v-if="form.text">{{ form.text }}</span>
@@ -152,6 +153,7 @@
 
 <script type="text/babel">
   import * as _ from '../utils/utils'
+  import $ from '../utils/helpers'
   import fSelect from './FSelect'
 
   export default {
@@ -195,11 +197,17 @@
           .concat('r').concat(rowIndex)
           .concat('f').concat(formIndex)
       },
-      colClass (columns, index, path) {
+      formGroupId (rIdx, fIdx) {
+        return this.formId(rIdx, fIdx).concat('_group')
+      },
+      formGroup (rIdx, fIdx) {
+        return $('#'.concat(this.formGroupId(rIdx, fIdx)))
+      },
+      colClass (columns, rIdx, fIdx, path) {
         let cols = Math.floor(12 / columns.length)
-        if (index === 0) cols += 12 % columns.length
+        if (fIdx === 0) cols += 12 % columns.length
         let classes = []
-        if (!this.isTopLabeled(columns[index].type)) {
+        if (!this.isTopLabeled(columns[fIdx].type)) {
           classes.push('focused')
           classes.push('blured')
         }
@@ -213,33 +221,54 @@
       calcProgress () {
         let requiredCount = 0
         let requiredFilled = 0
+        this.valid = true
         _.forEach(this.formConfig, (row, rIdx) => {
           _.forEach(row.columns, (form, fIdx) => {
             let data = _.get(this.formData, `${rIdx}_${fIdx}`)
+            let valid = _.isFunction(form.validate) ? form.validate(data) : true
+            if (!valid) {
+              this.valid = false
+              if (this.config.liveValidation && this.touched) this.formGroup(rIdx, fIdx).addClass('has-error')
+            } else {
+              this.formGroup(rIdx, fIdx).removeClass('has-error')
+            }
             if (form.required) {
               requiredCount++
-              if (_.isFunction(form.validate)) {
-                if (form.validate(data)) requiredFilled++
-              } else {
-                if (data) {
-                  requiredFilled++
-                }
-              }
+              if (valid && data) requiredFilled++
             }
           })
         })
+        this.touched = true
+        if (!requiredCount) return 100
         return Math.floor((requiredFilled / requiredCount) * 100)
       },
       updateData (newData) {
+        let progress = this.calcProgress()
         if (this.config.progress) {
           let progKey = this.config.progress === true ? '$$progress' : this.config.progress
-          this.$set(`data.${progKey}`, this.calcProgress())
+          this.$set(`data.${progKey}`, progress)
         }
         _.forEach(newData, (val, key) => {
           let [ rIdx, fIdx ] = key.split('_')
           let model = _.get(this.formConfig, `[${rIdx}].columns[${fIdx}].model`)
           if (model) this.$set(`data.${model}`, val)
         })
+      },
+      validate () {
+        this.valid = true
+        _.forEach(this.formConfig, (row, rIdx) => {
+          _.forEach(row.columns, (form, fIdx) => {
+            let data = _.get(this.formData, `${rIdx}_${fIdx}`)
+            let valid = _.isFunction(form.validate) ? form.validate(data) : true
+            if (!valid) {
+              this.valid = false
+              this.formGroup(rIdx, fIdx).addClass('has-error')
+            } else {
+              this.formGroup(rIdx, fIdx).removeClass('has-error')
+            }
+          })
+        })
+        return this.valid
       }
     },
     computed: {
@@ -261,6 +290,8 @@
     },
     data () {
       return {
+        valid: true,
+        touched: false,
         formData: {},
         uuid: null,
         textTypes: [
@@ -304,19 +335,17 @@
       }
     },
     props: {
-      config: {
-        type: Object,
-        required: true
-      },
-      data: {
-        twoWay: true,
-        type: Object,
-        required: true
-      },
+      config: { type: Object, required: true },
+      data: { twoWay: true, type: Object, required: true },
       width: {
         validator (val) {
           return (typeof val === 'number') || (typeof val === 'string')
         }
+      }
+    },
+    events: {
+      'fselect.error': function (event) {
+        this.$dispatch('formation.error', _.merge({ from: 'fselect' }, event))
       }
     }
   }

@@ -1,8 +1,8 @@
 <template>
-  <div class="dropdown fselect" :class="{ 'open': open }">
+  <div class="dropdown fselect" :class="{ 'open': open }" :class="{ 'has-error': !valid }">
     <div type="text" v-el:selectcontainer
       class="dropdown-toggle form-control"
-      @click="toggleDropdown" style="height: auto;"
+      @click="toggleDropdown"
       :style="{ 'width': width, 'text-align': align !== 'center' ? 'left' : null }"
       style="position: relative; font-weight: normal;">
       <div class="select-body" v-el:selectbody>
@@ -36,16 +36,16 @@
           <i>No Results Found...</i>
         </span>
       </li>
-      <li v-for="opt in options | selectable" :class="{ 'active': $index === activeOption }"
+      <li v-for="opt in options | selectable" :class="{ active: isSelected(opt) }"
         @mouseover="activeOption = $index">
-        <a @click="addItem(opt[valueKey])">{{ opt[textKey] }}</a>
+        <a @click="addItem(opt[valueKey])" :class="{ hovered: activeOption === $index }">{{ opt[textKey] }}</a>
       </li>
     </ul>
   </div>
 </template>
 <script type="text/babel">
   import * as _ from '../utils/utils'
-  import { onEvent } from '../utils/helpers'
+  import $ from '../utils/helpers'
   import { isKey } from '../utils/events'
 
   function validateClassProp (value) {
@@ -69,10 +69,18 @@
     methods: {
       addItem (id) {
         let val = this.getValue(id)
-        if (this.multiple) {
-          if (this.allowMultiple || (!this.allowMultiple && !_.contains(this.value, val))) {
+        let found = _.contains(this.value, val)
+        if (this.value.length >= this.selectLimit && !found) {
+          this.$dispatch('fselect.error', {
+            message: `The maximum selected option limit of ${this.selectLimit} has been reached`
+          })
+          return
+        } else if (this.multiple) {
+          if (this.allowMultiple || (!this.allowMultiple && !found)) {
             this.value.push(val)
             this.closeDropdown()
+          } else {
+            this.removeItem(id)
           }
         } else {
           this.value = [val]
@@ -80,8 +88,10 @@
         }
       },
       closeDropdown (force) {
-        if (this.closeOnSelect || force) this.open = false
-        this.search = ''
+        if (this.closeOnSelect || force) {
+          this.open = false
+          this.search = ''
+        }
       },
       removeItem (id) {
         this.value = _.filter(this.value, (v) => {
@@ -89,13 +99,18 @@
         })
       },
       clickAway (event) {
-        if (this.$el && !this.$el.contains(event.target) && this.open) this.open = false
-        this.search = ''
+        if (this.$el && !this.$el.contains(event.target) && this.open) this.closeDropdown(true)
       },
       getValue (id) {
         return !this.storeObject ? id : _.find(this.options, (v) => {
           return v[this.valueKey] === id
         })
+      },
+      isSelected (opt) {
+        let ids = _.map(this.value, (v) => {
+          return this.storeObject ? v[this.valueKey] : v
+        })
+        return _.contains(ids, opt[this.valueKey])
       },
       searchHandler (event) {
         if (isKey(event, 'ArrowDown') && this.activeOption < this.searchResults.length - 1) {
@@ -121,7 +136,7 @@
     computed: {
       caretClass () {
         if (!this.disabled) {
-          if (!this.multiple) {
+          if (!this.multiple || !this.value.length) {
             return 'caret'
           } else if (this.allowClear && this.value.length > 0) {
             return this.removeClass
@@ -159,19 +174,12 @@
     },
     filters: {
       selectable (options) {
-        let newOptions = options
-        let rx = /.*/
-        let ids = _.map(this.value, (val) => {
-          return this.storeObject ? val[this.valueKey] : val
-        })
-        newOptions = _.filter(options, (opt) => {
+        let newOptions = _.filter(options, (opt) => {
           try {
-            rx = new RegExp(this.search, 'i')
-          } catch (err) {}
-          let searchMatch = opt[this.textKey].match(rx) || this.search === ''
-          if (!this.removeSelectedOptions && searchMatch) return true
-          if (this.removeSelectedOptions && (_.includes(ids, opt[this.valueKey]) || !searchMatch)) return false
-          return true
+            return opt[this.textKey].match(new RegExp(this.search, 'i')) || this.search === ''
+          } catch (err) {
+            return false
+          }
         })
         this.searchResults = newOptions.slice(0, this.optionLimit)
         return newOptions.slice(0, this.optionLimit)
@@ -181,15 +189,16 @@
       align: { type: String, default: 'left' },
       allowClear: { type: Boolean, default: true },
       allowMultiple: { type: Boolean, default: false },
-      closeOnSelect: { type: Boolean, default: true },
+      closeOnSelect: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       optionLimit: { type: Number, default: 5 },
       multiple: { type: Boolean, default: false },
       options: { type: Array },
       placeholder: { type: String, default: '' },
       removeClass: { validator: validateClassProp, default: 'glyphicon glyphicon-remove x-remove' },
-      removeSelectedOptions: { type: Boolean, default: true },
+      removeSelectedOptions: { type: Boolean, default: false },
       searchable: { type: Boolean, default: true },
+      selectLimit: { type: Number },
       storeObject: { type: Boolean, default: false },
       tagClass: { validator: validateClassProp, default: 'default-tag-style' },
       textKey: { type: String, default: 'text' },
@@ -203,10 +212,17 @@
       }
     },
     created () {
-      this.removeClickAway = onEvent(document, 'click', this.clickAway)
+      this.removeClickAway = $(document).click(this.clickAway, undefined, true)
       this.value = _.without(_.map(_.ensureArray(this.value), (v) => {
         return this.getValue(_.isString(v) ? v : _.get(v, this.valueKey, null))
       }), null)
+
+      //  set the min-height to the initial height and make the select container auto height
+      $(document).ready(() => {
+        let minHeight = window.getComputedStyle(this.$els.selectcontainer).getPropertyValue('height')
+        this.$els.selectcontainer.style.minHeight = minHeight
+        this.$els.selectcontainer.style.height = 'auto'
+      })
     },
     beforeDestroy () {
       this.removeClickAway()
@@ -231,9 +247,11 @@
   }
   .fselect .select-body {
     padding: 2px 0px 2px 0px;
+    height: auto;
   }
   .fselect .x-remove {
     font-size: 9px;
+    min-height: inherit;
   }
   .fselect .x-remove:hover {
     color: red;
@@ -253,8 +271,15 @@
   }
   .fselect .scrollable-dropdown {
     height: auto;
-    max-height: 165px;
+    max-height: 15em;
     overflow-x: hidden;
     overflow-y: auto;
+  }
+  .fselect .form-control {
+    padding-right: 16px !important;
+  }
+  .fselect .hovered {
+    background-color: rgb(238, 238, 238);
+    color: #000;
   }
 </style>
