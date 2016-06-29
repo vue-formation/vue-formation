@@ -269,6 +269,13 @@
           })
         })
         return this.valid
+      },
+      setLocalFormData () {
+        _.forEach(this.formConfig, (row, rIdx) => {
+          _.forEach(row.columns, (form, fIdx) => {
+            if (_.has(this.data, form.model)) this.$set(`formData["${rIdx}_${fIdx}"]`, _.get(this.data, form.model))
+          })
+        })
       }
     },
     computed: {
@@ -320,16 +327,18 @@
     },
     created () {
       this.$set('uuid', 'form_'.concat((new Date()).valueOf().toString()))
-      _.forEach(this.config.rows, (row, rIdx) => {
-        _.forEach(row.columns, (form, fIdx) => {
-          if (_.has(this.data, form.model)) this.$set(`formData["${rIdx}_${fIdx}"]`, _.get(this.data, form.model))
-        })
-      })
+      this.setLocalFormData()
     },
     watch: {
       formData: {
         handler (newData) {
           this.updateData(newData)
+        },
+        deep: true
+      },
+      data: {
+        handler () {
+          this.setLocalFormData()
         },
         deep: true
       }
