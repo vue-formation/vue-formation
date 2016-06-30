@@ -276,6 +276,25 @@
             if (_.has(this.data, form.model)) this.$set(`formData["${rIdx}_${fIdx}"]`, _.get(this.data, form.model))
           })
         })
+      },
+      getModelCoords (config) {
+        let coords = {}
+        _.forEach(config, (row, rIdx) => {
+          _.forEach(row.columns, (col, cIdx) => {
+            if (col.model) coords[col.model] = `${rIdx}_${cIdx}`
+          })
+        })
+        return coords
+      },
+      rebuildLocalData (newConfig) {
+        let localData = {}
+        let oldCoords = this.getModelCoords(this.lastConfig)
+        let newCoords = this.getModelCoords(newConfig)
+        _.forEach(newCoords, (key, path) => {
+          let oldKey = oldCoords[path]
+          if (_.has(this.formData, oldKey)) localData[key] = this.formData[oldKey]
+        })
+        this.$set('formData', localData)
       }
     },
     computed: {
@@ -289,6 +308,8 @@
             rows.push(row)
           }
         })
+        if (this.lastConfig.length > 0) this.rebuildLocalData(rows)
+        this.lastConfig = rows
         return rows
       },
       isBootstrapFormat () {
@@ -297,6 +318,7 @@
     },
     data () {
       return {
+        lastConfig: [],
         valid: true,
         touched: false,
         formData: {},
