@@ -55,7 +55,7 @@
     computed: {
       formConfig () {
         return {
-          debug: true,
+          debug: false,
           liveValidation: true,
           format: this.formData.format,
           rows: [

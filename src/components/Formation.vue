@@ -115,6 +115,7 @@
                   <select class="form-control"
                     :id="formId(rIdx, fIdx)"
                     :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
+                    @blur="form.onBlur ? form.onBlur(event, this) : null"
                     v-model="formData[form.model]">
                       <option v-for="opt in form.filter ? form.filter(formData[form.model], form.options) : form.options"
                         :value="opt.value"
@@ -271,6 +272,23 @@
         })
         return this.valid
       },
+      clearIncludeData () {
+        _.forEach(this.config.rows, (row) => {
+          if (row.type === 'include' && !row.persistData) {
+            let newRows = _.isFunction(row.value) ? row.value(row, this) : row.value
+            if (_.isArray(newRows)) {
+              _.forEach(newRows, (r) => {
+                _.forEach(r.columns, (col) => {
+                  if (col.model) {
+                    delete this.formData[col.model]
+                    _.vueSet(this.data, col.model, undefined)
+                  }
+                })
+              })
+            }
+          }
+        })
+      },
       jsonEquals (a, b) {
         try {
           return JSON.stringify(a) === JSON.stringify(b)
@@ -281,14 +299,21 @@
       updateSource () {
         if (this.breakOp()) return
         let data = {}
+        let paths = []
         if (this.config.progress) {
           let progKey = this.config.progress === true ? '$$progress' : this.config.progress
           Vue.set(this.data, progKey, this.calcProgress())
         }
         _.forEach(this.formConfig, (row) => {
           _.forEach(row.columns, (col) => {
-            if (this.formData[col.model]) _.set(data, col.model, this.formData[col.model])
+            if (this.formData[col.model]) {
+              paths.push(col.model)
+              _.set(data, col.model, this.formData[col.model])
+            }
           })
+        })
+        _.forEach(this.formData, (d, k) => {
+          if (!_.includes(paths, k)) delete this.formData[k]
         })
         Vue.set(this, 'data', data)
       },
@@ -305,17 +330,21 @@
     },
     computed: {
       formConfig () {
-        console.log('updateConfig')
         let rows = []
         _.forEach(this.config.rows, (row) => {
           if (row.type === 'include') {
             let newRows = _.isFunction(row.value) ? row.value(row, this) : row.value
-            if (_.isArray(newRows)) _.forEach(newRows, (r) => { rows.push(r) })
+            if (_.isArray(newRows)) {
+              _.forEach(newRows, (r) => {
+                rows.push(r)
+              })
+            }
           } else {
             rows.push(row)
           }
         })
         if (this.jsonEquals(this.lastConfig, rows)) return this.lastConfig
+        this.clearIncludeData()
         this.lastConfig = rows
         return rows
       },
@@ -327,9 +356,6 @@
       return {
         opMax: 50,
         opCount: 0,
-        allowLocal: true,
-        allowSource: true,
-        allowConfig: true,
         lastConfig: [],
         valid: true,
         touched: false,
