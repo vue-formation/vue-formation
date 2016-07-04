@@ -46,7 +46,7 @@
                   :style="form.style"
                   :placeholder="form.placeholder"
                   :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                  v-model="formData[rIdx + '_' + fIdx]">
+                  v-model="formData[form.model]">
                 <!-- text ./-->
 
                 <!-- html -->
@@ -89,7 +89,7 @@
                     <input type="checkbox"
                       :id="formId(rIdx, fIdx)"
                       :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                      v-model="formData[rIdx + '_' + fIdx]">
+                      v-model="formData[form.model]">
                     {{ form.text }}
                   </label>
                 </div>
@@ -97,14 +97,14 @@
 
                 <!-- radio -->
                 <div v-if="form.type === 'radio'" class="radio">
-                  <label v-for="(oIdx, radio) in form.filter ? form.filter(formData[rIdx + '_' + fIdx], form.radios) : form.radios"
+                  <label v-for="(oIdx, radio) in form.filter ? form.filter(formData[form.model], form.radios) : form.radios"
                     style="display: block;">
                     <input type="radio"
                       :name="formId(rIdx, fIdx)"
                       :id="formId(rIdx, fIdx)"
                       :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
                       :value="radio.value"
-                      v-model="formData[rIdx + '_' + fIdx]">
+                      v-model="formData[form.model]">
                       {{ radio.label }}
                   </label>
                 </div>
@@ -115,8 +115,8 @@
                   <select class="form-control"
                     :id="formId(rIdx, fIdx)"
                     :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                    v-model="formData[rIdx + '_' + fIdx]">
-                      <option v-for="opt in form.filter ? form.filter(formData[rIdx + '_' + fIdx], form.options) : form.options"
+                    v-model="formData[form.model]">
+                      <option v-for="opt in form.filter ? form.filter(formData[form.model], form.options) : form.options"
                         :value="opt.value"
                         :hidden="opt.hidden">
                         {{ opt.text }}
@@ -133,7 +133,7 @@
                 <f-select v-if="form.type === 'fselect'"
                   :close-on-select="form.closeOnSelect"
                   :width="form.width"
-                  :value.sync="formData[rIdx + '_' + fIdx]"
+                  :value.sync="formData[form.model]"
                   :options="form.options"
                   :placeholder="form.placeholder"
                   :store-object="form.storeObject"
@@ -155,12 +155,20 @@
   import * as _ from '../utils/utils'
   import $ from '../utils/helpers'
   import fSelect from './FSelect'
+  import Vue from 'vue'
 
   export default {
     components: {
       fSelect
     },
     methods: {
+      breakOp () {
+        if (this.config.debug) {
+          if (this.opCount > this.opMax) return true
+          this.opCount++
+        }
+        return false
+      },
       multiClickaway (evt) {
         this.$broadcast('hide::dropdown')
       },
@@ -168,6 +176,11 @@
         if (_.isFunction(this.config.disabled)) return this.config.disabled()
         if (_.isBoolean(this.config.disabled)) return this.config.disabled
         return null
+      },
+      pretty (obj, label = '') {
+        try {
+          console.log(label, JSON.stringify(obj, null, '  '))
+        } catch (err) {}
       },
       has (obj, path) {
         return _.has(obj, path)
@@ -242,18 +255,6 @@
         if (!requiredCount) return 100
         return Math.floor((requiredFilled / requiredCount) * 100)
       },
-      updateData (newData) {
-        let progress = this.calcProgress()
-        if (this.config.progress) {
-          let progKey = this.config.progress === true ? '$$progress' : this.config.progress
-          this.$set(`data.${progKey}`, progress)
-        }
-        _.forEach(newData, (val, key) => {
-          let [ rIdx, fIdx ] = key.split('_')
-          let model = _.get(this.formConfig, `[${rIdx}].columns[${fIdx}].model`)
-          if (model) this.$set(`data.${model}`, val)
-        })
-      },
       validate () {
         this.valid = true
         _.forEach(this.formConfig, (row, rIdx) => {
@@ -270,37 +271,43 @@
         })
         return this.valid
       },
-      setLocalFormData () {
-        _.forEach(this.formConfig, (row, rIdx) => {
-          _.forEach(row.columns, (form, fIdx) => {
-            if (_.has(this.data, form.model)) this.$set(`formData["${rIdx}_${fIdx}"]`, _.get(this.data, form.model))
+      jsonEquals (a, b) {
+        try {
+          return JSON.stringify(a) === JSON.stringify(b)
+        } catch (err) {
+          return false
+        }
+      },
+      updateSource () {
+        if (this.breakOp()) return
+        let data = {}
+        if (this.config.progress) {
+          let progKey = this.config.progress === true ? '$$progress' : this.config.progress
+          Vue.set(this.data, progKey, this.calcProgress())
+        }
+        _.forEach(this.formConfig, (row) => {
+          _.forEach(row.columns, (col) => {
+            if (this.formData[col.model]) _.set(data, col.model, this.formData[col.model])
           })
         })
+        Vue.set(this, 'data', data)
       },
-      getModelCoords (config) {
-        let coords = {}
-        _.forEach(config, (row, rIdx) => {
-          _.forEach(row.columns, (col, cIdx) => {
-            if (col.model) coords[col.model] = `${rIdx}_${cIdx}`
+      updateLocal () {
+        if (this.breakOp()) return
+        _.forEach(this.formConfig, (row) => {
+          _.forEach(row.columns, (form) => {
+            if (_.has(this.data, form.model)) {
+              Vue.set(this.formData, form.model, _.get(this.data, form.model))
+            }
           })
         })
-        return coords
-      },
-      rebuildLocalData (newConfig) {
-        let localData = {}
-        let oldCoords = this.getModelCoords(this.lastConfig)
-        let newCoords = this.getModelCoords(newConfig)
-        _.forEach(newCoords, (key, path) => {
-          let oldKey = oldCoords[path]
-          if (_.has(this.formData, oldKey)) localData[key] = this.formData[oldKey]
-        })
-        this.$set('formData', localData)
       }
     },
     computed: {
       formConfig () {
+        console.log('updateConfig')
         let rows = []
-        _.forEach(this.config.rows, (row, idx) => {
+        _.forEach(this.config.rows, (row) => {
           if (row.type === 'include') {
             let newRows = _.isFunction(row.value) ? row.value(row, this) : row.value
             if (_.isArray(newRows)) _.forEach(newRows, (r) => { rows.push(r) })
@@ -308,7 +315,7 @@
             rows.push(row)
           }
         })
-        if (this.lastConfig.length > 0) this.rebuildLocalData(rows)
+        if (this.jsonEquals(this.lastConfig, rows)) return this.lastConfig
         this.lastConfig = rows
         return rows
       },
@@ -318,6 +325,11 @@
     },
     data () {
       return {
+        opMax: 50,
+        opCount: 0,
+        allowLocal: true,
+        allowSource: true,
+        allowConfig: true,
         lastConfig: [],
         valid: true,
         touched: false,
@@ -348,21 +360,24 @@
       }
     },
     created () {
-      this.$set('uuid', 'form_'.concat((new Date()).valueOf().toString()))
-      this.setLocalFormData()
+      this.uuid = `form_${Date.now()}`
+      this.updateLocal()
     },
     watch: {
       formData: {
-        handler (newData) {
-          this.updateData(newData)
+        handler () {
+          this.updateSource()
         },
         deep: true
       },
       data: {
         handler () {
-          this.setLocalFormData()
+          this.updateLocal()
         },
         deep: true
+      },
+      opCount (v) {
+        console.log(v)
       }
     },
     props: {

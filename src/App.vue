@@ -33,9 +33,29 @@
         console.log(evt)
       }
     },
+    methods: {
+      buildInclude () {
+        if (!isNaN(this.formData.select1)) {
+          let rows = []
+          for (let i = 0; i < Number(this.formData.select1); i++) {
+            rows.push({
+              columns: [
+                {
+                  type: 'text',
+                  label: `Include ${i}`,
+                  model: `includes.sub["row${i}"]`
+                }
+              ]
+            })
+          }
+          return rows
+        }
+      }
+    },
     computed: {
       formConfig () {
         return {
+          debug: true,
           liveValidation: true,
           format: this.formData.format,
           rows: [
@@ -76,6 +96,14 @@
                   onClick (event, data, validate) {
                     console.log('VALID:', validate())
                     console.log(JSON.stringify(data, null, '  '))
+                  }
+                },
+                {
+                  type: 'button',
+                  text: 'Clear Select',
+                  class: 'btn-info',
+                  onClick (event, data, validate) {
+                    data.select1 = '-1'
                   }
                 }
               ]
@@ -118,24 +146,12 @@
                   ],
                   textKey: 'name',
                   valueKey: 'id'
-                } /*
-                {
-                  label: 'vSelect Multiple',
-                  type: 'vselect',
-                  model: 'vselect1',
-                  labelKey: 'text',
-                  placeholder: 'Select numbers...',
-                  multiple: true,
-                  options: [
-                    { value: '1', text: 'One' },
-                    { value: '2', text: 'Two' },
-                    { value: '3', text: 'Three' },
-                    { value: '4', text: 'Four' },
-                    { value: '5', text: 'Five' },
-                    { value: '6', text: 'Six' }
-                  ]
-                } */
+                }
               ]
+            },
+            {
+              type: 'include',
+              value: this.buildInclude
             },
             {
               type: 'section',

@@ -1,4 +1,5 @@
 /* lodash like functions to remove dependency on lodash */
+import Vue from 'vue'
 
 export function isFunction (obj) {
   return typeof obj === 'function'
@@ -6,6 +7,10 @@ export function isFunction (obj) {
 
 export function isString (obj) {
   return typeof obj === 'string'
+}
+
+export function isNumber (obj) {
+  return typeof obj === 'number'
 }
 
 export function isArray (obj) {
@@ -212,6 +217,30 @@ export function get (obj, path, defaultValue) {
     return defaultValue
   }
   return value
+}
+
+export function set (obj, path, val) {
+  let value = obj
+  let fields = isArray(path) ? path : stringToPathArray(path)
+  for (let f in fields) {
+    let idx = Number(f)
+    let p = fields[idx]
+    if (idx === fields.length - 1) value[p] = val
+    else if (!value[p]) value[p] = isNumber(p) ? [] : {}
+    value = value[p]
+  }
+}
+
+export function vueSet (obj, path, val) {
+  let value = obj
+  let fields = isArray(path) ? path : stringToPathArray(path)
+  for (let f in fields) {
+    let idx = Number(f)
+    let p = fields[idx]
+    if (idx === fields.length - 1) Vue.set(value, p, val)
+    else if (!value[p]) Vue.set(value, p, isNumber(p) ? [] : {})
+    value = value[p]
+  }
 }
 
 export function merge () {
