@@ -140,7 +140,17 @@
                   :store-object="form.storeObject"
                   :multiple="form.multiple"
                   :text-key="form.textKey"
-                  :value-key="form.valueKey">
+                  :value-key="form.valueKey"
+                  :on-add="form.onAdd"
+                  :on-adding="form.onAdding"
+                  :on-change="form.onChange"
+                  :on-changing="form.onChanging"
+                  :on-clear="form.onClear"
+                  :on-clearing="form.onClearing"
+                  :on-close="form.onClose"
+                  :on-closing="form.onClosing"
+                  :on-remove="form.onRemove"
+                  :on-removing="form.onRemoving">
                 </f-select>
                 <!-- fselect ./-->
               </label>
@@ -272,33 +282,8 @@
         })
         return this.valid
       },
-      clearIncludeData () {
-        _.forEach(this.config.rows, (row) => {
-          if (row.type === 'include' && !row.persistData) {
-            let newRows = _.isFunction(row.value) ? row.value(row, this) : row.value
-            if (_.isArray(newRows)) {
-              _.forEach(newRows, (r) => {
-                _.forEach(r.columns, (col) => {
-                  if (col.model) {
-                    delete this.formData[col.model]
-                    _.vueSet(this.data, col.model, undefined)
-                  }
-                })
-              })
-            }
-          }
-        })
-      },
-      jsonEquals (a, b) {
-        try {
-          return JSON.stringify(a) === JSON.stringify(b)
-        } catch (err) {
-          return false
-        }
-      },
       updateSource () {
         if (this.breakOp()) return
-        let data = {}
         let paths = []
         if (this.config.progress) {
           let progKey = this.config.progress === true ? '$$progress' : this.config.progress
@@ -308,14 +293,13 @@
           _.forEach(row.columns, (col) => {
             if (this.formData[col.model]) {
               paths.push(col.model)
-              _.set(data, col.model, this.formData[col.model])
+              _.vueSet(this.data, col.model, this.formData[col.model])
             }
           })
         })
         _.forEach(this.formData, (d, k) => {
           if (!_.includes(paths, k)) delete this.formData[k]
         })
-        Vue.set(this, 'data', data)
       },
       updateLocal () {
         if (this.breakOp()) return
@@ -343,9 +327,6 @@
             rows.push(row)
           }
         })
-        if (this.jsonEquals(this.lastConfig, rows)) return this.lastConfig
-        this.clearIncludeData()
-        this.lastConfig = rows
         return rows
       },
       isBootstrapFormat () {

@@ -145,7 +145,13 @@
                     { id: '6', name: 'Six' }
                   ],
                   textKey: 'name',
-                  valueKey: 'id'
+                  valueKey: 'id',
+                  onRemoving (event, val, vm, fn) {
+                    if (val === '2') return false
+                  },
+                  onClearing (event, vm) {
+                    if (vm.value.length < 2) return false
+                  }
                 }
               ]
             },

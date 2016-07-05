@@ -21,7 +21,7 @@
       </div>
       <span class="caret-position"
         :class="caretClass"
-        @click="multiple && allowClear ? value = [] : null"></span>
+        @click="clearItems"></span>
     </div>
     <ul class="dropdown-menu scrollable-dropdown" :style="{ 'width': width }">
       <li class="search-field">
@@ -77,25 +77,43 @@
           return
         } else if (this.multiple) {
           if (this.allowMultiple || (!this.allowMultiple && !found)) {
-            this.value.push(val)
-            this.closeDropdown()
+            this.$emit('fselect.adding', val, this, () => {
+              this.value.push(val)
+              this.$emit('fselect.add', val, this)
+              this.closeDropdown()
+            })
           } else {
             this.removeItem(id)
           }
         } else {
-          this.value = [val]
-          this.closeDropdown()
+          this.$emit('fselect.changing', val, this, () => {
+            this.value = [val]
+            this.$emit('fselect.change', val, this)
+            this.closeDropdown()
+          })
         }
       },
       closeDropdown (force) {
         if (this.closeOnSelect || force) {
-          this.open = false
-          this.search = ''
+          this.$emit('fselect.closing', this, () => {
+            this.open = false
+            this.search = ''
+            this.$emit('fselect.close', this)
+          })
         }
       },
+      clearItems () {
+        this.$emit('fselect.clearing', this, () => {
+          if (this.multiple && this.allowClear) this.value = []
+          this.$emit('fselect.clear', this)
+        })
+      },
       removeItem (id) {
-        this.value = _.filter(this.value, (v) => {
-          return (this.storeObject && v[this.valueKey] !== id) || (!this.storeObject && v !== id)
+        this.$emit('fselect.removing', id, this, () => {
+          this.value = _.filter(this.value, (v) => {
+            return (this.storeObject && v[this.valueKey] !== id) || (!this.storeObject && v !== id)
+          })
+          this.$emit('fselect.remove', id, this)
         })
       },
       clickAway (event) {
@@ -193,6 +211,16 @@
       disabled: { type: Boolean, default: false },
       optionLimit: { type: Number, default: 5 },
       multiple: { type: Boolean, default: false },
+      onChange: { type: Function },
+      onChanging: { type: Function, default: () => true },
+      onClose: { type: Function },
+      onClosing: { type: Function, default: () => true },
+      onClear: { type: Function },
+      onClearing: { type: Function, default: () => true },
+      onAdd: { type: Function },
+      onAdding: { type: Function, default: () => true },
+      onRemove: { type: Function },
+      onRemoving: { type: Function, default: () => true },
       options: { type: Array },
       placeholder: { type: String, default: '' },
       removeClass: { validator: validateClassProp, default: 'glyphicon glyphicon-remove x-remove' },
@@ -226,6 +254,45 @@
     },
     beforeDestroy () {
       this.removeClickAway()
+    },
+    events: {
+      'fselect.add': function (value, vm) {
+        vm.$emit('fselect.change', value, vm, vm.onAdd)
+      },
+      'fselect.adding': function (value, vm, success) {
+        vm.$emit('fselect.changing', value, vm, () => {
+          if (vm.onAdding(this, value, vm, success) !== false) success(this, value, vm)
+        })
+      },
+      'fselect.change': function (value, vm, changeFn) {
+        if (vm.onChange) vm.onChange(this, value, vm)
+        if (vm.changeFn) changeFn(this, value, vm)
+      },
+      'fselect.changing': function (value, vm, success) {
+        if (vm.onChanging(this, value, vm, success) !== false) success(this, value, vm)
+      },
+      'fselect.close': function (vm) {
+        if (vm.onClose) vm.onClose(this, vm)
+      },
+      'fselect.closing': function (vm, success) {
+        if (vm.onClosing(this, vm)) success(this, vm)
+      },
+      'fselect.clear': function (vm) {
+        vm.$emit('fselect.change', undefined, vm, vm.onClear)
+      },
+      'fselect.clearing': function (vm, success) {
+        vm.$emit('fselect.changing', undefined, vm, () => {
+          if (vm.onClearing(this, vm, success) !== false) success(this, vm)
+        })
+      },
+      'fselect.remove': function (value, vm) {
+        vm.$emit('fselect.change', value, vm, vm.onRemove)
+      },
+      'fselect.removing': function (value, vm, success) {
+        vm.$emit('fselect.changing', value, vm, () => {
+          if (vm.onRemoving(this, value, vm, success) !== false) success(this, value, vm)
+        })
+      }
     }
   }
 </script>
