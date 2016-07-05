@@ -15,8 +15,7 @@
 
 <script type="text/babel">
   import Hello from './components/Hello'
-  import Formation from './components/Formation'
-  import FSelect from './components/FSelect'
+  import { Formation } from 'vue-formation'
 
   import 'bootstrap/dist/css/bootstrap.min.css'
   import 'bootswatch/paper/bootstrap.css'
@@ -25,8 +24,7 @@
   export default {
     components: {
       Hello,
-      Formation,
-      FSelect
+      Formation
     },
     events: {
       'formation.error': (evt) => {
@@ -93,8 +91,8 @@
                   text: 'Print Data',
                   class: 'btn-primary',
                   iconClass: 'glyphicon glyphicon-console',
-                  onClick (event, data, validate) {
-                    console.log('VALID:', validate())
+                  onClick (event, data, vm) {
+                    console.log('VALID:', vm.validate())
                     console.log(JSON.stringify(data, null, '  '))
                   }
                 },
@@ -102,8 +100,9 @@
                   type: 'button',
                   text: 'Clear Select',
                   class: 'btn-info',
-                  onClick (event, data, validate) {
+                  onClick (event, data, vm) {
                     data.select1 = '-1'
+                    data.includes = undefined
                   }
                 }
               ]

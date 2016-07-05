@@ -116,7 +116,7 @@ export class Helper {
   removeClass (clazz) {
     return this.each((el) => { removeClass(el, clazz) })
   }
-  toggleClazz (clazz, force) {
+  toggleClass (clazz, force) {
     return this.each((el) => { toggleClass(el, clazz, force) })
   }
   hasClass (clazz) {

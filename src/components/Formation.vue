@@ -59,7 +59,7 @@
                 :class="form.class"
                 :style="form.style"
                 :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                @click.prevent="form.onClick ? form.onClick($event, data, validate) : null">
+                @click.prevent="form.onClick ? form.onClick($event, data, this) : null">
                   <span v-if="form.iconClass", :class="form.iconClass"></span>
                   <span v-if="form.iconClass && form.text">&nbsp;</span>
                   <span v-if="form.text">{{ form.text }}</span>
@@ -75,7 +75,7 @@
                     :class="btn.class"
                     :style="btn.style"
                     :disabled="has(btn, 'bind.disabled') ? btn.bind.disabled() : formDisabled()"
-                    @click.prevent="btn.onClick ? btn.onClick($event, data) : null">
+                    @click.prevent="btn.onClick ? btn.onClick($event, data, this) : null">
                       <span v-if="btn.iconClass", :class="btn.iconClass"></span>
                       <span v-if="btn.iconClass && btn.label">&nbsp;</span>
                       <span v-if="btn.label">{{ form.label }}</span>
@@ -165,7 +165,7 @@
 <script type="text/babel">
   import * as _ from '../utils/utils'
   import $ from '../utils/helpers'
-  import fSelect from './FSelect'
+  import fSelect from './FSelect.vue'
   import Vue from 'vue'
 
   export default {
@@ -291,7 +291,7 @@
         }
         _.forEach(this.formConfig, (row) => {
           _.forEach(row.columns, (col) => {
-            if (this.formData[col.model]) {
+            if (this.formData[col.model] !== undefined) {
               paths.push(col.model)
               _.vueSet(this.data, col.model, this.formData[col.model])
             }
