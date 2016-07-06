@@ -10,7 +10,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">VueFormation</a>
+          <a class="navbar-brand" href="#">
+            <img src="../src/assets/formation.png" style="display: inline-block; height: 35px; width: 50px;">
+            <span style="display: inline-block;">VueFormation</span>
+          </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
           <form class="form-inline">
