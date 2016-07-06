@@ -1,27 +1,54 @@
 # vue-formation
+A Bootstrap themeable Vue.js form builder
 
-> A vue.js form builder
+[`Project Page`](https://bhoriuchi.github.io/vue-formation/)
 
-## Build Setup
+### Example
 
-``` bash
-# install dependencies
-npm install
+```js
+import { Formation } from 'vue-formation'
 
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
+new Vue({
+  el: '#app',
+  components: { Formation },
+  template: '<formation :data.sync="formData" :config="formConfig"></formation>',
+  data: {
+    formData: {
+      firstName: '',
+      lastName: ''
+    },
+    formConfig: {
+      rows: [
+        {
+          columns: [
+            {
+              type: 'text',
+              label: 'First Name',
+              model: 'firstName'
+            },
+            {
+              type: 'text',
+              label: 'Last Name',
+              model: 'lastName'
+            }
+          ]
+        },
+        {
+          columns: [
+            {
+              type: 'button',
+              text: 'OK',
+              class: 'btn-primary',
+              iconClass: 'glyphicon glyphicon-ok',
+              onClick (event, vm) {
+                vm.validate()
+                console.log(vm.data)
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+})
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
