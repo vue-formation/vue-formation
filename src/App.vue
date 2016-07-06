@@ -29,17 +29,31 @@
       <div class="container">
         &nbsp;
         <h1 class="display-3" style="color: white; font-weight: 500">VueFormation</h1>
-        <p class="lead" style="color: #fff">A Bootstrap themeable Vue.js form builder</p>
+        <p class="lead" style="color: #fff">A <b>Bootstrap</b> themeable <b>Vue.js</b> form builder
+          <br>
+          Build complex <b>reactive</b> form layouts using <b>JSON</b></p>
         <p class="lead">
           <a style="border: 1px solid #fff; color: #fff;" class="btn btn-lg"
-             href="https://github.com/bhoriuchi/vue-formation" role="button">Code on GitHib</a>
-          <a style="border: 1px solid #fff; color: #fff;" class="btn btn-lg"
-             href="https://github.com/bhoriuchi/vue-formation/zipball/master"
-             role="button" download target="_blank">Download v0.1.0</a>
+             href="https://github.com/bhoriuchi/vue-formation" role="button">Code on GitHub</a>
         </p>
       </div>
     </div>
     <div class="container">
+      <h3>Simple Form</h3>
+      <div class="row">
+        <div class="col-md-8">
+          <formation :data.sync="e1Data" :config="e1Config"></formation>
+        </div>
+        <div class="col-md-4">
+          <label style="width: 100%"> <b>Form Data</b>
+<pre style="font-size: 10px;">
+{{ e1Data | json }}
+</pre>
+          </label>
+        </div>
+      </div>
+
+      <h3>Complex Form</h3>
       <div class="row">
         <div class="col-md-8">
           <formation :data.sync="formData" :config="formConfig"></formation>
@@ -53,6 +67,7 @@
         </div>
       </div>
     </div>
+    <f-modal :show.sync="showModal"></f-modal>
   </div>
 </template>
 
@@ -63,6 +78,7 @@
   // import { Formation } from '../dist/vue-formation'
   // import { Formation } from '../dist/vue-formation.min'
   import Formation from './components/Formation'
+  import FModal from './components/FModal'
   import 'bootstrap/dist/css/bootstrap.min.css'
   import './formation.css'
   import 'prismjs/themes/prism-coy.css'
@@ -71,6 +87,7 @@
     components: {
       Hello,
       Formation,
+      FModal,
       ThemeSelector
     },
     created () {
@@ -106,6 +123,44 @@
       }
     },
     computed: {
+      e1Config () {
+        return {
+          rows: [
+            {
+              columns: [
+                { type: 'text', label: 'First Name', model: 'firstName' },
+                { type: 'text', label: 'Last Name', model: 'lastName' }
+              ]
+            },
+            {
+              columns: [
+                {
+                  type: 'buttons',
+                  buttons: [
+                    {
+                      text: 'Clear',
+                      class: 'btn-default',
+                      iconClass: 'glyphicon glyphicon-remove',
+                      onClick (event, vm) {
+                        vm.setData(['firstName', 'lastName'], '')
+                      }
+                    },
+                    {
+                      text: 'Submit',
+                      class: 'btn-primary',
+                      iconClass: 'glyphicon glyphicon-ok',
+                      onClick: (event, vm) => {
+                        this.showModal = true
+                        console.log(vm.data)
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
       formConfig () {
         return {
           debug: false,
@@ -250,6 +305,8 @@
     },
     data () {
       return {
+        showModal: false,
+        e1Data: { firstName: '', lastName: '' },
         formData: {
           text1: 'Has Default Text',
           text2: '',

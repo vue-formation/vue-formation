@@ -78,7 +78,7 @@
                     @click.prevent="btn.onClick ? btn.onClick($event, utils) : null">
                       <span v-if="btn.iconClass", :class="btn.iconClass"></span>
                       <span v-if="btn.iconClass && btn.label">&nbsp;</span>
-                      <span v-if="btn.label">{{ form.label }}</span>
+                      <span v-if="btn.text">{{ btn.text }}</span>
                   </button>
                 </div>
                 <!-- buttons ./-->
@@ -182,12 +182,18 @@
         return false
       },
       clearData (path, onNextTick) {
-        let pathRx = _.escapeRegExp(path)
+        this.setData(path, undefined, onNextTick)
+      },
+      setData (path, value, onNextTick) {
         let doClear = () => {
-          _.forEach(this.formData, (val, key) => {
-            if (key.match(pathRx)) this.formData[key] = undefined
+          path = _.ensureArray(path)
+          _.forEach(path, (p) => {
+            let pathRx = _.escapeRegExp(p)
+            _.forEach(this.formData, (val, key) => {
+              if (key.match(pathRx)) this.formData[key] = value
+            })
+            _.vueSet(this.data, p, value)
           })
-          _.vueSet(this.data, path, undefined)
         }
         onNextTick ? this.$nextTick(doClear) : doClear()
       },
@@ -328,6 +334,7 @@
     computed: {
       utils () {
         return Object.assign({
+          setData: this.setData,
           clearData: this.clearData,
           validate: this.validate,
           data: this.data,
