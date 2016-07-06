@@ -270,7 +270,7 @@
         this.valid = true
         _.forEach(this.formConfig, (row, rIdx) => {
           _.forEach(row.columns, (form, fIdx) => {
-            let data = _.get(this.formData, `${rIdx}_${fIdx}`)
+            let data = _.get(this.formData, form.model)
             let valid = _.isFunction(form.validate) ? form.validate(data) : true
             if (!valid) {
               this.valid = false
