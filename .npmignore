@@ -1,0 +1,15 @@
+build
+example
+node_modules
+static
+src
+test
+.babelrc
+.DS_Store
+.idea
+npm-debug.log
+.npmignore
+.travis.yml
+index.html
+TODO.md
+.*

@@ -15,7 +15,9 @@
 
 <script type="text/babel">
   import Hello from './components/Hello'
-  import { Formation } from 'vue-formation'
+  // import { Formation } from '../dist/vue-formation'
+  // import { Formation } from '../dist/vue-formation.min'
+  import Formation from '../src/components/Formation'
 
   import 'bootstrap/dist/css/bootstrap.min.css'
   import 'bootswatch/paper/bootstrap.css'

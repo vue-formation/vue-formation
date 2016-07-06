@@ -5,7 +5,7 @@ var projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
   entry: {
-    'vue-formation': './src/components/index.js',
+    'vue-formation': './src/index.js',
   },
   output: {
     filename: './dist/[name].js',
@@ -26,6 +26,10 @@ module.exports = {
         loader: 'babel',
         include: projectRoot,
         exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        loader: 'vue-style-loader!css-loader?importLoaders=1'
       },
       {
         test: /\.json$/,
@@ -52,6 +56,12 @@ module.exports = {
         }
       }
     ]
+  },
+  eslint: {
+    formatter: require('eslint-friendly-formatter')
+  },
+  vue: {
+    loaders: utils.cssLoaders()
   },
   babel: {
     presets: ['es2015'],

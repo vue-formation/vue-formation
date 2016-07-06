@@ -1,12 +1,12 @@
-var config = require('./webpack.dev.conf.js')
+var config = require('./webpack.dist.conf.js')
 
 config.entry = {
-  'vue-formation': './src/components/index.js',
+  'vue-formation': './src/index.js',
 }
 
 config.output = {
-  filename: './dist/[name].js',
-  library: 'Formation',
+  filename: './dist/vue-formation.js',
+  library: 'VueFormation',
   libraryTarget: 'umd'
 }
 

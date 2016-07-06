@@ -20,7 +20,7 @@
         </span>
       </div>
       <span class="caret-position"
-        :class="caretClass"
+        :class="interactClass"
         @click="clearItems"></span>
     </div>
     <ul class="dropdown-menu scrollable-dropdown" :style="{ 'width': width }">
@@ -47,6 +47,7 @@
   import * as _ from '../utils/utils'
   import $ from '../utils/helpers'
   import { isKey } from '../utils/events'
+  import '../formation-icons.css'
 
   function validateClassProp (value) {
     return _.isString(value) || _.isArray(value) || _.isHash(value)
@@ -152,10 +153,10 @@
       }
     },
     computed: {
-      caretClass () {
+      interactClass () {
         if (!this.disabled) {
           if (!this.multiple || !this.value.length) {
-            return 'caret'
+            return this.caretClass
           } else if (this.allowClear && this.value.length > 0) {
             return this.removeClass
           }
@@ -207,6 +208,7 @@
       align: { type: String, default: 'left' },
       allowClear: { type: Boolean, default: true },
       allowMultiple: { type: Boolean, default: false },
+      caretClass: { validator: validateClassProp, default: 'icon formation-caret-down caret-font' },
       closeOnSelect: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       optionLimit: { type: Number, default: 5 },
@@ -223,7 +225,7 @@
       onRemoving: { type: Function, default: () => true },
       options: { type: Array },
       placeholder: { type: String, default: '' },
-      removeClass: { validator: validateClassProp, default: 'glyphicon glyphicon-remove x-remove' },
+      removeClass: { validator: validateClassProp, default: 'icon formation-remove x-remove' },
       removeSelectedOptions: { type: Boolean, default: false },
       searchable: { type: Boolean, default: true },
       selectLimit: { type: Number },
@@ -317,7 +319,7 @@
     height: auto;
   }
   .fselect .x-remove {
-    font-size: 9px;
+    font-size: 10px;
     min-height: inherit;
   }
   .fselect .x-remove:hover {
@@ -326,12 +328,15 @@
   .fselect .placeholder-text {
     line-height: 2em;
   }
+  .fselect .caret-font {
+    font-size: 13px;
+  }
   .fselect .caret-position {
     position: absolute;
     top: 50%;
     right: 4px;
     line-height: 0.5em;
-    font-size: 10px;
+    color: #555;
   }
   .fselect .dropdown-menu .search-field {
     padding: 0px 20px;

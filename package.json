@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "A vue.js form builder",
   "author": "Branden Horiuchi <bhoriuchi@gmail.com>",
-  "private": true,
+  "license": "MIT",
+  "main": "dist/vue-formation.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhoriuchi/vue-formation.git"
+  },
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
@@ -11,22 +16,7 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
-    "build:dist": "webpack --progress --hide-modules --config  build/webpack.build.js"
-  },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        }
-      ],
-      [
-        "vueify"
-      ]
-    ]
+    "build:dist": "webpack --bail --progress --hide-modules --config  build/webpack.build.min.js && webpack --bail --progress --hide-modules --config  build/webpack.build.js"
   },
   "dependencies": {
   },
@@ -42,10 +32,7 @@
     "babel-preset-stage-3": "^6.0.0",
     "bootstrap": "^3.3.6",
     "bootswatch": "^3.3.6",
-    "browserify": "^13.0.0",
-    "browserify-hmr": "^0.3.0",
     "connect-history-api-fallback": "^1.1.0",
-    "cross-env": "^1.0.0",
     "css-loader": "^0.23.0",
     "eslint": "^2.10.2",
     "eslint-friendly-formatter": "^2.0.5",
@@ -87,8 +74,6 @@
     "url-loader": "^0.5.7",
     "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.0.0",
-    "vueify": "^8.7.0",
-    "vueify-insert-css": "^1.0.0",
     "vue-loader": "^8.3.0",
     "vue-style-loader": "^1.0.0",
     "webpack": "^1.12.2",
