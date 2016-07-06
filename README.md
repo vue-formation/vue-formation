@@ -5,10 +5,16 @@ A Bootstrap themeable Vue.js form builder
 
 [`Project Page`](https://bhoriuchi.github.io/vue-formation/)
 
+### Bootstrap
+Formation relies on [Bootstrap.css](http://getbootstrap.com/) for styling and it must be included in your project for formation to work properly. You may also use bootstrap themes like [Bootswatch](https://bootswatch.com/)
+
+
 ### Example
 
 ```js
 import { Formation } from 'vue-formation'
+import 'bootstrap.css'
+import 'bootstrap-theme.css' // optional
 
 new Vue({
   el: '#app',

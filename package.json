@@ -18,8 +18,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "build:dist": "webpack --bail --progress --hide-modules --config  build/webpack.build.min.js && webpack --bail --progress --hide-modules --config  build/webpack.build.js"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "vue": "^1.0.21",
     "babel-runtime": "^6.0.0",
@@ -81,5 +80,32 @@
     "webpack-dev-middleware": "^1.4.0",
     "webpack-hot-middleware": "^2.6.0",
     "webpack-merge": "^0.8.3"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/bhoriuchi/vue-formation/issues"
+  },
+  "homepage": "https://github.com/bhoriuchi/vue-formation#readme",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "forms",
+    "webpack",
+    "formation",
+    "select",
+    "bootstrap",
+    "material",
+    "theme",
+    "json",
+    "configuration",
+    "form",
+    "select",
+    "components",
+    "radio",
+    "text",
+    "input",
+    "button"
+  ]
 }
