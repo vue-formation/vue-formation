@@ -35,7 +35,7 @@
              href="https://github.com/bhoriuchi/vue-formation" role="button">Code on GitHib</a>
           <a style="border: 1px solid #fff; color: #fff;" class="btn btn-lg"
              href="https://github.com/bhoriuchi/vue-formation/zipball/master"
-             role="button" download target="_blank">Download v1.0.0</a>
+             role="button" download target="_blank">Download v0.1.0</a>
         </p>
       </div>
     </div>
