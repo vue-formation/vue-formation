@@ -1,5 +1,6 @@
 build
 example
+config
 node_modules
 static
 src
