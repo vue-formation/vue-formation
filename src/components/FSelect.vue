@@ -3,16 +3,15 @@
     <div type="text" v-el:selectcontainer
       class="dropdown-toggle form-control"
       @click="toggleDropdown"
-      :style="{ 'width': width, 'text-align': align !== 'center' ? 'left' : null }"
-      style="position: relative; font-weight: normal;">
+      :style="{ 'width': width, 'text-align': align !== 'center' ? 'left' : null, 'height': 'auto', 'display': 'flex' }"
+      style="position: relative; font-weight: normal; height: auto; display: flex;">
       <div class="select-body" v-el:selectbody>
         <span v-if="value.length === 0" v-el:placeholder class="placeholder-text">{{ placeholder }}</span>
         <span v-if="value.length > 0 && !multiple" class="placeholder-text">{{ singleValueText }}</span>
         <span v-if="value.length > 0 && multiple"
         v-for="item in multiValue"
         track-by="$index"
-        class="select-tag"
-        :class="tagClass">
+        class="select-tag" :class="tagClass">
           <span v-if="!disabled"
             :class="removeClass"
             @click="removeItem(item[valueKey])"></span>
@@ -22,6 +21,7 @@
       <span class="caret-position"
         :class="interactClass"
         @click="clearItems"></span>
+      <select class="form-control" style="width: 1px; float: right; visibility: hidden;"></select>
     </div>
     <ul class="dropdown-menu scrollable-dropdown" :style="{ 'width': width }">
       <li class="search-field">
@@ -225,12 +225,18 @@
       onRemoving: { type: Function, default: () => true },
       options: { type: Array },
       placeholder: { type: String, default: '' },
+      height: { type: String },
       removeClass: { validator: validateClassProp, default: 'icon formation-remove x-remove' },
       removeSelectedOptions: { type: Boolean, default: false },
       searchable: { type: Boolean, default: true },
       selectLimit: { type: Number },
       storeObject: { type: Boolean, default: false },
-      tagClass: { validator: validateClassProp, default: 'default-tag-style' },
+      tagClass: {
+        validator: validateClassProp,
+        default () {
+          return ['btn', 'btn-primary', 'default-tag-class']
+        }
+      },
       textKey: { type: String, default: 'text' },
       value: { twoWay: true, validator: validateValue },
       valueKey: { type: String, default: 'value' },
@@ -246,13 +252,6 @@
       this.value = _.without(_.map(_.ensureArray(this.value), (v) => {
         return this.getValue(_.isString(v) ? v : _.get(v, this.valueKey, null))
       }), null)
-
-      //  set the min-height to the initial height and make the select container auto height
-      $(document).ready(() => {
-        let minHeight = window.getComputedStyle(this.$els.selectcontainer).getPropertyValue('height')
-        this.$els.selectcontainer.style.minHeight = minHeight
-        this.$els.selectcontainer.style.height = 'auto'
-      })
     },
     beforeDestroy () {
       this.removeClickAway()
@@ -305,13 +304,19 @@
     padding-top: 0px;
     padding-bottom: 0px;
   }
+  .fselect .select-tag.default-tag-class {
+    margin: 2px;
+    font-size: 0.75em;
+    padding: 0px 10px;
+    height: 2em;
+    line-height: 2em;
+  }
   .fselect .select-tag.default-tag-style {
     display: inline-block;
     color: rgba(0, 0, 0, 0.6);
     background-color: #e4e4e4;
     border-radius: 14px;
-    padding: 3px 12px;
-    font-size: 13px;
+    padding: 0px 12px;
     margin: 2px;
   }
   .fselect .select-body {

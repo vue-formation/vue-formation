@@ -59,7 +59,7 @@
                 :class="form.class"
                 :style="form.style"
                 :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                @click.prevent="form.onClick ? form.onClick($event, data, this) : null">
+                @click.prevent="form.onClick ? form.onClick($event, utils) : null">
                   <span v-if="form.iconClass", :class="form.iconClass"></span>
                   <span v-if="form.iconClass && form.text">&nbsp;</span>
                   <span v-if="form.text">{{ form.text }}</span>
@@ -75,7 +75,7 @@
                     :class="btn.class"
                     :style="btn.style"
                     :disabled="has(btn, 'bind.disabled') ? btn.bind.disabled() : formDisabled()"
-                    @click.prevent="btn.onClick ? btn.onClick($event, data, this) : null">
+                    @click.prevent="btn.onClick ? btn.onClick($event, utils) : null">
                       <span v-if="btn.iconClass", :class="btn.iconClass"></span>
                       <span v-if="btn.iconClass && btn.label">&nbsp;</span>
                       <span v-if="btn.label">{{ form.label }}</span>
@@ -115,7 +115,8 @@
                   <select class="form-control"
                     :id="formId(rIdx, fIdx)"
                     :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                    @blur="form.onBlur ? form.onBlur(event, this) : null"
+                    @blur="form.onBlur ? form.onBlur(event, utils) : null"
+                    @change="form.onChange ? form.onChange(event, utils) : null"
                     v-model="formData[form.model]">
                       <option v-for="opt in form.filter ? form.filter(formData[form.model], form.options) : form.options"
                         :value="opt.value"
@@ -179,6 +180,16 @@
           this.opCount++
         }
         return false
+      },
+      clearData (path, onNextTick) {
+        let pathRx = _.escapeRegExp(path)
+        let doClear = () => {
+          _.forEach(this.formData, (val, key) => {
+            if (key.match(pathRx)) this.formData[key] = undefined
+          })
+          _.vueSet(this.data, path, undefined)
+        }
+        onNextTick ? this.$nextTick(doClear) : doClear()
       },
       multiClickaway (evt) {
         this.$broadcast('hide::dropdown')
@@ -248,7 +259,7 @@
         this.valid = true
         _.forEach(this.formConfig, (row, rIdx) => {
           _.forEach(row.columns, (form, fIdx) => {
-            let data = _.get(this.formData, `${rIdx}_${fIdx}`)
+            let data = _.get(this.formData, form.model)
             let valid = _.isFunction(form.validate) ? form.validate(data) : true
             if (!valid) {
               this.valid = false
@@ -268,6 +279,7 @@
       },
       validate () {
         this.valid = true
+        this.touched = true
         _.forEach(this.formConfig, (row, rIdx) => {
           _.forEach(row.columns, (form, fIdx) => {
             let data = _.get(this.formData, form.model)
@@ -285,9 +297,10 @@
       updateSource () {
         if (this.breakOp()) return
         let paths = []
+        let progress = this.calcProgress()
         if (this.config.progress) {
           let progKey = this.config.progress === true ? '$$progress' : this.config.progress
-          Vue.set(this.data, progKey, this.calcProgress())
+          Vue.set(this.data, progKey, progress)
         }
         _.forEach(this.formConfig, (row) => {
           _.forEach(row.columns, (col) => {
@@ -313,6 +326,15 @@
       }
     },
     computed: {
+      utils () {
+        return Object.assign({
+          clearData: this.clearData,
+          validate: this.validate,
+          data: this.data,
+          config: Object.assign({}, this.config, { rows: this.formConfig }),
+          localData: this.formData
+        }, _)
+      },
       formConfig () {
         let rows = []
         _.forEach(this.config.rows, (row) => {

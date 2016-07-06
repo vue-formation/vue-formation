@@ -1,32 +1,82 @@
 <template>
   <div id="app">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">VueFormation</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse pull-right">
+          <form class="form-inline">
+            <div class="form-group" style="margin-top: 8px;">
+              <label for="themer" class="navbar-text" style="line-height: 0.5em;">Change Theme&nbsp;&nbsp;</label>
+              <theme-selector style="width:200px;" id="themer" class="form-control"></theme-selector>
+            </div>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="jumbotron jumbotron-fluid" style="background-color: #3368bb; color: #fff">
+      <div class="container">
+        &nbsp;
+        <h1 class="display-3" style="color: white; font-weight: 500">VueFormation</h1>
+        <p class="lead" style="color: #fff">A Bootstrap themeable Vue.js form builder</p>
+        <p class="lead">
+          <a style="border: 1px solid #fff; color: #fff;" class="btn btn-lg"
+             href="https://github.com/bhoriuchi/vue-formation" role="button">Code on GitHib</a>
+          <a style="border: 1px solid #fff; color: #fff;" class="btn btn-lg"
+             href="https://github.com/bhoriuchi/vue-formation/zipball/master"
+             role="button" download target="_blank">Download v1.0.0</a>
+        </p>
+      </div>
+    </div>
     <div class="container">
-      <h3>Vue-Formation</h3>
-      <span>A Vue.js form builder</span>
-      <hr>
-      <formation :data.sync="formData" :config="formConfig"></formation>
-      <pre>
-// Form Data
+      <div class="row">
+        <div class="col-md-8">
+          <formation :data.sync="formData" :config="formConfig"></formation>
+        </div>
+        <div class="col-md-4" style="padding-top: 16px;">
+          <label style="width: 100%"> <b>Form Data</b>
+<pre style="font-size: 10px;">
 {{ formData | json }}
-      </pre>
+</pre>
+          </label>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/babel">
+  import 'prismjs'
   import Hello from './components/Hello'
+  import ThemeSelector from './components/ThemeSelector'
   // import { Formation } from '../dist/vue-formation'
   // import { Formation } from '../dist/vue-formation.min'
-  import Formation from '../src/components/Formation'
-
+  import Formation from './components/Formation'
   import 'bootstrap/dist/css/bootstrap.min.css'
-  import 'bootswatch/paper/bootstrap.css'
   import './formation.css'
+  import 'prismjs/themes/prism-coy.css'
 
   export default {
     components: {
       Hello,
-      Formation
+      Formation,
+      ThemeSelector
+    },
+    created () {
+      var ss = document.createElement('link')
+      ss.type = 'text/css'
+      ss.rel = 'stylesheet'
+      ss.href = 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css'
+      ss.id = 'page-theme'
+      document.getElementsByTagName('head')[0].appendChild(ss)
     },
     events: {
       'formation.error': (evt) => {
@@ -93,18 +143,18 @@
                   text: 'Print Data',
                   class: 'btn-primary',
                   iconClass: 'glyphicon glyphicon-console',
-                  onClick (event, data, vm) {
+                  onClick (event, vm) {
                     console.log('VALID:', vm.validate())
-                    console.log(JSON.stringify(data, null, '  '))
+                    console.log(JSON.stringify(vm.data, null, '  '))
                   }
                 },
                 {
                   type: 'button',
                   text: 'Clear Select',
                   class: 'btn-info',
-                  onClick (event, data, vm) {
-                    data.select1 = '-1'
-                    data.includes = undefined
+                  onClick (event, vm) {
+                    vm.data.select1 = '-1'
+                    vm.clearData('includes')
                   }
                 }
               ]
@@ -127,7 +177,10 @@
                     { value: '4', text: 'Four' },
                     { value: '5', text: 'Five' },
                     { value: '6', text: 'Six' }
-                  ]
+                  ],
+                  onChange (event, vm) {
+                    vm.clearData('includes')
+                  }
                 },
                 {
                   label: 'fSelect',
@@ -210,4 +263,7 @@
 </script>
 
 <style>
+  input:focus, button:focus, button:active {
+    outline: none !important;
+  }
 </style>

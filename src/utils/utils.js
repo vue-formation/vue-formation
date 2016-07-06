@@ -36,6 +36,24 @@ export function isObject (obj) {
 export function isHash (obj) {
   return isObject(obj) && !isArray(obj) && !isDate(obj) && obj !== null
 }
+export function toString (obj) {
+  try {
+    if (isHash(obj) || isArray(obj)) return JSON.stringify(obj)
+    else if (has(obj, 'toString')) return obj.toString()
+    else return String(obj)
+  } catch (err) {}
+  return ''
+}
+
+// taken from lodash - https://github.com/lodash/lodash
+export function escapeRegExp (str) {
+  var reRegExpChar = /[\\^$.*+?()[\]{}|]/g
+  var reHasRegExpChar = RegExp(reRegExpChar.source)
+  str = toString(str)
+  return (str && reHasRegExpChar.test(str))
+    ? str.replace(reRegExpChar, '\\$&')
+    : str
+}
 
 export function includes (obj, key) {
   try {
