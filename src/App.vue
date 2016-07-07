@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -10,14 +10,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="#" style="height: 100%">
             <img src="../src/assets/formation.png" style="display: inline-block; height: 35px; width: 50px;">
-            <span style="display: inline-block;">VueFormation</span>
+            <span style="display: inline-block; height: 100%; position: relative; top: 0.2em;">VueFormation</span>
           </a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse pull-right">
+        <div id="navbar" class="navbar-collapse collapse pull-right" style="height: 100%; top: 1em; position: relative;">
           <form class="form-inline">
-            <div class="form-group" style="margin-top: 8px;">
+            <div class="form-group">
               <label for="themer" class="navbar-text" style="line-height: 0.5em;">Change Theme&nbsp;&nbsp;</label>
               <theme-selector style="width:200px;" id="themer" class="form-control"></theme-selector>
             </div>
@@ -25,61 +25,56 @@
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
-    <div class="jumbotron jumbotron-fluid" style="background-color: #3368bb; color: #fff">
+    <div class="jumbotron jumbotron-fluid" style="background-color: #3368bb; color: #fff;">
       <div class="container">
-        &nbsp;
-        <h1 class="display-3" style="color: white; font-weight: 500">VueFormation</h1>
+        <h1 class="display-3" style="color: #fff; font-weight: 500; margin-top: 0px;">VueFormation</h1>
         <p class="lead" style="color: #fff">A <b>Bootstrap</b> themeable <b>Vue.js</b> form builder
           <br>
           Build complex <b>reactive</b> form layouts using <b>JSON</b></p>
         <p class="lead">
           <a style="border: 1px solid #fff; color: #fff;" class="btn btn-lg"
-             href="https://github.com/bhoriuchi/vue-formation" role="button">Code on GitHub</a>
+             href="https://github.com/bhoriuchi/vue-formation" role="button">
+            <span class="fa fa-github"></span>
+            Code on GitHub
+          </a>
         </p>
       </div>
     </div>
     <div class="container">
-      <h3>Simple Form</h3>
-      <div class="row">
-        <div class="col-md-8">
-          <formation :data.sync="e1Data" :config="e1Config"></formation>
-        </div>
-        <div class="col-md-4">
-          <label style="width: 100%"> <b>Form Data</b>
+      <div v-for="(exampleId, example) in Examples">
+        <h3><a><span @click="showCode(exampleId)" class="fa fa-code"></span></a> {{ example.title }}</h3>
+        <div class="row">
+          <div class="col-md-8">
+            <formation :data.sync="exampleData[exampleId]" :config="exampleConfig[exampleId]"></formation>
+          </div>
+          <div class="col-md-4">
+            <label style="width: 100%"> <b>Form Data</b>
 <pre style="font-size: 10px;">
-{{ e1Data | json }}
+{{ exampleData[exampleId] | json }}
 </pre>
-          </label>
-        </div>
-      </div>
-
-      <h3>Complex Form</h3>
-      <div class="row">
-        <div class="col-md-8">
-          <formation :data.sync="formData" :config="formConfig"></formation>
-        </div>
-        <div class="col-md-4" style="padding-top: 16px;">
-          <label style="width: 100%"> <b>Form Data</b>
-<pre style="font-size: 10px;">
-{{ formData | json }}
-</pre>
-          </label>
+            </label>
+          </div>
         </div>
       </div>
     </div>
-    <f-modal :show.sync="showModal"></f-modal>
+    <f-modal v-ref:codemodal>
+    </f-modal>
   </div>
 </template>
 
 <script type="text/babel">
-  import 'prismjs'
+  import Prism from 'prismjs'
   import Hello from './components/Hello'
   import ThemeSelector from './components/ThemeSelector'
+  import * as _ from './utils/utils'
+  import { stringify } from './utils/stringify'
   // import { Formation } from '../dist/vue-formation'
   // import { Formation } from '../dist/vue-formation.min'
   import Formation from './components/Formation'
   import FModal from './components/FModal'
+  import Examples from './examples'
   import 'bootstrap/dist/css/bootstrap.min.css'
+  import 'font-awesome/css/font-awesome.min.css'
   import './formation.css'
   import 'prismjs/themes/prism-coy.css'
 
@@ -97,13 +92,47 @@
       ss.href = 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css'
       ss.id = 'page-theme'
       document.getElementsByTagName('head')[0].appendChild(ss)
+      _.forEach(Examples, (example, id) => {
+        _.vueSet(this.exampleData, id, example.formData)
+        _.vueSet(this.exampleConfig, id, example.formConfig)
+      })
     },
     events: {
-      'formation.error': (evt) => {
-        console.log(evt)
-      }
+      'formation.error': (evt) => { console.log(evt) }
     },
     methods: {
+      showCode (id) {
+        let config = {
+          footerButtons: [
+            {
+              content: 'Close',
+              class: 'btn btn-default',
+              onClick (event, modal) {
+                modal.hide()
+              }
+            }
+          ]
+        }
+        let exConfig = this.Examples[id]
+        if (!exConfig) {
+          config = Object.assign({
+            title: 'No Documentation',
+            body: 'There is currently no documentation available for this example',
+            headerClass: 'bg-warning',
+            headerIconClass: 'fa fa-warning'
+          }, config)
+        } else {
+          let source = stringify(exConfig.formConfig, null, '  ')
+          config = Object.assign({
+            body: `<pre style="max-height: 30em; overflow-y: auto;"><code id="formatted-code" class="language-javascript">${source}</code></pre>`
+          }, config, exConfig)
+        }
+        this.$refs.codemodal.$emit('modal.show', config)
+        this.$nextTick(() => {
+          let el = document.getElementById('formatted-code')
+          Prism.highlightElement(el)
+        })
+      },
       buildInclude () {
         if (!isNaN(this.formData.select1)) {
           let rows = []
@@ -122,201 +151,11 @@
         }
       }
     },
-    computed: {
-      e1Config () {
-        return {
-          rows: [
-            {
-              columns: [
-                { type: 'text', label: 'First Name', model: 'firstName' },
-                { type: 'text', label: 'Last Name', model: 'lastName' }
-              ]
-            },
-            {
-              columns: [
-                {
-                  type: 'buttons',
-                  buttons: [
-                    {
-                      text: 'Clear',
-                      class: 'btn-default',
-                      iconClass: 'glyphicon glyphicon-remove',
-                      onClick (event, vm) {
-                        vm.setData(['firstName', 'lastName'], '')
-                      }
-                    },
-                    {
-                      text: 'Submit',
-                      class: 'btn-primary',
-                      iconClass: 'glyphicon glyphicon-ok',
-                      onClick: (event, vm) => {
-                        this.showModal = true
-                        console.log(vm.data)
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      },
-      formConfig () {
-        return {
-          debug: false,
-          liveValidation: true,
-          format: this.formData.format,
-          rows: [
-            {
-              type: 'section',
-              content: '<h5>Text Forms</h5>'
-            },
-            {
-              columns: [
-                {
-                  type: 'text',
-                  label: 'Text1',
-                  model: 'text1',
-                  placeholder: 'Enter text1'
-                },
-                {
-                  type: 'text',
-                  label: 'Text2',
-                  model: 'text2',
-                  placeholder: 'Enter text2',
-                  validate (data) {
-                    return data && data.length > 0
-                  }
-                }
-              ]
-            },
-            {
-              type: 'section',
-              content: '<h5>Buttons</h5>'
-            },
-            {
-              columns: [
-                {
-                  type: 'button',
-                  text: 'Print Data',
-                  class: 'btn-primary',
-                  iconClass: 'glyphicon glyphicon-console',
-                  onClick (event, vm) {
-                    console.log('VALID:', vm.validate())
-                    console.log(JSON.stringify(vm.data, null, '  '))
-                  }
-                },
-                {
-                  type: 'button',
-                  text: 'Clear Select',
-                  class: 'btn-info',
-                  onClick (event, vm) {
-                    vm.data.select1 = '-1'
-                    vm.clearData('includes')
-                  }
-                }
-              ]
-            },
-            {
-              type: 'section',
-              content: '<h5>Select Forms</h5>'
-            },
-            {
-              columns: [
-                {
-                  label: 'Standard Select',
-                  type: 'select',
-                  model: 'select1',
-                  options: [
-                    { value: '-1', text: 'Select a number...', hidden: true },
-                    { value: '1', text: 'One' },
-                    { value: '2', text: 'Two' },
-                    { value: '3', text: 'Three' },
-                    { value: '4', text: 'Four' },
-                    { value: '5', text: 'Five' },
-                    { value: '6', text: 'Six' }
-                  ],
-                  onChange (event, vm) {
-                    vm.clearData('includes')
-                  }
-                },
-                {
-                  label: 'fSelect',
-                  type: 'fselect',
-                  width: '100%',
-                  model: 'fselect',
-                  multiple: true,
-                  storeObject: true,
-                  placeholder: 'Select something...',
-                  options: [
-                    { id: '1', name: 'One' },
-                    { id: '2', name: 'Two' },
-                    { id: '3', name: 'Three' },
-                    { id: '4', name: 'Four' },
-                    { id: '5', name: 'Five' },
-                    { id: '6', name: 'Six' }
-                  ],
-                  textKey: 'name',
-                  valueKey: 'id',
-                  onRemoving (event, val, vm, fn) {
-                    if (val === '2') return false
-                  },
-                  onClearing (event, vm) {
-                    if (vm.value.length < 2) return false
-                  }
-                }
-              ]
-            },
-            {
-              type: 'include',
-              value: this.buildInclude
-            },
-            {
-              type: 'section',
-              content: '<h5>Controls</h5>'
-            },
-            {
-              columns: [
-                {
-                  type: 'radio',
-                  label: 'Format',
-                  model: 'format',
-                  bind: { disabled () { return true } },
-                  radios: [
-                    {
-                      label: 'None',
-                      value: null
-                    },
-                    {
-                      label: 'Inline',
-                      value: 'inline'
-                    },
-                    {
-                      label: 'Horizontal',
-                      value: 'horizontal'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      }
-    },
     data () {
       return {
-        showModal: false,
-        e1Data: { firstName: '', lastName: '' },
-        formData: {
-          text1: 'Has Default Text',
-          text2: '',
-          select1: '-1',
-          fselect: '1',
-          format: null,
-          vselect1: null,
-          valueKey: 'id',
-          textKey: 'name'
-        }
+        exampleData: {},
+        exampleConfig: {},
+        Examples
       }
     }
   }
@@ -325,5 +164,11 @@
 <style>
   input:focus, button:focus, button:active {
     outline: none !important;
+  }
+  .modal-header.bg-primary h4, .modal-header.bg-primary .close {
+    color: #fff;
+  }
+  h3 a span.fa.fa-code {
+    cursor: pointer;
   }
 </style>

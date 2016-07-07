@@ -11,3 +11,36 @@ input:focus, button:focus, button:active {
 .has-error > label {
   color: #e51c23;
 }
+
+
+@-webkit-keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-enter {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+@-webkit-keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.fade-leave {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
+.fade-transition {
+  display: block;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  transition-delay: 1s;
+}
+
