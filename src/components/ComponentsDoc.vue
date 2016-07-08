@@ -78,13 +78,13 @@
   <h5><a><span @click="vm.showCode('TabEx1')" class="fa fa-code"></span></a> Example</h5>
   <div class="well">
     <f-tabs :config="tabEx1">
-      <div slot="tab1">
+      <div slot="tab1" class="bg-primary" style="padding: 10px; margin-top: 5px;">
         <h3>Tab 1</h3>
       </div>
-      <div slot="tab2">
+      <div slot="tab2" class="bg-warning" style="padding: 10px; margin-top: 5px;">
         <h3>Tab 2</h3>
       </div>
-      <div slot="tab3">
+      <div slot="tab3" class="bg-danger" style="padding: 10px; margin-top: 5px;">
         <h3>Tab 3</h3>
       </div>
     </f-tabs>
