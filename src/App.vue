@@ -124,7 +124,7 @@
         } else {
           let source = stringify(exConfig.formConfig, null, '  ')
           config = Object.assign({
-            body: `<pre style="max-height: 30em; overflow-y: auto;"><code id="formatted-code" class="language-javascript">${source}</code></pre>`
+            body: `<pre style="max-height: 30em;"><code id="formatted-code" class="language-javascript">${source}</code></pre>`
           }, config, exConfig)
         }
         this.$refs.codemodal.$emit('modal.show', config)
