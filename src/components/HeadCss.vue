@@ -53,13 +53,13 @@
     },
     events: {
       'theme.set': function (theme) {
-        let intervalCount = 0
-        let color = this.getColor()
-        this.current = theme
         if (this.interval) {
           this.removeInterval()
           this.interval = null
         }
+        let intervalCount = 0
+        let color = this.getColor()
+        this.current = theme
         this.interval = setInterval(() => {
           if (intervalCount > 200) this.removeInterval()
           intervalCount++

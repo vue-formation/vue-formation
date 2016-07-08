@@ -190,9 +190,10 @@
           _.forEach(path, (p) => {
             let pathRx = _.escapeRegExp(p)
             _.forEach(this.formData, (val, key) => {
-              if (key.match(pathRx)) this.formData[key] = value
+              if (key.match(pathRx)) {
+                this.formData[key] = value
+              }
             })
-            _.vueSet(this.data, p, value)
           })
         }
         onNextTick ? this.$nextTick(doClear) : doClear()
@@ -302,6 +303,7 @@
       },
       updateSource () {
         if (this.breakOp()) return
+        this.pauseWatch = true
         let paths = []
         let progress = this.calcProgress()
         if (this.config.progress) {
@@ -319,16 +321,20 @@
         _.forEach(this.formData, (d, k) => {
           if (!_.includes(paths, k)) delete this.formData[k]
         })
+        this.$nextTick(() => { this.pauseWatch = false })
       },
       updateLocal () {
         if (this.breakOp()) return
+        this.pauseWatch = true
         _.forEach(this.formConfig, (row) => {
           _.forEach(row.columns, (form) => {
             if (_.has(this.data, form.model)) {
-              Vue.set(this.formData, form.model, _.get(this.data, form.model))
+              let val = _.get(this.data, form.model)
+              Vue.set(this.formData, form.model, val)
             }
           })
         })
+        this.$nextTick(() => { this.pauseWatch = false })
       }
     },
     computed: {
@@ -369,6 +375,7 @@
         lastConfig: [],
         valid: true,
         touched: false,
+        pauseWatch: false,
         formData: {},
         uuid: null,
         textTypes: [
@@ -402,12 +409,14 @@
     watch: {
       formData: {
         handler () {
+          if (this.pauseWatch) return
           this.updateSource()
         },
         deep: true
       },
       data: {
         handler () {
+          if (this.pauseWatch) return
           this.updateLocal()
         },
         deep: true
