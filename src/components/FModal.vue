@@ -70,7 +70,10 @@
         return typeof obj === 'function'
       },
       clickAway (event) {
-        if (!this.$els.content.contains(event.target) && this.open) this.hideModal()
+        if (this.$els &&
+          this.$els.content &&
+          !this.$els.content.contains(event.target)
+          && this.open) this.hideModal()
       },
       toggleModal () {
         this.show = !this.show
