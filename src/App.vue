@@ -206,9 +206,9 @@
   import Examples from './examples'
 
   //  components
+  import Hello from './components/Hello'
+  import ThemeSelector from './components/ThemeSelector'
   import {
-    Hello,
-    ThemeSelector,
     Formation,
     FModal,
     FTabs
