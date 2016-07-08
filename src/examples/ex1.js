@@ -1,5 +1,6 @@
 export default {
   title: 'Simple Form',
+  exampleType: 'formation',
   description: 'A simple reactive form that can be cleared and displays a modal when submitted. First Name is required.',
   headerClass: 'bg-primary',
   formConfig: {

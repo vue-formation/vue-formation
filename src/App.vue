@@ -13,7 +13,6 @@
           <a class="navbar-brand" href="#" style="height: 100%">
             <img v-if="logoInverted" src="../src/assets/formation-inverted.png" style="display: inline-block; height: 35px; width: 50px;">
             <img v-if="!logoInverted" src="../src/assets/formation.png" style="display: inline-block; height: 35px; width: 50px;">
-            <span style="display: inline-block; height: 100%; position: relative; top: 0.2em;">VueFormation</span>
           </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right" style="height: 100%; top: 1em; position: relative;">
@@ -44,45 +43,14 @@
     <div class="container">
       <f-tabs :active.sync="mainTabActive" :config="mainTabConfig">
         <div slot="about">
-          <h3>Introduction</h3>
-          <div class="well">
-            <h4 class="text-primary">About VueFormation</h4>
-            <hr>
-            Formation is a no dependency, Bootstrap themeable form builder for Vue.js. The following are its goals/features
-            <ul>
-              <li>Build form layouts of any complexity using JSON</li>
-              <li>Bind all form data to a single reactive object</li>
-              <li>Provide optional controls over all styling</li>
-              <li>Integrate native options for validation</li>
-              <li>Provide a small set of UI components that can be accessed natively or standalone</li>
-            </ul>
-          </div>
-          <h3>Usage</h3>
-          <div class="well">
-            <h4 class="text-primary"><span class="fa fa-code"></span> CommonJS</h4>
-            <hr>
-            <i>Documentation in progress...</i>
-          </div>
-          <p>&nbsp;</p>
-          <div class="well">
-            <h4 class="text-primary"><span class="fa fa-code"></span> ES6</h4>
-            <hr>
-            <i>Documentation in progress...</i>
-          </div>
-          <p>&nbsp;</p>
-          <div class="well">
-            <h4 class="text-primary"><span class="fa fa-code"></span> AMD</h4>
-            <hr>
-            <i>Documentation in progress...</i>
-          </div>
-          <p>&nbsp;</p>
+          <about></about>
         </div>
         <div slot="examples">
           <p>&nbsp;</p>
           <div v-for="(exampleId, example) in Examples">
             <h3><a><span @click="showCode(exampleId)" class="fa fa-code"></span></a> {{ example.title }}</h3>
             <p>{{ example.description }}</p>
-            <div class="row well">
+            <div v-if="example.exampleType === 'formation'" class="row well">
               <div class="col-md-8">
                 <formation :data.sync="exampleData[exampleId]" :config="self[exampleId]"></formation>
               </div>
@@ -97,72 +65,7 @@
           </div>
         </div>
         <div slot="components">
-          <h3>Formation</h3>
-          <h5><a><span @click="showCode('Ex1')" class="fa fa-code"></span></a> Example</h5>
-          <div class="well">
-            <formation :data.sync="exampleData.Ex1" :config="Ex1"></formation>
-          </div>
-          <h5>Parameters</h5>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>TwoWay</th>
-                <th>Required</th>
-                <th>Default</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>config</td>
-                <td><code>Object&lt;FormationConfig&gt;</code></td>
-                <td></td>
-                <td><span class="fa fa-check"></td>
-                <td></td>
-                <td>Formation configuration object</td>
-              </tr>
-              <tr>
-                <td>data</td>
-                <td><code>Object</code></td>
-                <td><span class="fa fa-check"></span></td>
-                <td><span class="fa fa-check"></td>
-                <td></td>
-                <td>Data object to bind to</td>
-              </tr>
-              <tr>
-                <td>width</td>
-                <td><code>String</code> | <code>Number</code></td>
-                <td></span></td>
-                <td></span></td>
-                <td></td>
-                <td>Width of component (e.g "100%" or "500px"). Numbers will be evaluated as pixels</td>
-              </tr>
-            </tbody>
-          </table>
-          <h5>Events</h5>
-          <table class="table table-bordered">
-            <thead>
-            <tr>
-              <th>Event Type</th>
-              <th>Arguments</th>
-              <th>Description</th>
-            </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>formation.error</td>
-                <td>
-                  ErrorInfo&nbsp;<code>Object</code>
-                  <ul>
-                    <li>Contains details on the error including which component emitted the error</li>
-                  </ul>
-                </td>
-                <td>This event fires immediately when an error encountered by either the formation component or any child components</td>
-              </tr>
-            </tbody>
-          </table>
+          <components-doc :vm="self"></components-doc>
         </div>
       </f-tabs>
     </div>
@@ -206,6 +109,8 @@
   import Examples from './examples'
 
   //  components
+  import About from './components/About'
+  import ComponentsDoc from './components/ComponentsDoc'
   import Hello from './components/Hello'
   import ThemeSelector from './components/ThemeSelector'
   import {
@@ -223,6 +128,8 @@
 
   export default {
     components: {
+      About,
+      ComponentsDoc,
       Hello,
       Formation,
       FModal,
