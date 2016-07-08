@@ -45,7 +45,7 @@
       <f-tabs :active.sync="mainTabActive" :config="mainTabConfig">
         <div slot="about">
           <h3>Introduction</h3>
-          <div class="custom-well">
+          <div class="well">
             <h4 class="text-primary">About VueFormation</h4>
             <hr>
             Formation is a no dependency, Bootstrap themeable form builder for Vue.js. The following are its goals/features
@@ -58,19 +58,19 @@
             </ul>
           </div>
           <h3>Usage</h3>
-          <div class="custom-well">
+          <div class="well">
             <h4 class="text-primary"><span class="fa fa-code"></span> CommonJS</h4>
             <hr>
             <i>Documentation in progress...</i>
           </div>
           <p>&nbsp;</p>
-          <div class="custom-well">
+          <div class="well">
             <h4 class="text-primary"><span class="fa fa-code"></span> ES6</h4>
             <hr>
             <i>Documentation in progress...</i>
           </div>
           <p>&nbsp;</p>
-          <div class="custom-well">
+          <div class="well">
             <h4 class="text-primary"><span class="fa fa-code"></span> AMD</h4>
             <hr>
             <i>Documentation in progress...</i>
@@ -79,17 +79,16 @@
         </div>
         <div slot="examples">
           <p>&nbsp;</p>
-          <div v-for="(exampleId, example) in Examples" class="custom-well">
+          <div v-for="(exampleId, example) in Examples">
             <h3><a><span @click="showCode(exampleId)" class="fa fa-code"></span></a> {{ example.title }}</h3>
-            <span>{{ example.description }}</span>
-            <hr>
-            <div class="row">
+            <p>{{ example.description }}</p>
+            <div class="row well">
               <div class="col-md-8">
                 <formation :data.sync="exampleData[exampleId]" :config="self[exampleId]"></formation>
               </div>
               <div class="col-md-4">
                 <label style="width: 100%"> <b>Form Data</b>
-<pre style="font-size: 10px;">
+<pre style="font-size: 10px;background-color: #fff;">
 {{ exampleData[exampleId] | json }}
 </pre>
                 </label>
@@ -100,7 +99,7 @@
         <div slot="components">
           <h3>Formation</h3>
           <h5><a><span @click="showCode('Ex1')" class="fa fa-code"></span></a> Example</h5>
-          <div class="custom-well">
+          <div class="well">
             <formation :data.sync="exampleData.Ex1" :config="Ex1"></formation>
           </div>
           <h5>Parameters</h5>
@@ -351,10 +350,5 @@
   }
   h3 a span.fa.fa-code {
     cursor: pointer;
-  }
-  .custom-well {
-    border: 1px solid #ddd;
-    padding: 16px;
-    background-color: #fdfdfd;
   }
 </style>
