@@ -36,7 +36,7 @@
             <slot name="footer">
               {{{ isFunction(config.footer) ? config.footer(this) : config.footer }}}
               <button v-for="button in config.footerButtons"
-                @click="button.onClick($event, this)" :class="button.class"
+                @click="button.onClick ? button.onClick($event, this) : null" :class="button.class"
                 :style="button.style">
                 {{{ button.content }}}
               </button>
@@ -107,6 +107,9 @@
           return {}
         }
       },
+      modalId: {
+        type: String
+      },
       backdrop: {
         type: Boolean,
         default: true
@@ -137,7 +140,8 @@
       'modal.hide': function () {
         this.hideModal()
       },
-      'modal.show': function (config) {
+      'modal.show': function (config, id) {
+        if (id && this.modalId !== id) return
         this.config = config || this.config
         this.showModal()
       },

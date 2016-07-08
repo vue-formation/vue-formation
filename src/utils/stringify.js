@@ -10,14 +10,14 @@ function getType (obj) {
 
 // function to do stringification
 function toStr (obj, replacer, space, depth) {
-  var type = getType(obj)
-  var output = ''
-  var ret = (replacer !== undefined && space) ? '\n' : ''
+  let type = getType(obj)
+  let output = ''
+  let ret = (replacer !== undefined && space) ? '\n' : ''
 
   depth = depth || 0
   space = space || ''
 
-  var spaces = space.repeat(depth)
+  let spaces = space.repeat(depth)
 
   if (type === 'Null') {
     output += 'null,' + ret
@@ -44,14 +44,14 @@ function toStr (obj, replacer, space, depth) {
     output = output.replace(endRx, ret)
     output += spaces + '},' + ret
   } else if (type === 'Function') {
-    var o = obj.toString()
+    let o = obj.toString()
     if (replacer === undefined || !space) {
       o = o.replace(/\s+/g, ' ')
     } else {
-      var fnIndent = o.match('\n[ \t]+')
+      let fnIndent = o.match('\n[ \t]+')
 
       if (fnIndent) {
-        var fnRx = new RegExp(fnIndent[0].replace(/\n/g, '\\n').replace(/\t/g, '\\t'), 'g')
+        let fnRx = new RegExp(fnIndent[0].replace(/\n/g, '\\n').replace(/\t/g, '\\t'), 'g')
         o = o.replace(fnRx, '\n' + spaces + space)
           .replace(/\s+}$/, '\n' + spaces + '}')
           .replace(/\t/g, space)

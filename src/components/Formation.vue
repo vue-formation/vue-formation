@@ -31,7 +31,7 @@
               <label :for="formId(rIdx, fIdx)"
                 :style="{ 'float': config.alignLabels, 'width': '100%' }">
                 {{{ getLabel(rIdx, fIdx, form.label) }}}
-                <span v-if="config.decorateRequired && form.required && form.label" class="required-decoration">
+                <span v-if="config.decorateRequired !== false && form.required && form.label" class="required-decoration">
                   *
                 </span>
 
@@ -59,7 +59,7 @@
                 :class="form.class"
                 :style="form.style"
                 :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                @click.prevent="form.onClick ? form.onClick($event, utils) : null">
+                @click.prevent="form.onClick ? form.onClick($event, this) : null">
                   <span v-if="form.iconClass", :class="form.iconClass"></span>
                   <span v-if="form.iconClass && form.text">&nbsp;</span>
                   <span v-if="form.text">{{ form.text }}</span>
@@ -75,7 +75,7 @@
                     :class="btn.class"
                     :style="btn.style"
                     :disabled="has(btn, 'bind.disabled') ? btn.bind.disabled() : formDisabled()"
-                    @click.prevent="btn.onClick ? btn.onClick($event, utils) : null">
+                    @click.prevent="btn.onClick ? btn.onClick($event, this) : null">
                       <span v-if="btn.iconClass", :class="btn.iconClass"></span>
                       <span v-if="btn.iconClass && btn.label">&nbsp;</span>
                       <span v-if="btn.text">{{ btn.text }}</span>
@@ -290,7 +290,7 @@
           _.forEach(row.columns, (form, fIdx) => {
             let data = _.get(this.formData, form.model)
             let valid = _.isFunction(form.validate) ? form.validate(data) : true
-            if (!valid) {
+            if (!valid || (form.required && !data)) {
               this.valid = false
               this.formGroup(rIdx, fIdx).addClass('has-error')
             } else {
