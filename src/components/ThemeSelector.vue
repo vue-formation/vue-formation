@@ -1,22 +1,76 @@
 <template>
   <select v-model="value" @change="onChange">
-    <option v-for="opt in options | orderBy 'text'" :value="opt.value" :selected="opt.value === value ">{{ opt.text }}</option>
+    <option v-for="opt in options | orderBy 'text'" :value="opt.value"
+      :selected="opt.value === value ">{{ opt.text }}</option>
   </select>
 </template>
 <script type="text/babel">
+  import validator from 'validator'
+
   export default {
     methods: {
       onChange (event) {
-        document.getElementById('page-theme').href = this.value
+        if (this.value === 'customurl') {
+          this.$root.$broadcast('modal.show', {
+            title: 'Custom Theme URL',
+            headerClass: 'bg-primary',
+            footerButtons: [
+              {
+                content: 'Cancel',
+                class: 'btn btn-default',
+                onClick: (event, modal) => {
+                  this.value = this.lastValue
+                  modal.hide()
+                }
+              },
+              {
+                content: 'Set',
+                class: 'btn btn-primary',
+                onClick: (event, modal) => {
+                  if (validator.isURL(this.$parent.customUrl)) {
+                    this.$parent.customUrlError = false
+                    this.customCount++
+                    this.options.push({
+                      value: this.$parent.customUrl,
+                      text: `Custom${this.customCount}`
+                    })
+                    this.value = this.$parent.customUrl
+                    this.$root.$broadcast('theme.set', this.value)
+                    modal.hide()
+                  } else {
+                    this.$parent.customUrlError = true
+                  }
+                }
+              }
+            ]
+          }, 'theme-selector')
+        } else {
+          this.$root.$broadcast('theme.set', this.value)
+        }
+      }
+    },
+    watch: {
+      value (newVal, oldVal) {
+        if (newVal !== this.lastValue) this.lastValue = oldVal
       }
     },
     data () {
       return {
+        customCount: 0,
+        lastValue: null,
         value: 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css',
         options: [
           {
-            value: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap-theme.css',
+            value: 'customurl',
+            text: 'Custom URL'
+          },
+          {
+            value: null,
             text: 'Bootstrap'
+          },
+          {
+            value: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap-theme.css',
+            text: 'Bootstrap Theme'
           },
           {
             value: 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css',

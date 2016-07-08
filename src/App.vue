@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+    <nav id="topnav" class="navbar navbar-default" style="margin-bottom: 0px;">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -11,7 +11,8 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#" style="height: 100%">
-            <img src="../src/assets/formation.png" style="display: inline-block; height: 35px; width: 50px;">
+            <img v-if="logoInverted" src="../src/assets/formation-inverted.png" style="display: inline-block; height: 35px; width: 50px;">
+            <img v-if="!logoInverted" src="../src/assets/formation.png" style="display: inline-block; height: 35px; width: 50px;">
             <span style="display: inline-block; height: 100%; position: relative; top: 0.2em;">VueFormation</span>
           </a>
         </div>
@@ -73,21 +74,41 @@
       </f-tabs>
     </f-modal>
     <f-modal modal-id="dialog"></f-modal>
+    <f-modal modal-id="theme-selector">
+      <div slot="body">
+        <form style="width:100%">
+          <div class="form-group" :class="{ 'has-error': customUrlError }">
+            <label for="theme-css-url">Custom Theme URL</label>
+            <input v-model="customUrl" type="url"
+              class="form-control"
+              id="theme-css-url"
+              placeholder="Enter theme URL...">
+          </div>
+        </form>
+      </div>
+    </f-modal>
   </div>
 </template>
 
 <script type="text/babel">
+  //  vendor
   import Prism from 'prismjs'
-  import Hello from './components/Hello'
-  import ThemeSelector from './components/ThemeSelector'
+
+  //  local
   import * as _ from './utils/utils'
   import { stringify } from './utils/stringify'
-  // import { Formation } from '../dist/vue-formation'
-  // import { Formation } from '../dist/vue-formation.min'
-  import Formation from './components/Formation'
-  import FModal from './components/FModal'
-  import FTabs from './components/FTabs'
   import Examples from './examples'
+
+  //  components
+  import {
+    Hello,
+    ThemeSelector,
+    Formation,
+    FModal,
+    FTabs
+  } from './components'
+
+  //  css
   import 'bootstrap/dist/css/bootstrap.min.css'
   import 'font-awesome/css/font-awesome.min.css'
   import './formation.css'
@@ -103,12 +124,6 @@
       ThemeSelector
     },
     created () {
-      var ss = document.createElement('link')
-      ss.type = 'text/css'
-      ss.rel = 'stylesheet'
-      ss.href = 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css'
-      ss.id = 'page-theme'
-      document.getElementsByTagName('head')[0].appendChild(ss)
       _.forEach(Examples, (example, id) => {
         _.vueSet(this.exampleData, id, example.formData)
         _.vueSet(this.exampleConfig, id, example.formConfig)
@@ -121,7 +136,9 @@
         if (!pre || !/pre/i.test(pre.nodeName)) {
           return
         }
-        var language = pre.getAttribute('data-language') || Languages[env.language] || (env.language.substring(0, 1).toUpperCase() + env.language.substring(1))
+        let language = pre.getAttribute('data-language') ||
+          Languages[env.language] ||
+          (env.language.substring(0, 1).toUpperCase() + env.language.substring(1))
 
         /* check if the divs already exist */
         let sib = pre.previousSibling
@@ -136,14 +153,14 @@
           div2.className = 'prism-show-language-label'
           div.className = 'prism-show-language'
           div.appendChild(div2)
-
           pre.parentNode.insertBefore(div, pre)
         }
         div2.innerHTML = language
       })
     },
     events: {
-      'formation.error': (evt) => { console.log(evt) }
+      'formation.error': (evt) => { console.log(evt) },
+      'logo.inverted': function (inverted) { this.logoInverted = inverted }
     },
     methods: {
       showCode (id) {
@@ -176,23 +193,6 @@
         this.$nextTick(() => {
           Prism.highlightAll()
         })
-      },
-      buildInclude () {
-        if (!isNaN(this.formData.select1)) {
-          let rows = []
-          for (let i = 0; i < Number(this.formData.select1); i++) {
-            rows.push({
-              columns: [
-                {
-                  type: 'text',
-                  label: `Include ${i}`,
-                  model: `includes.sub["row${i}"]`
-                }
-              ]
-            })
-          }
-          return rows
-        }
       }
     },
     computed: _.merge({}, _.mapValues(Examples, (v) => {
@@ -202,6 +202,9 @@
       let self = this
       return {
         self,
+        logoInverted: false,
+        customUrl: 'http://',
+        customUrlError: false,
         exampleData: {},
         exampleConfig: {},
         tabConfig: {

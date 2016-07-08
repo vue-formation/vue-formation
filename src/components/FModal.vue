@@ -72,8 +72,8 @@
       clickAway (event) {
         if (this.$els &&
           this.$els.content &&
-          !this.$els.content.contains(event.target)
-          && this.open) this.hideModal()
+          !this.$els.content.contains(event.target) &&
+          this.open) this.hideModal()
       },
       toggleModal () {
         this.show = !this.show

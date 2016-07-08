@@ -73,6 +73,7 @@
     "ora": "^0.2.0",
     "shelljs": "^0.6.0",
     "url-loader": "^0.5.7",
+    "validator": "^5.4.0",
     "vue-animate-css": "^1.0.0",
     "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.0.0",

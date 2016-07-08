@@ -31,7 +31,7 @@
               <label :for="formId(rIdx, fIdx)"
                 :style="{ 'float': config.alignLabels, 'width': '100%' }">
                 {{{ getLabel(rIdx, fIdx, form.label) }}}
-                <span v-if="config.decorateRequired !== false && form.required && form.label" class="required-decoration">
+                <span v-if="config.decorateRequired !== false && form.required && form.label" class="text-danger">
                   *
                 </span>
 
@@ -359,7 +359,7 @@
         return rows
       },
       isBootstrapFormat () {
-        return !this.config.style || this.config.style === 'bootstrap'
+        return !this.config || !this.config.style || this.config.style === 'bootstrap'
       }
     },
     data () {
@@ -447,9 +447,6 @@
   }
   .formation .form-group-autoheight button {
     height: inherit;
-  }
-  .formation .required-decoration {
-    color: #e51c23;
   }
   .formation .no-vertical-spacing {
     margin-top: 0px;
