@@ -46,8 +46,7 @@
           <about></about>
         </div>
         <div slot="examples">
-          <p>&nbsp;</p>
-          <div v-for="(exampleId, example) in Examples">
+          <div v-for="(exampleId, example) in Examples" v-if="example.showExample !== false">
             <h3><a><span @click="showCode(exampleId)" class="fa fa-code"></span></a> {{ example.title }}</h3>
             <p>{{ example.description }}</p>
             <div v-if="example.exampleType === 'formation'" class="row well">
@@ -74,7 +73,7 @@
         <div slot="config">
           <pre style="max-height: 30em;"><code class="language-javascript">{{ source.config }}</code></pre>
         </div>
-        <div slot="data">
+        <div slot="data" v-if="source.data">
           <pre style="max-height: 30em;"><code class="language-javascript">{{ source.data }}</code></pre>
         </div>
         <div slot="html">
@@ -170,6 +169,7 @@
         }
         div2.innerHTML = language
       })
+      Prism.highlightAll()
     },
     events: {
       'formation.error': (evt) => { console.log(evt) },
@@ -200,6 +200,8 @@
           this.source.config = stringify(exConfig.formConfig, null, '  ')
           this.source.data = stringify(this.exampleData[id], null, '  ')
           this.source.html = exConfig.formHtml
+          if (exConfig.exampleType !== 'formation') this.sourceTabConfig.tabs[1].show = false
+          else this.sourceTabConfig.tabs[1].show = true
           config = Object.assign(config, exConfig)
         }
         this.$refs.codemodal.$emit('modal.show', config)
@@ -240,7 +242,7 @@
           html: null
         },
         exActiveTabs: {},
-        mainTabActive: 'examples',
+        mainTabActive: 'components',
         sourceTabActive: 'config',
         Examples
       }

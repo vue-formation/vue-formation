@@ -1,14 +1,19 @@
 <template>
   <div>
     <ul class="nav nav-tabs">
-      <li v-for="tab in config.tabs" :class="{ 'active': tab.id === active }">
+      <li v-for="tab in config.tabs"
+        v-if="tab.show !== false"
+        :class="{ 'active': tab.id === active }">
         <a @click="activate(tab.id)">
           {{ tab.text || tab.id }}
         </a>
       </li>
     </ul>
     <div class="tab-content">
-      <div class="tab-pane" v-for="tab in config.tabs" :class="{ 'active': tab.id === active }">
+      <div class="tab-pane"
+        v-for="tab in config.tabs"
+        v-if="tab.show !== false"
+        :class="{ 'active': tab.id === active }">
         <slot :name="tab.id"></slot>
       </div>
     </div>
@@ -23,7 +28,7 @@
       activate (id) {
         this.$emit('show.bs.tab', id)
         if (this.active !== id) this.active = id
-        this.$emit('shown.bs.tab', id)
+        this.$nextTick(() => { this.$emit('shown.bs.tab', id) })
       }
     },
     created () {

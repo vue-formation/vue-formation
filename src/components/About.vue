@@ -1,8 +1,7 @@
 <template>
   <h3>Introduction</h3>
-  <div class="well">
-    <h4 class="text-primary">About VueFormation</h4>
-    <hr>
+  <h4 class="text-primary"><span class="fa fa-hashtag"></span> About</h4>
+  <div class="well" style="border: 1px solid #ddd; border-radius: 3px;">
     Formation is a no dependency, Bootstrap themeable form builder for Vue.js. The following are its goals/features
     <ul>
       <li>Build form layouts of any complexity using JSON</li>
@@ -13,22 +12,41 @@
     </ul>
   </div>
   <h3>Usage</h3>
-  <div class="well">
+  <div>
     <h4 class="text-primary"><span class="fa fa-code"></span> CommonJS</h4>
-    <hr>
-    <i>Documentation in progress...</i>
+    <pre>// npm install vue-formation
+<code class="language-JavaScript">
+var Formation = require('vue-formation').Formation;
+
+new Vue({
+  components: {
+    Formation: Formation
+  }
+})</code></pre>
   </div>
   <p>&nbsp;</p>
-  <div class="well">
+  <div>
     <h4 class="text-primary"><span class="fa fa-code"></span> ES6</h4>
-    <hr>
-    <i>Documentation in progress...</i>
+    <pre>// npm install vue-formation
+<code class="language-JavaScript">
+import { Formation } from 'vue-formation'
+
+new Vue({
+  components: {
+    Formation
+  }
+})</code></pre>
   </div>
   <p>&nbsp;</p>
-  <div class="well">
+  <div v-if="1 === 2">
     <h4 class="text-primary"><span class="fa fa-code"></span> AMD</h4>
-    <hr>
-    <i>Documentation in progress...</i>
-  </div>
-  <p>&nbsp;</p>
+    <pre>// bower install vue-formation
+<code class="language-JavaScript">
+var Formation = require('vue-formation').Formation;
+
+new Vue({
+  components: {
+    Formation: Formation
+  }
+})</code></pre>
 </template>
