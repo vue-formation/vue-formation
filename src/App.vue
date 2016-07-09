@@ -242,7 +242,7 @@
           html: null
         },
         exActiveTabs: {},
-        mainTabActive: 'components',
+        mainTabActive: 'about',
         sourceTabActive: 'config',
         Examples
       }

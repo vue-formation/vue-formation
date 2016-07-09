@@ -51,8 +51,8 @@ export default {
                 onClick: (event, vm) => {
                   if (!vm.validate()) return
                   vm.$root.$broadcast('modal.show', {
-                    title: 'Hello!',
-                    body: vm.data,
+                    title: 'Data',
+                    body: `<pre>${JSON.stringify(vm.data, null, '  ')}</pre>`,
                     footerButtons: [
                       {
                         content: 'Close',
