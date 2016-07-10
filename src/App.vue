@@ -106,6 +106,7 @@
   import * as _ from './utils/utils'
   import { stringify } from './utils/stringify'
   import Examples from './examples'
+  import ConfigStrs from './examples/example-config-strings'
 
   //  components
   import About from './components/About'
@@ -197,7 +198,7 @@
             headerIconClass: 'fa fa-warning'
           }, config)
         } else {
-          this.source.config = stringify(exConfig.formConfig, null, '  ')
+          this.source.config = ConfigStrs[id] // stringify(exConfig.formConfig, null, '  ')
           this.source.data = stringify(this.exampleData[id], null, '  ')
           this.source.html = exConfig.formHtml
           if (exConfig.exampleType !== 'formation') this.sourceTabConfig.tabs[1].show = false
