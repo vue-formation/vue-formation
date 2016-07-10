@@ -1,9 +1,16 @@
 import Vue from 'vue'
+import { sync } from 'vuex-router-sync'
+import store from './vuex/store'
+import VueRouter from 'vue-router'
 import App from './App'
-import HeadCss from './components/HeadCss'
 
 /* eslint-disable no-new */
-new Vue({
-  el: 'html',
-  components: { App, HeadCss }
+Vue.use(VueRouter)
+let router = new VueRouter()
+sync(store, router)
+router.map({
+  '/': {
+    component: App
+  }
 })
+router.start(App, 'html')

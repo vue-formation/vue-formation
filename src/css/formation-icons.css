@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "formation";
-  src:url("fonts/formation.eot");
-  src:url("fonts/formation.eot?#iefix") format("embedded-opentype"),
-    url("fonts/formation.woff") format("woff"),
-    url("fonts/formation.ttf") format("truetype"),
-    url("fonts/formation.svg#formation") format("svg");
+  src:url("../fonts/formation.eot");
+  src:url("../fonts/formation.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/formation.woff") format("woff"),
+    url("../fonts/formation.ttf") format("truetype"),
+    url("../fonts/formation.svg#formation") format("svg");
   font-weight: normal;
   font-style: normal;
 

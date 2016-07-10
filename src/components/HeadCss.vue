@@ -1,15 +1,28 @@
 <template>
-  <link v-el:link v-if="current" rel="stylesheet" type="text/css" :href="current" id="page-theme">
+  <link v-el:link v-if="cookie.theme" rel="stylesheet" type="text/css" :href="cookie.theme" id="page-theme">
 </template>
 
 <script type="text/babel">
+  import {
+    changeTheme,
+    changeInvertedLogo
+  } from '../vuex/actions'
+  import * as _ from '../utils/utils'
   export default {
+    vuex: {
+      actions: {
+        changeTheme,
+        changeInvertedLogo
+      },
+      getters: {
+        cookie: (state) => state.cookie
+      }
+    },
     data () {
       return {
         color: null,
         intervalCount: 0,
-        interval: null,
-        current: 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css'
+        interval: null
       }
     },
     methods: {
@@ -58,17 +71,21 @@
           this.interval = null
         }
         let intervalCount = 0
-        let color = this.getColor()
-        this.current = theme
-        this.interval = setInterval(() => {
-          if (intervalCount > 200) this.removeInterval()
-          intervalCount++
-          let currentColor = this.getColor()
-          if (currentColor !== color) {
-            this.removeInterval()
-            this.$root.$broadcast('logo.inverted', currentColor === '#fff')
-          }
-        }, 10)
+        this.changeTheme(theme)
+
+        setTimeout(() => {
+          this.interval = setInterval(() => {
+            if (intervalCount > 200) this.removeInterval()
+            intervalCount++
+            let found = _.find(document.styleSheets, (sheet) => {
+              if (sheet.href === theme) return true
+            })
+            if (found) {
+              this.removeInterval()
+              this.changeInvertedLogo(this.getColor() === '#fff')
+            }
+          }, 10)
+        }, 100)
       }
     }
   }

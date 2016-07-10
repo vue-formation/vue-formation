@@ -47,7 +47,7 @@
   import * as _ from '../utils/utils'
   import $ from '../utils/helpers'
   import { isKey } from '../utils/events'
-  import '../formation-icons.css'
+  import '../css/formation-icons.css'
 
   function validateClassProp (value) {
     return _.isString(value) || _.isArray(value) || _.isHash(value)
