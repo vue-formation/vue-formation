@@ -1,0 +1,4 @@
+dist/
+node_modules/
+params.json
+.idea/
