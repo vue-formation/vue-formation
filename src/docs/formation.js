@@ -1,6 +1,6 @@
 export default {
   title: 'Formation',
-  exampleId: 'Ex1',
+  exampleId: 'FormationEx1',
   params: [
     {
       name: 'config',

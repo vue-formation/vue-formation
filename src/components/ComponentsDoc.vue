@@ -4,10 +4,10 @@
       <h3>{{ doc.title }}</h3>
       <h5><a><span @click="vm.showCode(doc.exampleId)" class="fa fa-code"></span></a> Example</h5>
       <div v-if="docId === 'formation'" class="well">
-        <formation :data.sync="formationData" :config="vm.Ex1"></formation>
+        <formation :data.sync="vm.exampleData[doc.exampleId]" :config="vm[doc.exampleId]"></formation>
       </div>
       <div v-if="docId === 'ftabs'" class="well">
-        <f-tabs :config="vm.TabEx1">
+        <f-tabs :config="vm[doc.exampleId]">
           <div slot="tab1" class="bg-primary" style="padding: 10px; margin-top: 5px;">
             <h3>Tab 1</h3>
           </div>
@@ -23,7 +23,7 @@
         <button type="button" @click="show = true" class="btn btn-primary">
           Open Modal
         </button>
-        <f-modal :show.sync="show" :config="vm.ModalEx1">
+        <f-modal :show.sync="show" :config="vm[doc.exampleId]">
           <div slot="body">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
           </div>
@@ -142,11 +142,7 @@
     data () {
       return {
         Docs,
-        show: false,
-        formationData: {
-          firstName: '',
-          lastName: ''
-        }
+        show: false
       }
     }
   }
