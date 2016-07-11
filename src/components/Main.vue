@@ -66,18 +66,21 @@
         <div slot="components">
           <components-doc :vm="self"></components-doc>
         </div>
+        <div slot="types">
+          <types-doc></types-doc>
+        </div>
       </f-tabs>
     </div>
     <f-modal v-ref:codemodal>
       <f-tabs slot="body" :config="sourceTabConfig" :active.sync="sourceTabActive" style="width: 100%;">
         <div slot="config">
-          <pre style="max-height: 30em;"><code class="language-javascript">{{ source.config }}</code></pre>
+          <pre style="max-height: 30em;"><code class="prism language-javascript">{{ source.config }}</code></pre>
         </div>
         <div slot="data" v-if="source.data">
-          <pre style="max-height: 30em;"><code class="language-javascript">{{ source.data }}</code></pre>
+          <pre style="max-height: 30em;"><code class="prism language-javascript">{{ source.data }}</code></pre>
         </div>
         <div slot="html">
-          <pre style="max-height: 30em;"><code class="language-markup">{{ source.html }}</code></pre>
+          <pre style="max-height: 30em;"><code class="prism language-markup">{{ source.html }}</code></pre>
         </div>
       </f-tabs>
     </f-modal>
@@ -111,6 +114,7 @@
   //  components
   import About from './About'
   import ComponentsDoc from './ComponentsDoc'
+  import TypesDoc from './TypesDoc'
   import Hello from './Hello'
   import ThemeSelector from './ThemeSelector'
   import {
@@ -119,15 +123,19 @@
     FTabs
   } from './index'
 
+  //  actions
+  import { activateMainTab } from '../vuex/actions'
+
   //  css
   import 'bootstrap/dist/css/bootstrap.min.css'
   import 'font-awesome/css/font-awesome.min.css'
   import '../css/formation.css'
-  import 'prismjs/themes/prism.css'
-  import 'prismjs/plugins/show-language/prism-show-language.css'
 
   export default {
     vuex: {
+      actions: {
+        activateMainTab
+      },
       getters: {
         cookie: (state) => state.cookie
       }
@@ -135,6 +143,7 @@
     components: {
       About,
       ComponentsDoc,
+      TypesDoc,
       Hello,
       Formation,
       FModal,
@@ -142,40 +151,11 @@
       ThemeSelector
     },
     created () {
+      this.mainTabActive = this.cookie.mainTab
       _.forEach(Examples, (example, id) => {
         _.vueSet(this.exampleData, id, example.formData)
         _.vueSet(this.exampleConfig, id, example.formConfig)
       })
-
-      /* Taken From example http://prismjs.com/plugins/show-language/ */
-      var Languages = {}
-      Prism.hooks.add('before-highlight', function (env) {
-        let pre = env.element.parentNode
-        if (!pre || !/pre/i.test(pre.nodeName)) {
-          return
-        }
-        let language = pre.getAttribute('data-language') ||
-          Languages[env.language] ||
-          (env.language.substring(0, 1).toUpperCase() + env.language.substring(1))
-
-        /* check if the divs already exist */
-        let sib = pre.previousSibling
-        var div, div2
-        if (sib && /\s*\bprism-show-language\b\s*/.test(sib.className) &&
-          sib.firstChild &&
-          /\s*\bprism-show-language-label\b\s*/.test(sib.firstChild.className)) {
-          div2 = sib.firstChild
-        } else {
-          div = document.createElement('div')
-          div2 = document.createElement('div')
-          div2.className = 'prism-show-language-label'
-          div.className = 'prism-show-language'
-          div.appendChild(div2)
-          pre.parentNode.insertBefore(div, pre)
-        }
-        div2.innerHTML = language
-      })
-      Prism.highlightAll()
     },
     events: {
       'formation.error': (evt) => { console.log(evt) }
@@ -234,10 +214,14 @@
           ]
         },
         mainTabConfig: {
+          onActivate: (id) => {
+            this.activateMainTab(id)
+          },
           tabs: [
             { id: 'about', text: 'About' },
             { id: 'examples', text: 'Examples' },
-            { id: 'components', text: 'Components' }
+            { id: 'components', text: 'Components' },
+            { id: 'types', text: 'Types' }
           ]
         },
         source: {
@@ -246,7 +230,7 @@
           html: null
         },
         exActiveTabs: {},
-        mainTabActive: 'about',
+        mainTabActive: null,
         sourceTabActive: 'config',
         Examples
       }

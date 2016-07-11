@@ -69,6 +69,7 @@ export default {
           "type":"fselect",
           "label":"FSelect",
           "model":"fselect",
+          "multiple":true,
           "options":[
             {
               "value":"dog",

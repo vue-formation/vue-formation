@@ -44,8 +44,8 @@
           </thead>
           <tbody>
             <tr v-for="param in doc.params | orderBy 'name'">
-              <td>{{ param.name }}</td>
-              <td><code>{{ param.type }}</code></td>
+              <td style="white-space: nowrap;">{{ param.name }}</td>
+              <td style="white-space: nowrap;"><code>{{ param.type }}</code></td>
               <td><span v-if="param.twoWay" class="fa fa-check"></span></td>
               <td><span v-if="param.required" class="fa fa-check"></span></td>
               <td>{{{ param.default }}}</td>

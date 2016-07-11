@@ -104,7 +104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-2ad3ecfe/Formation.vue"
+	  var id = "_v-dff00d3c/Formation.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -13093,7 +13093,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-14bafb52/FSelect.vue"
+	  var id = "_v-e00d211a/FSelect.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -13136,7 +13136,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.fselect .dropdown-toggle {\n  cursor: default;\n  padding-left: 8px;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n.fselect .select-tag.default-tag-class {\n  margin: 2px;\n  font-size: 0.75em;\n  padding: 0px 10px;\n  height: 2em;\n  line-height: 2em;\n}\n.fselect .select-tag.default-tag-style {\n  display: inline-block;\n  color: rgba(0, 0, 0, 0.6);\n  background-color: #e4e4e4;\n  border-radius: 14px;\n  padding: 0px 12px;\n  margin: 2px;\n}\n.fselect .select-body {\n  padding: 2px 0px 2px 0px;\n  height: auto;\n}\n.fselect .x-remove {\n  font-size: 10px;\n  min-height: inherit;\n}\n.fselect .x-remove:hover {\n  color: red;\n}\n.fselect .placeholder-text {\n  line-height: 2em;\n}\n.fselect .caret-font {\n  font-size: 13px;\n}\n.fselect .caret-position {\n  position: absolute;\n  top: 50%;\n  right: 4px;\n  line-height: 0.5em;\n  color: #555;\n}\n.fselect .dropdown-menu .search-field {\n  padding: 0px 20px;\n}\n.fselect .scrollable-dropdown {\n  height: auto;\n  max-height: 15em;\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.fselect .form-control {\n  padding-right: 16px !important;\n}\n.fselect .hovered {\n  background-color: rgb(238, 238, 238);\n  color: #000;\n}\n", ""]);
+	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.fselect .dropdown-toggle {\n  cursor: default;\n  padding-left: 8px;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n.fselect .select-tag.default-tag-class {\n  margin: 2px;\n  font-size: 0.75em;\n  padding: 0px 10px;\n  height: 2em;\n  line-height: 2em;\n}\n.fselect .select-tag.default-tag-style {\n  display: inline-block;\n  color: rgba(0, 0, 0, 0.6);\n  background-color: #e4e4e4;\n  border-radius: 14px;\n  padding: 0px 12px;\n  margin: 2px;\n}\n.fselect .select-body {\n  padding: 2px 0px 2px 0px;\n  height: auto;\n}\n.fselect .x-remove {\n  font-size: 10px;\n  min-height: inherit;\n}\n.fselect .x-remove:hover {\n  color: red;\n}\n.fselect .placeholder-text {\n  line-height: 2em;\n}\n.fselect .caret-font {\n  font-size: 13px;\n}\n.fselect .caret-position {\n  position: absolute;\n  top: 50%;\n  right: 4px;\n  line-height: 0.5em;\n  color: #555;\n}\n.fselect .dropdown-menu .search-field {\n  padding: 0px 20px;\n}\n.fselect .scrollable-dropdown {\n  height: auto;\n  max-height: 15em;\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.fselect .form-control {\n  padding-right: 16px !important;\n}\n.fselect .hovered {\n  background-color: rgb(238, 238, 238);\n  color: #000;\n}\n", ""]);
 	
 	// exports
 
@@ -13187,9 +13187,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	
 	  methods: {
+	    emitChange: function emitChange(type, value, id) {
+	      this.$emit('fselect.change', type, value, id);
+	    },
 	    addItem: function addItem(id) {
-	      var _this = this;
-	
 	      var val = this.getValue(id);
 	      var found = _.contains(this.value, val);
 	      if (this.value.length >= this.selectLimit && !found) {
@@ -13199,66 +13200,59 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      } else if (this.multiple) {
 	        if (this.allowMultiple || !this.allowMultiple && !found) {
-	          this.$emit('fselect.adding', val, this, function () {
-	            _this.value.push(val);
-	            _this.$emit('fselect.add', val, _this);
-	            _this.closeDropdown();
-	          });
+	          this.value.push(val);
+	          this.$emit('fselect.added', val);
+	          this.$emit('fselect.changed');
+	          if (this.onChange) this.onChange('add', val, this);
+	          this.closeDropdown();
 	        } else {
 	          this.removeItem(id);
 	        }
 	      } else {
-	        this.$emit('fselect.changing', val, this, function () {
-	          _this.value = [val];
-	          _this.$emit('fselect.change', val, _this);
-	          _this.closeDropdown();
-	        });
+	        this.value = [val];
+	        this.$emit('fselect.added', val);
+	        this.$emit('fselect.changed');
+	        if (this.onChange) this.onChange('add', val, this);
+	        this.closeDropdown();
 	      }
 	    },
 	    closeDropdown: function closeDropdown(force) {
-	      var _this2 = this;
-	
 	      if (this.closeOnSelect || force) {
-	        this.$emit('fselect.closing', this, function () {
-	          _this2.open = false;
-	          _this2.search = '';
-	          _this2.$emit('fselect.close', _this2);
-	        });
+	        this.open = false;
+	        this.search = '';
 	      }
 	    },
 	    clearItems: function clearItems() {
-	      var _this3 = this;
-	
-	      this.$emit('fselect.clearing', this, function () {
-	        if (_this3.multiple && _this3.allowClear) _this3.value = [];
-	        _this3.$emit('fselect.clear', _this3);
-	      });
+	      if (this.multiple && this.allowClear) this.value = [];
+	      this.$emit('fselect.cleared');
+	      this.$emit('fselect.changed');
+	      if (this.onChange) this.onChange('clear', undefined, this);
 	    },
 	    removeItem: function removeItem(id) {
-	      var _this4 = this;
+	      var _this = this;
 	
-	      this.$emit('fselect.removing', id, this, function () {
-	        _this4.value = _.filter(_this4.value, function (v) {
-	          return _this4.storeObject && v[_this4.valueKey] !== id || !_this4.storeObject && v !== id;
-	        });
-	        _this4.$emit('fselect.remove', id, _this4);
+	      this.value = _.filter(this.value, function (v) {
+	        return _this.storeObject && v[_this.valueKey] !== id || !_this.storeObject && v !== id;
 	      });
+	      this.$emit('fselect.removed', id);
+	      this.$emit('fselect.changed');
+	      if (this.onChange) this.onChange('remove', id, this);
 	    },
 	    clickAway: function clickAway(event) {
 	      if (this.$el && !this.$el.contains(event.target) && this.open) this.closeDropdown(true);
 	    },
 	    getValue: function getValue(id) {
-	      var _this5 = this;
+	      var _this2 = this;
 	
 	      return !this.storeObject ? id : _.find(this.options, function (v) {
-	        return v[_this5.valueKey] === id;
+	        return v[_this2.valueKey] === id;
 	      });
 	    },
 	    isSelected: function isSelected(opt) {
-	      var _this6 = this;
+	      var _this3 = this;
 	
 	      var ids = _.map(this.value, function (v) {
-	        return _this6.storeObject ? v[_this6.valueKey] : v;
+	        return _this3.storeObject ? v[_this3.valueKey] : v;
 	      });
 	      return _.contains(ids, opt[this.valueKey]);
 	    },
@@ -13270,7 +13264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else if ((0, _events.isKey)(event, 'Enter')) {
 	        event.preventDefault();
 	        var item = this.searchResults[this.activeOption];
-	        if (item) this.addItem(item[this.valueKey]);
+	        if (item) this.emitChange('add', item[this.valueKey], this.selectId);
 	      } else if ((0, _events.isKey)(event, 'Escape')) {
 	        this.closeDropdown(true);
 	      } else {
@@ -13278,14 +13272,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    },
 	    toggleDropdown: function toggleDropdown(event) {
-	      var _this7 = this;
+	      var _this4 = this;
 	
 	      var clickAreas = [this.$els.selectcontainer, this.$els.selectbody, this.$els.placeholder];
 	      if (_.contains(clickAreas, event.target)) this.open = !this.open;
 	      if (this.open && this.searchable) {
-	        setTimeout(function () {
-	          _this7.$els.search.focus();
-	        }, 10);
+	        this.$nextTick(function () {
+	          _this4.$els.search.focus();
+	        });
 	      }
 	    }
 	  },
@@ -13301,42 +13295,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return null;
 	    },
 	    multiValue: function multiValue() {
-	      var _this8 = this;
+	      var _this5 = this;
 	
 	      return this.storeObject ? this.value : _.map(this.value, function (val) {
-	        return _.find(_this8.options, function (opt) {
-	          return opt[_this8.valueKey] === val;
+	        return _.find(_this5.options, function (opt) {
+	          return opt[_this5.valueKey] === val;
 	        });
 	      });
 	    },
 	    multiValueText: function multiValueText() {
-	      var _this9 = this;
+	      var _this6 = this;
 	
 	      return _.map(_.filter(this.options, function (opt) {
-	        return _.find(_this9.value, function (val) {
-	          var v = _this9.storeObject ? val[_this9.valueKey] : val;
-	          return opt[_this9.valueKey] === v;
+	        return _.find(_this6.value, function (val) {
+	          var v = _this6.storeObject ? val[_this6.valueKey] : val;
+	          return opt[_this6.valueKey] === v;
 	        });
 	      }), function (val) {
-	        return val[_this9.textKey];
+	        return val[_this6.textKey];
 	      }).join(', ');
 	    },
 	    singleValueText: function singleValueText() {
-	      var _this10 = this;
+	      var _this7 = this;
 	
 	      return _.get(_.find(this.options, function (opt) {
-	        var v = _this10.storeObject ? _this10.value[0][_this10.valueKey] : _this10.value[0];
-	        return opt[_this10.valueKey] === v;
+	        var v = _this7.storeObject ? _this7.value[0][_this7.valueKey] : _this7.value[0];
+	        return opt[_this7.valueKey] === v;
 	      }), this.textKey);
 	    }
 	  },
 	  filters: {
 	    selectable: function selectable(options) {
-	      var _this11 = this;
+	      var _this8 = this;
 	
 	      var newOptions = _.filter(options, function (opt) {
 	        try {
-	          return opt[_this11.textKey].match(new RegExp(_this11.search, 'i')) || _this11.search === '';
+	          return opt[_this8.textKey].match(new RegExp(_this8.search, 'i')) || _this8.search === '';
 	        } catch (err) {
 	          return false;
 	        }
@@ -13350,7 +13344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    allowClear: { type: Boolean, default: true },
 	    allowMultiple: { type: Boolean, default: false },
 	    caretClass: { validator: validateClassProp, default: 'icon formation-caret-down caret-font' },
-	    closeOnSelect: { type: Boolean, default: false },
+	    closeOnSelect: { type: Boolean, default: true },
 	    disabled: { type: Boolean, default: false },
 	    optionLimit: { type: Number, default: 5 },
 	    multiple: { type: Boolean, default: false },
@@ -13358,29 +13352,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    onChanging: { type: Function, default: function _default() {
 	        return true;
 	      } },
-	    onClose: { type: Function },
-	    onClosing: { type: Function, default: function _default() {
-	        return true;
-	      } },
-	    onClear: { type: Function },
-	    onClearing: { type: Function, default: function _default() {
-	        return true;
-	      } },
-	    onAdd: { type: Function },
-	    onAdding: { type: Function, default: function _default() {
-	        return true;
-	      } },
-	    onRemove: { type: Function },
-	    onRemoving: { type: Function, default: function _default() {
-	        return true;
-	      } },
-	    options: { type: Array },
+	    options: { type: Array, required: true },
 	    placeholder: { type: String, default: '' },
-	    height: { type: String },
 	    removeClass: { validator: validateClassProp, default: 'icon formation-remove x-remove' },
 	    removeSelectedOptions: { type: Boolean, default: false },
 	    searchable: { type: Boolean, default: true },
-	    selectLimit: { type: Number },
+	    selectId: { type: String },
 	    storeObject: { type: Boolean, default: false },
 	    tagClass: {
 	      validator: validateClassProp,
@@ -13399,11 +13376,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  created: function created() {
-	    var _this12 = this;
+	    var _this9 = this;
 	
 	    this.removeClickAway = (0, _helpers2.default)(document).click(this.clickAway, undefined, true);
 	    this.value = _.without(_.map(_.ensureArray(this.value), function (v) {
-	      return _this12.getValue(_.isString(v) ? v : _.get(v, _this12.valueKey, null));
+	      return _this9.getValue(_.isString(v) ? v : _.get(v, _this9.valueKey, null));
 	    }), null);
 	  },
 	  beforeDestroy: function beforeDestroy() {
@@ -13411,48 +13388,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	
 	  events: {
-	    'fselect.add': function fselectAdd(value, vm) {
-	      vm.$emit('fselect.change', value, vm, vm.onAdd);
-	    },
-	    'fselect.adding': function fselectAdding(value, vm, success) {
-	      var _this13 = this;
+	    'fselect.change': function fselectChange(type, value, id) {
+	      if (this.selectId && this.selectId !== id) return;
 	
-	      vm.$emit('fselect.changing', value, vm, function () {
-	        if (vm.onAdding(_this13, value, vm, success) !== false) success(_this13, value, vm);
-	      });
+	      this.$emit('fselect.changing', type, value, this, id);
+	      if (this.onChanging(type, value, this)) {
+	        switch (type) {
+	          case 'add':
+	            this.$emit('fselect.adding', value, this, id);
+	            this.addItem(value);
+	            break;
+	          case 'remove':
+	            this.$emit('fselect.removing', value, this, id);
+	            this.removeItem(value);
+	            break;
+	          case 'clear':
+	            this.$emit('fselect.clearing', this, id);
+	            this.clearItems();
+	            break;
+	          default:
+	            break;
+	        }
+	      }
 	    },
-	    'fselect.change': function fselectChange(value, vm, changeFn) {
-	      if (vm.onChange) vm.onChange(this, value, vm);
-	      if (vm.changeFn) changeFn(this, value, vm);
+	    'fselect.add': function fselectAdd(value, id) {
+	      this.$emit('fselect.change', 'add', value, id);
 	    },
-	    'fselect.changing': function fselectChanging(value, vm, success) {
-	      if (vm.onChanging(this, value, vm, success) !== false) success(this, value, vm);
+	    'fselect.remove': function fselectRemove(value, id) {
+	      this.$emit('fselect.change', 'remove', value, id);
 	    },
-	    'fselect.close': function fselectClose(vm) {
-	      if (vm.onClose) vm.onClose(this, vm);
-	    },
-	    'fselect.closing': function fselectClosing(vm, success) {
-	      if (vm.onClosing(this, vm)) success(this, vm);
-	    },
-	    'fselect.clear': function fselectClear(vm) {
-	      vm.$emit('fselect.change', undefined, vm, vm.onClear);
-	    },
-	    'fselect.clearing': function fselectClearing(vm, success) {
-	      var _this14 = this;
-	
-	      vm.$emit('fselect.changing', undefined, vm, function () {
-	        if (vm.onClearing(_this14, vm, success) !== false) success(_this14, vm);
-	      });
-	    },
-	    'fselect.remove': function fselectRemove(value, vm) {
-	      vm.$emit('fselect.change', value, vm, vm.onRemove);
-	    },
-	    'fselect.removing': function fselectRemoving(value, vm, success) {
-	      var _this15 = this;
-	
-	      vm.$emit('fselect.changing', value, vm, function () {
-	        if (vm.onRemoving(_this15, value, vm, success) !== false) success(_this15, value, vm);
-	      });
+	    'fselect.clear': function fselectClear(id) {
+	      this.$emit('fselect.change', 'clear', id);
 	    }
 	  }
 	};
@@ -13508,8 +13474,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js?importLoaders=1!./formation-icons.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js?importLoaders=1!./formation-icons.css");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?importLoaders=1!./formation-icons.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?importLoaders=1!./formation-icons.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -13560,7 +13526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 110 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"dropdown fselect\" :class=\"{ 'open': open }\" :class=\"{ 'has-error': !valid }\">\n  <div type=\"text\" v-el:selectcontainer\n    class=\"dropdown-toggle form-control\"\n    @click=\"toggleDropdown\"\n    :style=\"{ 'width': width, 'text-align': align !== 'center' ? 'left' : null, 'height': 'auto', 'display': 'flex' }\"\n    style=\"position: relative; font-weight: normal; height: auto; display: flex;\">\n    <div class=\"select-body\" v-el:selectbody>\n      <span v-if=\"value.length === 0\" v-el:placeholder class=\"placeholder-text\">{{ placeholder }}</span>\n      <span v-if=\"value.length > 0 && !multiple\" class=\"placeholder-text\">{{ singleValueText }}</span>\n      <span v-if=\"value.length > 0 && multiple\"\n      v-for=\"item in multiValue\"\n      track-by=\"$index\"\n      class=\"select-tag\" :class=\"tagClass\">\n        <span v-if=\"!disabled\"\n          :class=\"removeClass\"\n          @click=\"removeItem(item[valueKey])\"></span>\n        <span>{{ item[textKey] }}</span>\n      </span>\n    </div>\n    <span class=\"caret-position\"\n      :class=\"interactClass\"\n      @click=\"clearItems\"></span>\n    <select class=\"form-control\" style=\"width: 1px; float: right; visibility: hidden;\"></select>\n  </div>\n  <ul class=\"dropdown-menu scrollable-dropdown\" :style=\"{ 'width': width }\">\n    <li class=\"search-field\">\n      <input v-show=\"searchable\" v-el:search\n        @keydown=\"searchHandler\"\n        type=\"text\"\n        v-model=\"search\"\n        class=\"form-control\"\n        style=\"width: 100%; margin-bottom: 5px;\"\n        placeholder=\"Search...\">\n      <span v-if=\"searchable && !searchResults.length\">\n        <i>No Results Found...</i>\n      </span>\n    </li>\n    <li v-for=\"opt in options | selectable\" :class=\"{ active: isSelected(opt) }\"\n      @mouseover=\"activeOption = $index\">\n      <a @click=\"addItem(opt[valueKey])\" :class=\"{ hovered: activeOption === $index }\">{{ opt[textKey] }}</a>\n    </li>\n  </ul>\n</div>\n";
+	module.exports = "\n<div class=\"dropdown fselect\" :class=\"{ 'open': open }\" :class=\"{ 'has-error': !valid }\">\n  <div type=\"text\" v-el:selectcontainer\n    class=\"dropdown-toggle form-control\"\n    @click=\"toggleDropdown\"\n    :style=\"{ 'width': width, 'text-align': align !== 'center' ? 'left' : null, 'height': 'auto', 'display': 'flex' }\"\n    style=\"position: relative; font-weight: normal; height: auto; display: flex;\">\n    <div class=\"select-body\" v-el:selectbody>\n      <span v-if=\"value.length === 0\" v-el:placeholder class=\"placeholder-text\">{{ placeholder }}</span>\n      <span v-if=\"value.length > 0 && !multiple\" class=\"placeholder-text\">{{ singleValueText }}</span>\n      <span v-if=\"value.length > 0 && multiple\"\n      v-for=\"item in multiValue\"\n      track-by=\"$index\"\n      class=\"select-tag\" :class=\"tagClass\">\n        <span v-if=\"!disabled\"\n          :class=\"removeClass\"\n          @click=\"emitChange('remove', item[valueKey], selectId)\"></span>\n        <span>{{ item[textKey] }}</span>\n      </span>\n    </div>\n    <span class=\"caret-position\"\n      :class=\"interactClass\"\n      @click=\"emitChange('clear', undefined, selectId)\"></span>\n    <select class=\"form-control\" style=\"width: 1px; float: right; visibility: hidden;\"></select>\n  </div>\n  <ul class=\"dropdown-menu scrollable-dropdown\" :style=\"{ 'width': width }\">\n    <li class=\"search-field\">\n      <input v-show=\"searchable\" v-el:search\n        @keydown=\"searchHandler\"\n        type=\"text\"\n        v-model=\"search\"\n        class=\"form-control\"\n        style=\"width: 100%; margin-bottom: 5px;\"\n        placeholder=\"Search...\">\n      <span v-if=\"searchable && !searchResults.length\">\n        <i>No Results Found...</i>\n      </span>\n    </li>\n    <li v-for=\"opt in options | selectable\" :class=\"{ active: isSelected(opt) }\"\n      @mouseover=\"activeOption = $index\">\n      <a @click=\"emitChange('add', opt[valueKey], selectId)\"\n        :class=\"{ hovered: activeOption === $index }\">{{ opt[textKey] }}</a>\n    </li>\n  </ul>\n</div>\n";
 
 /***/ },
 /* 111 */
@@ -13589,7 +13555,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-093f6d47/FModal.vue"
+	  var id = "_v-2e417106/FModal.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -13786,7 +13752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-0ecf7f58/FTabs.vue"
+	  var id = "_v-a1116e96/FTabs.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -13813,9 +13779,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = {
 	  methods: {
 	    activate: function activate(id) {
+	      var _this = this;
+	
 	      this.$emit('show.bs.tab', id);
 	      if (this.active !== id) this.active = id;
-	      this.$emit('shown.bs.tab', id);
+	      this.$nextTick(function () {
+	        _this.$emit('shown.bs.tab', id);
+	        if (typeof _this.config.onActivate === 'function') _this.config.onActivate(id, _this);
+	      });
 	    }
 	  },
 	  created: function created() {
@@ -13838,7 +13809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 119 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n  <ul class=\"nav nav-tabs\">\n    <li v-for=\"tab in config.tabs\" :class=\"{ 'active': tab.id === active }\">\n      <a @click=\"activate(tab.id)\">\n        {{ tab.text || tab.id }}\n      </a>\n    </li>\n  </ul>\n  <div class=\"tab-content\">\n    <div class=\"tab-pane\" v-for=\"tab in config.tabs\" :class=\"{ 'active': tab.id === active }\">\n      <slot :name=\"tab.id\"></slot>\n    </div>\n  </div>\n</div>\n";
+	module.exports = "\n<div>\n  <ul class=\"nav nav-tabs\">\n    <li v-for=\"tab in config.tabs\"\n      v-if=\"tab.show !== false\"\n      :class=\"{ 'active': tab.id === active }\">\n      <a @click=\"activate(tab.id)\">\n        {{ tab.text || tab.id }}\n      </a>\n    </li>\n  </ul>\n  <div class=\"tab-content\">\n    <div class=\"tab-pane\"\n      v-for=\"tab in config.tabs\"\n      v-if=\"tab.show !== false\"\n      :class=\"{ 'active': tab.id === active }\">\n      <slot :name=\"tab.id\"></slot>\n    </div>\n  </div>\n</div>\n";
 
 /***/ }
 /******/ ])

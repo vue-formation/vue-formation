@@ -87,7 +87,7 @@ export default {
   ],
   listeners: [
     {
-      type: 'modal.show',
+      type: 'modal.show (config, id)',
       description: 'When triggered, opens the modal',
       params: [
         {

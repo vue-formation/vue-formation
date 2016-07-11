@@ -4,6 +4,7 @@ export const FORMATION_KEY = 'vue-formation'
 
 const cookie = {
   logoInverted: false,
+  mainTab: 'about',
   theme: 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css',
   themes: [
     {
@@ -132,6 +133,11 @@ export const mutations = {
   CHANGE_INVERTED_LOGO (state, inverted) {
     let data = parseCookie()
     data.logoInverted = inverted
+    setCookie(state, data)
+  },
+  ACTIVATE_MAIN_TAB (state, tab) {
+    let data = parseCookie()
+    data.mainTab = tab
     setCookie(state, data)
   }
 }

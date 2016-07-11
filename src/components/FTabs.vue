@@ -28,7 +28,10 @@
       activate (id) {
         this.$emit('show.bs.tab', id)
         if (this.active !== id) this.active = id
-        this.$nextTick(() => { this.$emit('shown.bs.tab', id) })
+        this.$nextTick(() => {
+          this.$emit('shown.bs.tab', id)
+          if (typeof this.config.onActivate === 'function') this.config.onActivate(id, this)
+        })
       }
     },
     created () {
