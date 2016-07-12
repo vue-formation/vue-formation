@@ -4,7 +4,7 @@ export default {
   params: [
     {
       name: 'config',
-      type: 'Object<FormationConfig>',
+      type: 'Object&lt;FormationConfig&gt;',
       twoWay: false,
       required: true,
       default: null,

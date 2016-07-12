@@ -4,7 +4,7 @@ export default {
   params: [
     {
       name: 'config',
-      type: 'Object<TabConfig>',
+      type: 'Object&lt;TabConfig&gt;',
       twoWay: false,
       required: true,
       default: null,

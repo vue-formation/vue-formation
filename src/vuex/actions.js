@@ -10,3 +10,6 @@ export const changeInvertedLogo = ({dispatch}, inverted) => {
 export const activateMainTab = ({dispatch}, tab) => {
   dispatch('ACTIVATE_MAIN_TAB', tab)
 }
+export const setCollapsed = ({dispatch}, tab, collapsed) => {
+  dispatch('SET_COLLAPSED', tab, collapsed)
+}

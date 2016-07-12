@@ -365,7 +365,7 @@
         return rows
       },
       isBootstrapFormat () {
-        return !this.config || !this.config.style || this.config.style === 'bootstrap'
+        return !this.config || !this.config.style || this.config.framework === 'bootstrap'
       }
     },
     data () {

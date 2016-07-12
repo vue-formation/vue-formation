@@ -102,9 +102,6 @@
 </template>
 
 <script type="text/babel">
-  //  vendor
-  import Prism from 'prismjs'
-
   //  local
   import * as _ from '../utils/utils'
   import { stringify } from '../utils/stringify'
@@ -182,7 +179,7 @@
             headerIconClass: 'fa fa-warning'
           }, config)
         } else {
-          this.source.config = ConfigStrs[id] // stringify(exConfig.formConfig, null, '  ')
+          this.source.config = ConfigStrs[id]
           this.source.data = stringify(this.exampleData[id], null, '  ')
           this.source.html = exConfig.formHtml
           if (exConfig.exampleType !== 'formation') this.sourceTabConfig.tabs[1].show = false
@@ -190,9 +187,6 @@
           config = Object.assign(config, exConfig)
         }
         this.$refs.codemodal.$emit('modal.show', config)
-        this.$nextTick(() => {
-          Prism.highlightAll()
-        })
       }
     },
     computed: _.merge({}, _.mapValues(Examples, (v) => {

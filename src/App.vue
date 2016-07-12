@@ -43,7 +43,15 @@
         }
         div2.innerHTML = langOverride || language
       })
-      Prism.highlightAll()
+      this.$nextTick(() => {
+        Prism.highlightAll()
+      })
     }
   }
 </script>
+
+<style>
+  a {
+    cursor: pointer;
+  }
+</style>

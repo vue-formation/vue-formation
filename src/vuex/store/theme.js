@@ -4,6 +4,7 @@ export const FORMATION_KEY = 'vue-formation'
 
 const cookie = {
   logoInverted: false,
+  collapsed: {},
   mainTab: 'about',
   theme: 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css',
   themes: [
@@ -138,6 +139,12 @@ export const mutations = {
   ACTIVATE_MAIN_TAB (state, tab) {
     let data = parseCookie()
     data.mainTab = tab
+    setCookie(state, data)
+  },
+  SET_COLLAPSED (state, tab, collapsed) {
+    let data = parseCookie()
+    data.collapsed = data.collapsed || {}
+    data.collapsed[tab] = collapsed
     setCookie(state, data)
   }
 }

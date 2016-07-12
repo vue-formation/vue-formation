@@ -44,8 +44,8 @@
           </thead>
           <tbody>
             <tr v-for="param in doc.params | orderBy 'name'">
-              <td style="white-space: nowrap;">{{ param.name }}</td>
-              <td style="white-space: nowrap;"><code>{{ param.type }}</code></td>
+              <td class="text-nowrap">{{ param.name }}</td>
+              <td class="text-nowrap">{{{ typeLinks(param.type) }}}</td>
               <td><span v-if="param.twoWay" class="fa fa-check"></span></td>
               <td><span v-if="param.required" class="fa fa-check"></span></td>
               <td>{{{ param.default }}}</td>
@@ -78,7 +78,7 @@
                 <tbody>
                 <tr v-for="param in event.params | orderBy 'name'">
                   <td>{{ param.name }}</td>
-                  <td><code>{{ param.type }}</code></td>
+                  <td>{{{ typeLinks(param.type) }}}</td>
                   <td>{{{ param.description }}}</td>
                 </tr>
                 </tbody>
@@ -112,7 +112,7 @@
                 <tbody>
                 <tr v-for="param in event.params | orderBy 'name'">
                   <td>{{ param.name }}</td>
-                  <td><code>{{ param.type }}</code></td>
+                  <td>{{{ typeLinks(param.type) }}}</td>
                   <td>{{{ param.description }}}</td>
                 </tr>
                 </tbody>
@@ -127,8 +127,12 @@
 </template>
 <script type="text/babel">
   import Docs from '../docs'
+  import TypeLinksMixin from '../mixins/TypeLinks'
   import { Formation, FTabs, FModal } from '../components'
   export default {
+    mixins: [
+      TypeLinksMixin
+    ],
     components: {
       Formation,
       FTabs,
