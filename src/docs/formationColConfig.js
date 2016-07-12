@@ -6,19 +6,17 @@ export default {
   structure: [
     {
       path: 'type',
-      type: 'FormationColTypeEnum',
+      type: {
+        name: 'FormationColTypeEnum',
+        link: '#FormationColTypeEnum'
+      },
       required: true,
       description: 'A supported column type'
     },
     {
-      path: 'label',
-      type: 'String',
-      description: 'Form label'
-    },
-    {
-      path: 'model',
-      type: 'String',
-      description: 'Data path to bind to'
+      path: 'bind',
+      type: 'FormationColBind',
+      description: 'A collection of element binding actions'
     }
   ]
 }

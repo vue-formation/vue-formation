@@ -6,7 +6,7 @@ export default {
       if (_.isString(obj)) obj = obj.split('|')
       else if (!_.isArray(obj)) obj = [obj]
       let links = _.map(obj, (o) => {
-        if (_.isString(o)) return `<a href="${_.get(this.native, o, '')}"><code>${o.trim()}</code></a>`
+        if (_.isString(o)) return `<a href="${_.get(this.native, o.trim(), '')}"><code>${o.trim()}</code></a>`
         else return `<a href="${o.link || _.get(this.native, o.name, '')}"><code>${o.name}</code></a>`
       })
       return links.join(' | ')

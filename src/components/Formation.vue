@@ -14,13 +14,7 @@
           <div class="row form-group"
             :class="{ 'form-group-autoheight': row.type !== 'section', 'no-vertical-spacing': row.type === 'section' }"
             :style="{ 'height': row.height }">
-            <div v-if="row.type === 'section'"
-              class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-              :class="row.class"
-              :style="row.style">
-              {{{ row.content }}}
-            </div>
-            <div v-if="row.type !== 'section'"
+            <div v-if="row.columns"
               v-for="(fIdx, form) in row.columns"
               class="form-group"
               :id="formGroupId(rIdx, fIdx)"
@@ -87,6 +81,8 @@
                 <div v-if="form.type === 'checkbox'">
                   <label>
                     <input type="checkbox"
+                      :class="form.class"
+                      :style="form.style"
                       :id="formId(rIdx, fIdx)"
                       :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
                       v-model="formData[form.model]">
@@ -379,7 +375,7 @@
         formData: {},
         uuid: null,
         textTypes: [
-          'text', 'email', 'password', 'number', 'search', 'url', 'search', 'tel'
+          'text', 'email', 'password', 'number', 'search', 'url', 'tel'
         ],
         dateTypes: [
           'date', 'month', 'week', 'time', 'datetime', 'datetime-local'

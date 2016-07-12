@@ -33,7 +33,7 @@
         <h5 class="doc-header">Parameters</h5>
         <table class="table table-bordered">
           <thead>
-          <tr>
+          <tr class="active">
             <th>Name</th>
             <th>Type</th>
             <th>TwoWay</th>
@@ -57,8 +57,8 @@
       <div v-if="doc.events">
         <h5 class="doc-header">Events</h5>
         <table v-for="event in doc.events | orderBy 'type'" class="table table-bordered" style="margin-bottom: 10px;">
-          <thead>
-          <tr>
+          <thead class="active">
+          <tr class="active">
             <th>{{ event.type }}</th>
           </tr>
           </thead>
@@ -93,7 +93,7 @@
         <table v-for="event in doc.listeners | orderBy 'type'"
           class="table table-bordered" style="margin-bottom: 10px;">
           <thead>
-          <tr>
+          <tr class="active">
             <th>{{ event.type }}</th>
           </tr>
           </thead>
