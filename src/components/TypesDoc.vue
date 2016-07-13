@@ -12,49 +12,53 @@
     </div>
     <div v-if="type.structure">
       <collapsable-section :type-id="typeId" :tab="tab" header="Structure" section="structure">
-        <table class="table table-bordered">
-          <thead v-if="type.structure.length > 0">
-          <tr class="active">
-            <th>Path</th>
-            <th>Type</th>
-            <th>Required</th>
-            <th>Default</th>
-            <th>Description</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="prop in type.structure | orderBy 'path'">
-            <td>{{ prop.path }}</td>
-            <td class="text-nowrap">{{{ typeLinks(prop.type) }}}</td>
-            <td><span v-if="prop.required" class="fa fa-check"></span></td>
-            <td>{{{ prop.default }}}</td>
-            <td>{{{ prop.description }}}</td>
-          </tr>
-          <tr v-if="type.extends" v-for="(eIdx, eRow) in getInherited(type.extends)" :class="{ active: (eIdx % 2) === 0 }">
-            <td colspan="5">
-              {{{ eRow }}}
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead v-if="type.structure.length > 0">
+            <tr class="active">
+              <th>Path</th>
+              <th>Type</th>
+              <th>Required</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="prop in type.structure | orderBy 'path'">
+              <td>{{ prop.path }}</td>
+              <td class="text-nowrap">{{{ typeLinks(prop.type) }}}</td>
+              <td><span v-if="prop.required" class="fa fa-check"></span></td>
+              <td>{{{ prop.default }}}</td>
+              <td>{{{ prop.description }}}</td>
+            </tr>
+            <tr v-if="type.extends" v-for="(eIdx, eRow) in getInherited(type.extends)" :class="{ active: (eIdx % 2) === 0 }">
+              <td colspan="5">
+                {{{ eRow }}}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </collapsable-section>
     </div>
     <div v-if="type.enums">
       <collapsable-section :type-id="typeId" :tab="tab" header="Enums" section="enums">
-        <table class="table table-bordered">
-          <thead>
-          <tr class="active">
-            <th>Value</th>
-            <th>Description</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="enum in type.enums | orderBy 'value'" :class="{ undocumented: enum.undocumented }">
-            <td>{{ enum.value }}</td>
-            <td>{{{ enum.description }}}</td>
-          </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+            <tr class="active">
+              <th>Value</th>
+              <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="enum in type.enums | orderBy 'value'" :class="{ undocumented: enum.undocumented }">
+              <td>{{ enum.value }}</td>
+              <td>{{{ enum.description }}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </collapsable-section>
     </div>
   </div>
