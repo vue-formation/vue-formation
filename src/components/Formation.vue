@@ -194,6 +194,13 @@
         }
         onNextTick ? this.$nextTick(doClear) : doClear()
       },
+      jsonEquals (a, b) {
+        try {
+          return JSON.stringify(a) === JSON.stringify(b)
+        } catch (err) {
+          return false
+        }
+      },
       multiClickaway (evt) {
         this.$broadcast('hide::dropdown')
       },
@@ -358,6 +365,10 @@
             rows.push(row)
           }
         })
+        // prevent unnecessary form config updates. this resolves an issue where form
+        // configs relying on data they set blur input fields on each input
+        if (this.jsonEquals(this.lastConfig, rows)) return this.lastConfig
+        this.lastConfig = rows
         return rows
       },
       isBootstrapFormat () {

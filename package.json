@@ -1,6 +1,6 @@
 {
   "name": "vue-formation",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A vue.js form builder",
   "author": "Branden Horiuchi <bhoriuchi@gmail.com>",
   "license": "MIT",
