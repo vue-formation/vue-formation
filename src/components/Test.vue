@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <formation :data.sync="formData" :config="formConfig"></formation>
     <pre>{{ formData | json }}</pre>
   </div>

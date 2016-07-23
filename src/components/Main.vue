@@ -69,9 +69,6 @@
         <div slot="types">
           <types-doc></types-doc>
         </div>
-        <div slot="tester">
-          <test-tab></test-tab>
-        </div>
       </f-tabs>
     </div>
     <f-modal v-ref:codemodal>
@@ -110,7 +107,6 @@
   import { stringify } from '../utils/stringify'
   import Examples from '../examples'
   import ConfigStrs from '../examples/example-config-strings'
-  import TestTab from './Test'
 
   //  components
   import About from './About'
@@ -149,8 +145,7 @@
       Formation,
       FModal,
       FTabs,
-      ThemeSelector,
-      TestTab
+      ThemeSelector
     },
     created () {
       this.mainTabActive = this.cookie.mainTab
@@ -220,8 +215,7 @@
             { id: 'about', text: 'About' },
             { id: 'examples', text: 'Examples' },
             { id: 'components', text: 'Components' },
-            { id: 'types', text: 'Types' },
-            { id: 'tester', text: 'Test' }
+            { id: 'types', text: 'Types' }
           ]
         },
         source: {
