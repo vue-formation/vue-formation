@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <table class="table" :class="config.class">
+  <div class="ftable">
+    <table class="table table-fixed" :class="config.class">
       <thead>
         <tr>
-          <td v-for="col in config.columns">
+          <th v-for="col in config.columns" class="col-xs-6">
             {{{ col.value }}}
-          </td>
+          </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody style="height: 200px; overflow: auto; display:block;">
         <tr v-for="row in data">
-          <td v-for="cell in row">{{{ cell.value || cell }}}</td>
+          <td v-for="cell in row" class="col-xs-6">{{{ cell.value || cell }}}</td>
         </tr>
       </tbody>
     </table>
@@ -33,3 +33,6 @@
     }
   }
 </script>
+
+<style>
+</style>
