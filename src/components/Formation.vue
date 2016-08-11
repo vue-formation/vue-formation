@@ -40,11 +40,11 @@
                   :style="form.style"
                   :placeholder="form.placeholder"
                   :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                  @keyup="form.onKeyUp"
-                  @keydown="form.onKeyDown"
-                  @blur="form.onBlur"
-                  @focus="form.onFocus"
-                  @change="form.onChange"
+                  @keyup="form.onKeyUp ? form.onKeyUp($event, this) : null"
+                  @keydown="form.onKeyDown ? form.onKeyDown($event, this) : null"
+                  @blur="form.onBlur ? form.onBlur($event, this) : null"
+                  @focus="form.onFocus ? form.onFocus($event, this) : null"
+                  @change="form.onChange ? form.onChange($event, this) : null"
                   v-model="formData[form.model]">
                 <!-- text ./-->
 
