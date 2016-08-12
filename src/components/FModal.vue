@@ -202,6 +202,12 @@
         type: Boolean,
         default: true
       },
+      onClose: {
+        type: Function
+      },
+      onOpen: {
+        type: Function
+      },
       zIndex: {
         type: Number,
         default: 2000000000
@@ -232,6 +238,7 @@
         this.open = true
         this.opener = false
         this.$emit('shown.bs.modal')
+        if (this.onOpen) this.onOpen(this)
       },
       'modal.closing': function () {
         setTimeout(() => { this.$emit('modal.close') }, 0)
@@ -239,6 +246,7 @@
       'modal.close': function () {
         this.open = false
         this.$emit('hidden.bs.modal')
+        if (this.onClose) this.onClose(this)
       }
     }
   }
