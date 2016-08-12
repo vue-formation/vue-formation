@@ -5,7 +5,7 @@
       :style="{ 'z-index': zIndex + 1 }"
       :class="{ 'mopen': open, 'mclose': !open }"
       role="dialog">
-      <div class="modal-dialog" role="document" style="z-index: 2000">
+      <div class="modal-dialog" :class="dialogClass" role="document">
         <div v-el:content class="modal-content">
           <div v-if="config.showHeader !== false"
                class="modal-header"
@@ -70,6 +70,25 @@
         _scrollWidth: 0,
         _bodyPad: 0,
         _bodyMargin: 0
+      }
+    },
+    computed: {
+      dialogClass () {
+        let clazz = this.config.dialogClass || []
+
+        if (_.isString(clazz)) {
+          clazz = clazz.split(/\s+/)
+        } else if (_.isHash(clazz)) {
+          let newClazz = []
+          _.forEach(clazz, (v, k) => {
+            if (v === true) newClazz.push(k)
+          })
+          clazz = newClazz
+        }
+        if (this.config.size === 'large') clazz.push('modal-lg')
+        else if (this.config.size === 'small') clazz.push('modal-sm')
+
+        return _.uniq(clazz)
       }
     },
     methods: {

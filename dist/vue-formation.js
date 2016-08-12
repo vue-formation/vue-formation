@@ -13718,7 +13718,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.fade-modal-enter, .fade-modal-leave {\n  opacity: 0;\n}\n.fade-modal-transition.modal {\n  -webkit-transition: opacity 0.3s ease;\n  transition: opacity 0.3s ease;\n}\n.fade-modal-transition.backdrop-container {\n  -webkit-transition: opacity 0.5s ease;\n  transition: opacity 0.5s ease;\n}\n.fade-modal-transition.modal.mclose, .fade-modal-transition.backdrop-container.mopen {\n  -webkit-transition-delay: 0.2s;\n          transition-delay: 0.2s;\n}\n", ""]);
+	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.fade-modal-enter, .fade-modal-leave {\n  opacity: 0;\n}\n.fade-modal-transition.modal {\n  -webkit-transition: opacity 0.3s ease;\n  transition: opacity 0.3s ease;\n}\n.fade-modal-transition.backdrop-container {\n  -webkit-transition: opacity 0.5s ease;\n  transition: opacity 0.5s ease;\n}\n.fade-modal-transition.modal.mclose, .fade-modal-transition.backdrop-container.mopen {\n  -webkit-transition-delay: 0.2s;\n          transition-delay: 0.2s;\n}\n", ""]);
 	
 	// exports
 
@@ -13757,6 +13757,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	
+	  computed: {
+	    dialogClass: function dialogClass() {
+	      var clazz = this.config.dialogClass || [];
+	
+	      if (_.isString(clazz)) {
+	        clazz = clazz.split(/\s+/);
+	      } else if (_.isHash(clazz)) {
+	        (function () {
+	          var newClazz = [];
+	          _.forEach(clazz, function (v, k) {
+	            if (v === true) newClazz.push(k);
+	          });
+	          clazz = newClazz;
+	        })();
+	      }
+	      if (this.config.size === 'large') clazz.push('modal-lg');else if (this.config.size === 'small') clazz.push('modal-sm');
+	
+	      return _.uniq(clazz);
+	    }
+	  },
 	  methods: {
 	    isFunction: function isFunction(obj) {
 	      return typeof obj === 'function';
@@ -13918,7 +13938,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 116 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div @click=\"clickAway\">\n  <div v-if=\"show\" :transition=\"animation !== 'none' ? animation : null\" v-el:modal class=\"modal\"\n    style=\"display: block;\"\n    :style=\"{ 'z-index': zIndex + 1 }\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\"\n    role=\"dialog\">\n    <div class=\"modal-dialog\" role=\"document\" style=\"z-index: 2000\">\n      <div v-el:content class=\"modal-content\">\n        <div v-if=\"config.showHeader !== false\"\n             class=\"modal-header\"\n             :class=\"config.headerClass\"\n             :style=\"config.headerStyle\">\n          <slot name=\"header\">\n            <button v-if=\"config.headerClose !== false\" type=\"button\" class=\"close\" @click=\"show = false\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <h4 class=\"modal-title\">\n              <span v-if=\"config.headerIconClass\" :class=\"config.headerIconClass\"></span>\n              {{ title || config.title }}\n            </h4>\n          </slot>\n        </div>\n        <div v-if=\"config.showBody !== false\"\n             class=\"modal-body\"\n             :class=\"config.bodyClass\"\n             :style=\"config.bodyStyle\">\n          <slot name=\"body\">\n            {{{ isFunction(config.body) ? config.body(this) : config.body }}}\n          </slot>\n        </div>\n        <div v-if=\"config.showFooter !== false\"\n             class=\"modal-footer\"\n             :class=\"config.footerClass\"\n             :style=\"config.footerStyle\">\n          <slot name=\"footer\">\n            {{{ isFunction(config.footer) ? config.footer(this) : config.footer }}}\n            <button v-for=\"button in config.footerButtons\"\n              @click=\"button.onClick ? button.onClick($event, this) : null\" :class=\"button.class\"\n              :style=\"button.style\">\n              {{{ button.content }}}\n            </button>\n          </slot>\n        </div>\n      </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n  </div><!-- /.modal -->\n  <!-- Deprecating\n  <div :transition=\"animation !== 'none' ? animation : null\"\n    v-if=\"backdrop && show\"\n    class=\"backdrop-container\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\" style=\"{ 'z-index': zIndex }\">\n    <div class=\"modal-backdrop\"\n      :style=\"{ 'opacity': backdropOpacity }\">\n    </div>\n  </div>\n  -->\n</div>\n";
+	module.exports = "\n<div @click=\"clickAway\">\n  <div v-if=\"show\" :transition=\"animation !== 'none' ? animation : null\" v-el:modal class=\"modal\"\n    style=\"display: block;\"\n    :style=\"{ 'z-index': zIndex + 1 }\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\"\n    role=\"dialog\">\n    <div class=\"modal-dialog\" :class=\"dialogClass\" role=\"document\">\n      <div v-el:content class=\"modal-content\">\n        <div v-if=\"config.showHeader !== false\"\n             class=\"modal-header\"\n             :class=\"config.headerClass\"\n             :style=\"config.headerStyle\">\n          <slot name=\"header\">\n            <button v-if=\"config.headerClose !== false\" type=\"button\" class=\"close\" @click=\"show = false\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <h4 class=\"modal-title\">\n              <span v-if=\"config.headerIconClass\" :class=\"config.headerIconClass\"></span>\n              {{ title || config.title }}\n            </h4>\n          </slot>\n        </div>\n        <div v-if=\"config.showBody !== false\"\n             class=\"modal-body\"\n             :class=\"config.bodyClass\"\n             :style=\"config.bodyStyle\">\n          <slot name=\"body\">\n            {{{ isFunction(config.body) ? config.body(this) : config.body }}}\n          </slot>\n        </div>\n        <div v-if=\"config.showFooter !== false\"\n             class=\"modal-footer\"\n             :class=\"config.footerClass\"\n             :style=\"config.footerStyle\">\n          <slot name=\"footer\">\n            {{{ isFunction(config.footer) ? config.footer(this) : config.footer }}}\n            <button v-for=\"button in config.footerButtons\"\n              @click=\"button.onClick ? button.onClick($event, this) : null\" :class=\"button.class\"\n              :style=\"button.style\">\n              {{{ button.content }}}\n            </button>\n          </slot>\n        </div>\n      </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n  </div><!-- /.modal -->\n  <!-- Deprecating\n  <div :transition=\"animation !== 'none' ? animation : null\"\n    v-if=\"backdrop && show\"\n    class=\"backdrop-container\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\" style=\"{ 'z-index': zIndex }\">\n    <div class=\"modal-backdrop\"\n      :style=\"{ 'opacity': backdropOpacity }\">\n    </div>\n  </div>\n  -->\n</div>\n";
 
 /***/ },
 /* 117 */
