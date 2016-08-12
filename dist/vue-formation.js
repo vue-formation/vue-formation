@@ -104,7 +104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-636da3a0/Formation.vue"
+	  var id = "_v-2ad3ecfe/Formation.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.formation {\n  display: block;\n}\n.formation.formation-container {\n  width: 100%;\n  background: transparent;\n}\n.formation .form-group-autoheight > div {\n  height: 100%;\n  margin-bottom: 0px;\n}\n.formation .form-group-autoheight button {\n  height: inherit;\n}\n.formation .no-vertical-spacing {\n  margin-top: 0px;\n  margin-bottom: 0px;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n.formation .hidden {\n  display: none;\n}\n", ""]);
+	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.formation {\n  display: block;\n}\n.formation.formation-container {\n  width: 100%;\n  background: transparent;\n}\n.formation .form-group-autoheight > div {\n  height: 100%;\n  margin-bottom: 0px;\n}\n.formation .form-group-autoheight button {\n  height: inherit;\n}\n.formation .no-vertical-spacing {\n  margin-top: 0px;\n  margin-bottom: 0px;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n.formation .hidden {\n  display: none;\n}\n", ""]);
 	
 	// exports
 
@@ -1868,6 +1868,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Thrash, waste and sodomy: IE GC bug
 	  var iframe = __webpack_require__(22)('iframe')
 	    , i      = enumBugKeys.length
+	    , lt     = '<'
 	    , gt     = '>'
 	    , iframeDocument;
 	  iframe.style.display = 'none';
@@ -1877,7 +1878,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // html.removeChild(iframe);
 	  iframeDocument = iframe.contentWindow.document;
 	  iframeDocument.open();
-	  iframeDocument.write('<script>document.F=Object</script' + gt);
+	  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
 	  iframeDocument.close();
 	  createDict = iframeDocument.F;
 	  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
@@ -1895,6 +1896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  } else result = createDict();
 	  return Properties === undefined ? result : dPs(result, Properties);
 	};
+
 
 /***/ },
 /* 59 */
@@ -12814,7 +12816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.Helper = exports.hasClass = exports.toggleClass = exports.removeClass = exports.addClass = undefined;
+	exports.Helper = exports.remove = exports.hasScroll = exports.css = exports.append = exports.appendTo = exports.hasClass = exports.toggleClass = exports.removeClass = exports.addClass = undefined;
 	
 	var _classCallCheck2 = __webpack_require__(94);
 	
@@ -12844,6 +12846,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _utils = __webpack_require__(46);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function whichTransitionEvent() {
+	  var el = document.createElement('fakeelement');
+	  var transitions = {
+	    'transition': 'transitionend',
+	    'OTransition': 'oTransitionEnd',
+	    'MozTransition': 'transitionend',
+	    'WebkitTransition': 'webkitTransitionEnd'
+	  };
+	
+	  for (var t in transitions) {
+	    if (el.style[t] !== undefined) {
+	      return transitions[t];
+	    }
+	  }
+	}
 	
 	function findCss(selectorText, props) {
 	  var css = {};
@@ -12893,7 +12911,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function onceEvent(element, event, callback, useCapture) {
 	  var fn = function fn(event) {
 	    callback(event);
-	    removeEvent(element, event, this);
+	    removeEvent(element, event, fn);
 	  };
 	  onEvent(element, event, fn, useCapture);
 	  return function () {
@@ -12906,6 +12924,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	
 	function _addClass(element, className) {
+	  if (!element) return;
 	  var classList = Array.isArray(className) ? className : className.split(/\s+/);
 	  (0, _utils.forEach)(classList, function (c) {
 	    element.classList.add(c);
@@ -12914,6 +12933,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	exports.addClass = _addClass;
 	function _removeClass(element, className) {
+	  if (!element) return;
 	  var classList = Array.isArray(className) ? className : className.split(/\s+/);
 	  (0, _utils.forEach)(classList, function (c) {
 	    element.classList.remove(c);
@@ -12937,12 +12957,69 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }), undefined);
 	}
 	
+	function _appendTo(element, selector) {
+	  var parent = new Helper(selector);
+	  if (parent.el.length) parent.el[0].appendChild(element);
+	}
+	
+	exports.appendTo = _appendTo;
+	function _append(element, appendee) {
+	  var child = new Helper(appendee);
+	  if (child.el.length) element.appendChild(child.el[0]);
+	}
+	
+	exports.append = _append;
+	function _css(elements, prop, value) {
+	  if (value === undefined && (0, _utils.isString)(prop)) {
+	    var val = elements[0].style[prop];
+	    if (prop.match(/^padding|Width$|Height$|^margin/)) return val ? pxToInt(val) : 0;
+	    return prop;
+	  }
+	
+	  (0, _utils.forEach)(elements, function (element) {
+	    if (value !== undefined && (0, _utils.isString)(prop)) {
+	      element.style[prop] = value;
+	    }
+	  });
+	}
+	
+	exports.css = _css;
+	function _hasScroll2(element) {
+	  return {
+	    vertical: element.scrollHeight > element.clientHeight,
+	    horizontal: element.scrollWidth > element.clientWidth
+	  };
+	}
+	
+	exports.hasScroll = _hasScroll2;
+	function _remove(elements, selector) {
+	  if (!elements.length) return;
+	  if (!selector) {
+	    try {
+	      if (elements.length && elements[0].parentNode) elements[0].parentNode.removeChild(elements[0]);
+	    } catch (err) {
+	      console.error(err);
+	    }
+	  } else {
+	    (0, _utils.forEach)(elements, function (element) {
+	      var children = new Helper(element).find(selector);
+	      try {
+	        children.each(function (child) {
+	          element.removeChild(child);
+	        });
+	      } catch (err) {}
+	    });
+	  }
+	}
+	
+	exports.remove = _remove;
+	
 	var Helper = exports.Helper = function () {
 	  function Helper(selector) {
 	    (0, _classCallCheck3.default)(this, Helper);
 	
 	    this.el = [];
-	    if (selector instanceof Helper) this.el[0] = selector.el;else if (typeof selector === 'string') this.el = mapNodes(document, selector);else if (Array.isArray(selector)) this.el = selector;else this.el[0] = selector;
+	    if (!selector) this.el = [];else if (selector instanceof Helper) this.el = selector.el;else if (typeof selector === 'string') this.el = mapNodes(document, selector);else if (Array.isArray(selector)) this.el = selector;else this.el[0] = selector;
 	  }
 	
 	  (0, _createClass3.default)(Helper, [{
@@ -12954,13 +13031,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'on',
 	    value: function on(event, callback, useCapture, returnRemove) {
-	      var removeFn = onEvent(this.el[0], event, callback, useCapture);
+	      if (event === 'transitionend') event = whichTransitionEvent();
+	      var removeFn = event ? onEvent(this.el[0], event, callback, useCapture) : this;
 	      return returnRemove ? removeFn : this;
 	    }
 	  }, {
 	    key: 'once',
 	    value: function once(event, callback, useCapture, returnRemove) {
-	      var removeFn = onceEvent(this.el[0], callback);
+	      if (event === 'transitionend') event = whichTransitionEvent();
+	      var removeFn = event ? onceEvent(this.el[0], event, callback, useCapture) : this;
 	      return returnRemove ? removeFn : this;
 	    }
 	  }, {
@@ -12970,11 +13049,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return returnRemove ? removeFn : this;
 	    }
 	  }, {
+	    key: 'append',
+	    value: function append(selector) {
+	      _append(this.el[0], selector);
+	      return this;
+	    }
+	  }, {
+	    key: 'appendTo',
+	    value: function appendTo(selector) {
+	      _appendTo(this.el[0], selector);
+	      return this;
+	    }
+	  }, {
 	    key: 'addClass',
 	    value: function addClass(clazz) {
 	      return this.each(function (el) {
 	        _addClass(el, clazz);
 	      });
+	    }
+	  }, {
+	    key: 'css',
+	    value: function css(prop, value) {
+	      var v = _css(this.el, prop, value);
+	      return value !== undefined ? this : v;
+	    }
+	  }, {
+	    key: 'hasScroll',
+	    value: function hasScroll(position) {
+	      var _hasScroll = _hasScroll2(this.el[0]);
+	      if (position === 'vertical' || position === 'horizontal') return _hasScroll[position];
+	      return _hasScroll.vertical || _hasScroll.horizontal;
 	    }
 	  }, {
 	    key: 'removeClass',
@@ -13007,6 +13111,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'find',
 	    value: function find(selector) {
 	      return new Helper(mapNodes(this.el[0], selector));
+	    }
+	  }, {
+	    key: 'remove',
+	    value: function remove(selector) {
+	      _remove(this.el, selector);
+	      return selector ? this : undefined;
 	    }
 	  }]);
 	  return Helper;
@@ -13103,7 +13213,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-1ebedd9e/FSelect.vue"
+	  var id = "_v-14bafb52/FSelect.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -13542,7 +13652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 111 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"formation\">\n  <div v-if=\"isBootstrapFormat\" class=\"container-fullwidth formation-container\">\n    <form role=\"form\"\n      :class=\"{ 'form-inline': config.format === 'inline', 'form-horizontal': config.format === 'horizontal' }\">\n      <div v-for=\"(rIdx, row) in formConfig\"\n        :transition=\"config.transition || null\"\n        :transition-enter=\"config.transitionEnter || null\"\n        :transition-leave=\"config.transitionLeave || null\"\n        :stagger=\"config.stagger || null\"\n        :enter-stagger=\"config.enterStagger || null\"\n        :leave-stagger=\"config.leaveStagger || null\"\n        :class=\"{ 'pull-left': config.align === 'left', 'pull-right': config.align === 'right' }\">\n        <div class=\"row form-group\"\n          :class=\"{ 'form-group-autoheight': row.type !== 'section', 'no-vertical-spacing': row.type === 'section' }\"\n          :style=\"{ 'height': row.height }\">\n          <div v-if=\"row.columns\"\n            v-for=\"(fIdx, form) in row.columns\"\n            class=\"form-group\"\n            :id=\"formGroupId(rIdx, fIdx)\"\n            :class=\"colClass(row.columns, rIdx, fIdx, form.model)\"\n            :style=\"{ 'margin-right': $index === row.columns.length - 1 ? '-1px' : null }\">\n\n            <!-- Label -->\n            <label :for=\"formId(rIdx, fIdx)\"\n              :style=\"{ 'float': config.alignLabels, 'width': '100%' }\">\n              {{{ getLabel(rIdx, fIdx, form.label) }}}\n              <span v-if=\"config.decorateRequired !== false && form.required && form.label\" class=\"text-danger\">\n                *\n              </span>\n\n              <!-- text -->\n              <input v-if=\"isTextInput(form.type)\"\n                :type=\"form.type\"\n                :name=\"formId(rIdx, fIdx)\"\n                :id=\"formId(rIdx, fIdx)\"\n                style=\"width: 100%;\"\n                class=\"form-control\"\n                :class=\"form.class\"\n                :style=\"form.style\"\n                :placeholder=\"form.placeholder\"\n                :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n                @keyup=\"form.onKeyUp ? form.onKeyUp($event, this) : null\"\n                @keydown=\"form.onKeyDown ? form.onKeyDown($event, this) : null\"\n                @blur=\"form.onBlur ? form.onBlur($event, this) : null\"\n                @focus=\"form.onFocus ? form.onFocus($event, this) : null\"\n                @change=\"form.onChange ? form.onChange($event, this) : null\"\n                v-model=\"formData[form.model]\">\n              <!-- text ./-->\n\n              <!-- html -->\n              <div v-if=\"form.type === 'html'\" style=\"width: 100%;\">{{{ form.value }}}</div>\n              <!-- html ./-->\n\n              <!-- button -->\n              <button v-if=\"form.type === 'button'\"\n              class=\"btn\"\n              :class=\"form.class\"\n              :style=\"form.style\"\n              :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n              @click.prevent=\"form.onClick ? form.onClick($event, this) : null\">\n                <span v-if=\"form.iconClass\", :class=\"form.iconClass\"></span>\n                <span v-if=\"form.iconClass && form.text\">&nbsp;</span>\n                <span v-if=\"form.text\">{{ form.text }}</span>\n              </button>\n              <!-- button ./-->\n\n              <!-- buttons -->\n              <div v-if=\"form.type === 'buttons'\"\n                :class=\"{ 'btn-group': form.group }\"\n                :role=\"form.group ? 'group' : null\">\n                <button v-for=\"btn in form.buttons\"\n                  class=\"btn\"\n                  :class=\"btn.class\"\n                  :style=\"btn.style\"\n                  :disabled=\"has(btn, 'bind.disabled') ? btn.bind.disabled() : formDisabled()\"\n                  @click.prevent=\"btn.onClick ? btn.onClick($event, this) : null\">\n                    <span v-if=\"btn.iconClass\", :class=\"btn.iconClass\"></span>\n                    <span v-if=\"btn.iconClass && btn.label\">&nbsp;</span>\n                    <span v-if=\"btn.text\">{{ btn.text }}</span>\n                </button>\n              </div>\n              <!-- buttons ./-->\n\n              <!-- checkbox -->\n              <div v-if=\"form.type === 'checkbox'\">\n                <label>\n                  <input type=\"checkbox\"\n                    :class=\"form.class\"\n                    :style=\"form.style\"\n                    :id=\"formId(rIdx, fIdx)\"\n                    :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n                    v-model=\"formData[form.model]\">\n                  {{ form.text }}\n                </label>\n              </div>\n              <!-- checkbox ./-->\n\n              <!-- radio -->\n              <div v-if=\"form.type === 'radio'\" class=\"radio\">\n                <label v-for=\"(oIdx, radio) in form.filter ? form.filter(formData[form.model], form.radios) : form.radios\"\n                  style=\"display: block;\">\n                  <input type=\"radio\"\n                    :name=\"formId(rIdx, fIdx)\"\n                    :id=\"formId(rIdx, fIdx)\"\n                    :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n                    :value=\"radio.value\"\n                    v-model=\"formData[form.model]\">\n                    {{ radio.label }}\n                </label>\n              </div>\n              <!-- radio ./-->\n\n              <!-- select -->\n              <div v-if=\"form.type === 'select'\">\n                <select class=\"form-control\"\n                  :id=\"formId(rIdx, fIdx)\"\n                  :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n                  @blur=\"form.onBlur ? form.onBlur(event, utils) : null\"\n                  @change=\"form.onChange ? form.onChange(event, utils) : null\"\n                  v-model=\"formData[form.model]\">\n                    <option v-for=\"opt in form.filter ? form.filter(formData[form.model], form.options) : form.options\"\n                      :value=\"opt.value\"\n                      :hidden=\"opt.hidden\">\n                      {{ opt.text }}\n                    </option>\n                </select>\n              </div>\n              <!-- select ./-->\n\n              <!-- slot -->\n              <slot v-if=\"form.type === 'slot' && form.name\" :name=\"form.name\"></slot>\n              <!-- slot ./-->\n\n              <!-- fselect -->\n              <f-select v-if=\"form.type === 'fselect'\"\n                :close-on-select=\"form.closeOnSelect\"\n                :width=\"form.width\"\n                :value.sync=\"formData[form.model]\"\n                :options=\"form.options\"\n                :placeholder=\"form.placeholder\"\n                :store-object=\"form.storeObject\"\n                :multiple=\"form.multiple\"\n                :text-key=\"form.textKey\"\n                :value-key=\"form.valueKey\"\n                :on-add=\"form.onAdd\"\n                :on-adding=\"form.onAdding\"\n                :on-change=\"form.onChange\"\n                :on-changing=\"form.onChanging\"\n                :on-clear=\"form.onClear\"\n                :on-clearing=\"form.onClearing\"\n                :on-close=\"form.onClose\"\n                :on-closing=\"form.onClosing\"\n                :on-remove=\"form.onRemove\"\n                :on-removing=\"form.onRemoving\">\n              </f-select>\n              <!-- fselect ./-->\n            </label>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n";
+	module.exports = "\n<div class=\"formation\">\n  <div v-if=\"isBootstrapFormat\" class=\"container-fullwidth formation-container\">\n    <form role=\"form\"\n      :class=\"{ 'form-inline': config.format === 'inline', 'form-horizontal': config.format === 'horizontal' }\">\n      <div v-for=\"(rIdx, row) in formConfig\"\n        :transition=\"config.transition || null\"\n        :transition-enter=\"config.transitionEnter || null\"\n        :transition-leave=\"config.transitionLeave || null\"\n        :stagger=\"config.stagger || null\"\n        :enter-stagger=\"config.enterStagger || null\"\n        :leave-stagger=\"config.leaveStagger || null\"\n        :class=\"{ 'pull-left': config.align === 'left', 'pull-right': config.align === 'right' }\">\n        <div class=\"row form-group\"\n          :class=\"{ 'form-group-autoheight': row.type !== 'section', 'no-vertical-spacing': row.type === 'section' }\"\n          :style=\"{ 'height': row.height }\">\n          <div v-if=\"row.columns\"\n            v-for=\"(fIdx, form) in row.columns\"\n            class=\"form-group\"\n            :id=\"formGroupId(rIdx, fIdx)\"\n            :class=\"colClass(row.columns, rIdx, fIdx, form.model)\"\n            :style=\"{ 'margin-right': $index === row.columns.length - 1 ? '-1px' : null }\">\n\n            <!-- Label -->\n            <label :for=\"formId(rIdx, fIdx)\"\n              :style=\"{ 'float': config.alignLabels, 'width': '100%' }\">\n              {{{ getLabel(rIdx, fIdx, form.label) }}}\n              <span v-if=\"config.decorateRequired !== false && form.required && form.label\" class=\"text-danger\">\n                *\n              </span>\n\n              <!-- text -->\n              <input v-if=\"isTextInput(form.type)\"\n                :type=\"form.type\"\n                :name=\"formId(rIdx, fIdx)\"\n                :id=\"formId(rIdx, fIdx)\"\n                style=\"width: 100%;\"\n                class=\"form-control\"\n                :class=\"form.class\"\n                :style=\"form.style\"\n                :placeholder=\"form.placeholder\"\n                :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n                @keyup=\"form.onKeyUp ? form.onKeyUp($event, this) : null\"\n                @keydown=\"form.onKeyDown ? form.onKeyDown($event, this) : null\"\n                @blur=\"form.onBlur ? form.onBlur($event, this) : null\"\n                @focus=\"form.onFocus ? form.onFocus($event, this) : null\"\n                @change=\"form.onChange ? form.onChange($event, this) : null\"\n                v-model=\"formData[form.model]\">\n              <!-- text ./-->\n\n              <!-- html -->\n              <div v-if=\"form.type === 'html'\" style=\"width: 100%;\">{{{ form.value }}}</div>\n              <!-- html ./-->\n\n              <!-- button -->\n              <button v-if=\"form.type === 'button'\"\n              class=\"btn\"\n              :class=\"form.class\"\n              :style=\"form.style\"\n              :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n              @click.prevent=\"form.onClick ? form.onClick($event, this) : null\">\n                <span v-if=\"form.iconClass\", :class=\"form.iconClass\"></span>\n                <span v-if=\"form.iconClass && form.text\">&nbsp;</span>\n                <span v-if=\"form.text\">{{ form.text }}</span>\n              </button>\n              <!-- button ./-->\n\n              <!-- buttons -->\n              <div v-if=\"form.type === 'buttons'\"\n                :class=\"{ 'btn-group': form.group }\"\n                :role=\"form.group ? 'group' : null\">\n                <button v-for=\"btn in form.buttons\"\n                  class=\"btn\"\n                  :class=\"btn.class\"\n                  :style=\"btn.style\"\n                  :disabled=\"has(btn, 'bind.disabled') ? btn.bind.disabled() : formDisabled()\"\n                  @click.prevent=\"btn.onClick ? btn.onClick($event, this) : null\">\n                    <span v-if=\"btn.iconClass\", :class=\"btn.iconClass\"></span>\n                    <span v-if=\"btn.iconClass && btn.label\">&nbsp;</span>\n                    <span v-if=\"btn.text\">{{ btn.text }}</span>\n                </button>\n              </div>\n              <!-- buttons ./-->\n\n              <!-- checkbox -->\n              <div v-if=\"form.type === 'checkbox'\">\n                <label>\n                  <input type=\"checkbox\"\n                    :class=\"form.class\"\n                    :style=\"form.style\"\n                    :id=\"formId(rIdx, fIdx)\"\n                    :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n                    @keyup=\"form.onKeyUp ? form.onKeyUp($event, this) : null\"\n                    @keydown=\"form.onKeyDown ? form.onKeyDown($event, this) : null\"\n                    @blur=\"form.onBlur ? form.onBlur($event, this) : null\"\n                    @focus=\"form.onFocus ? form.onFocus($event, this) : null\"\n                    @change=\"form.onChange ? form.onChange($event, this) : null\"\n                    v-model=\"formData[form.model]\">\n                  {{ form.text }}\n                </label>\n              </div>\n              <!-- checkbox ./-->\n\n              <!-- radio -->\n              <div v-if=\"form.type === 'radio'\" class=\"radio\">\n                <label v-for=\"(oIdx, radio) in form.filter ? form.filter(formData[form.model], form.radios) : form.radios\"\n                  style=\"display: block;\">\n                  <input type=\"radio\"\n                    :name=\"formId(rIdx, fIdx)\"\n                    :id=\"formId(rIdx, fIdx)\"\n                    :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n                    :value=\"radio.value\"\n                    @keyup=\"form.onKeyUp ? form.onKeyUp($event, this) : null\"\n                    @keydown=\"form.onKeyDown ? form.onKeyDown($event, this) : null\"\n                    @blur=\"form.onBlur ? form.onBlur($event, this) : null\"\n                    @focus=\"form.onFocus ? form.onFocus($event, this) : null\"\n                    @change=\"form.onChange ? form.onChange($event, this) : null\"\n                    v-model=\"formData[form.model]\">\n                    {{ radio.label }}\n                </label>\n              </div>\n              <!-- radio ./-->\n\n              <!-- select -->\n              <div v-if=\"form.type === 'select'\">\n                <select class=\"form-control\"\n                  :id=\"formId(rIdx, fIdx)\"\n                  :disabled=\"has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()\"\n                  @keyup=\"form.onKeyUp ? form.onKeyUp($event, this) : null\"\n                  @keydown=\"form.onKeyDown ? form.onKeyDown($event, this) : null\"\n                  @blur=\"form.onBlur ? form.onBlur($event, this) : null\"\n                  @focus=\"form.onFocus ? form.onFocus($event, this) : null\"\n                  @change=\"form.onChange ? form.onChange($event, this) : null\"\n                  v-model=\"formData[form.model]\">\n                    <option v-for=\"opt in form.filter ? form.filter(formData[form.model], form.options) : form.options\"\n                      :value=\"opt.value\"\n                      :hidden=\"opt.hidden\">\n                      {{ opt.text }}\n                    </option>\n                </select>\n              </div>\n              <!-- select ./-->\n\n              <!-- slot -->\n              <slot v-if=\"form.type === 'slot' && form.name\" :name=\"form.name\"></slot>\n              <!-- slot ./-->\n\n              <!-- fselect -->\n              <f-select v-if=\"form.type === 'fselect'\"\n                :close-on-select=\"form.closeOnSelect\"\n                :width=\"form.width\"\n                :value.sync=\"formData[form.model]\"\n                :options=\"form.options\"\n                :placeholder=\"form.placeholder\"\n                :store-object=\"form.storeObject\"\n                :multiple=\"form.multiple\"\n                :text-key=\"form.textKey\"\n                :value-key=\"form.valueKey\"\n                :on-add=\"form.onAdd\"\n                :on-adding=\"form.onAdding\"\n                :on-change=\"form.onChange\"\n                :on-changing=\"form.onChanging\"\n                :on-clear=\"form.onClear\"\n                :on-clearing=\"form.onClearing\"\n                :on-close=\"form.onClose\"\n                :on-closing=\"form.onClosing\"\n                :on-remove=\"form.onRemove\"\n                :on-removing=\"form.onRemoving\">\n              </f-select>\n              <!-- fselect ./-->\n            </label>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n";
 
 /***/ },
 /* 112 */
@@ -13565,7 +13675,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-73701f88/FModal.vue"
+	  var id = "_v-093f6d47/FModal.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -13608,25 +13718,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.fade-modal-enter, .fade-modal-leave {\n  opacity: 0;\n}\n.fade-modal-transition.modal {\n  -webkit-transition: opacity 0.3s ease;\n  transition: opacity 0.3s ease;\n}\n.fade-modal-transition.backdrop-container {\n  -webkit-transition: opacity 0.5s ease;\n  transition: opacity 0.5s ease;\n}\n.fade-modal-transition.modal.mclose, .fade-modal-transition.backdrop-container.mopen {\n  -webkit-transition-delay: 0.2s;\n          transition-delay: 0.2s;\n}\n", ""]);
+	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.fade-modal-enter, .fade-modal-leave {\n  opacity: 0;\n}\n.fade-modal-transition.modal {\n  -webkit-transition: opacity 0.3s ease;\n  transition: opacity 0.3s ease;\n}\n.fade-modal-transition.backdrop-container {\n  -webkit-transition: opacity 0.5s ease;\n  transition: opacity 0.5s ease;\n}\n.fade-modal-transition.modal.mclose, .fade-modal-transition.backdrop-container.mopen {\n  -webkit-transition-delay: 0.2s;\n          transition-delay: 0.2s;\n}\n", ""]);
 	
 	// exports
 
 
 /***/ },
 /* 115 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _utils = __webpack_require__(46);
+	
+	var _ = _interopRequireWildcard(_utils);
+	
+	var _helpers = __webpack_require__(93);
+	
+	var _helpers2 = _interopRequireDefault(_helpers);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	exports.default = {
 	  data: function data() {
 	    return {
 	      opener: false,
-	      open: false
+	      open: false,
+	      _backdrop: null,
+	      _scrollWidth: 0,
+	      _bodyPad: 0,
+	      _bodyMargin: 0
 	    };
 	  },
 	
@@ -13635,7 +13762,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return typeof obj === 'function';
 	    },
 	    clickAway: function clickAway(event) {
-	      if (this.$els && this.$els.content && !this.$els.content.contains(event.target) && this.open) this.hideModal();
+	      if (this.$els && this.$els.content && !this.$els.content.contains(event.target) && this.open) this.show = false;
 	    },
 	    toggleModal: function toggleModal() {
 	      this.show = !this.show;
@@ -13643,21 +13770,71 @@ return /******/ (function(modules) { // webpackBootstrap
 	    toggle: function toggle() {
 	      this.toggleModal();
 	    },
-	    hideModal: function hideModal(noSet) {
+	    hideModal: function hideModal() {
 	      if (this.opener) return;
 	      this.$emit('modal.closing');
 	      this.$emit('hide.bs.modal');
-	      if (!noSet) this.show = false;
+	      this.removeBackdrop();
 	    },
 	    hide: function hide() {
-	      this.hideModal();
+	      this.show = false;
 	    },
-	    showModal: function showModal(noSet) {
+	    showModal: function showModal() {
 	      this.opener = true;
 	      this.$emit('modal.opening');
 	      this.$emit('show.bs.modal');
-	      if (this.exclusive) this.$root.$broadcast('modal.hide');
-	      if (!noSet) this.show = true;
+	      if (this.exclusive) this.$root.$broadcast('modal.hide', [this.modalId]);
+	      this.checkScrollbar();
+	      (0, _helpers2.default)('body').css('paddingRight', this._scrollWidth + this._bodyPad + this._bodyMargin + 'px');
+	      this.addBackdrop();
+	    },
+	    addBackdrop: function addBackdrop() {
+	      var _this = this;
+	
+	      if (!this.backdrop) return;
+	      var a = this.animation;
+	      var tClass = a === 'none' ? '' : a + '-transition ' + a + '-enter';
+	      this._backdrop = (0, _helpers2.default)(document.createElement('div')).addClass('backdrop-container ' + tClass).css('zIndex', this.zIndex).css('position', 'absolute').appendTo('body').append((0, _helpers2.default)(document.createElement('div')).addClass('modal-backdrop'));
+	      this.$nextTick(function () {
+	        _this._backdrop.css('opacity', _this.backdropOpacity);
+	        (0, _helpers2.default)('body').addClass('modal-open');
+	      });
+	    },
+	    checkScrollbar: function checkScrollbar() {
+	      var hasScroll = (0, _helpers2.default)(document.documentElement).hasScroll();
+	      this._bodyPad = hasScroll ? (0, _helpers2.default)('body').css('paddingRight') : 0;
+	      this._bodyMargin = hasScroll ? (0, _helpers2.default)('body').css('marginRight') : 0;
+	      this._scrollWidth = hasScroll ? this.measureScrollbar() : 0;
+	    },
+	    removeBackdrop: function removeBackdrop() {
+	      var _this2 = this;
+	
+	      if (!this._backdrop) return;
+	
+	      var _remove = function _remove() {
+	        (0, _helpers2.default)(_this2._backdrop).remove();
+	        _this2._backdrop = null;
+	        (0, _helpers2.default)('body').removeClass('modal-open').css('paddingRight', _this2._bodyPad + _this2._bodyMargin + 'px');
+	      };
+	
+	      if (this.animation) {
+	        this._backdrop.removeClass(this.animation + '-enter').addClass('mopen ' + this.animation + '-leave');
+	        this.$nextTick(function () {
+	          _this2._backdrop.once('transitionend', function () {
+	            return _remove();
+	          }).css('opacity', 0);
+	        });
+	      } else {
+	        _remove();
+	      }
+	    },
+	    measureScrollbar: function measureScrollbar() {
+	      var scrollDiv = document.createElement('div');
+	      scrollDiv.className = 'modal-scrollbar-measure';
+	      (0, _helpers2.default)('body').append(scrollDiv);
+	      var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+	      (0, _helpers2.default)(scrollDiv).remove();
+	      return scrollbarWidth;
 	    }
 	  },
 	  props: {
@@ -13673,7 +13850,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    },
 	    modalId: {
-	      type: String
+	      type: String,
+	      default: 'modal' + Date.now()
 	    },
 	    backdrop: {
 	      type: Boolean,
@@ -13698,23 +13876,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  watch: {
 	    show: function show(val) {
-	      val ? this.showModal(true) : this.hideModal(true);
+	      val ? this.showModal() : this.hideModal();
 	    }
 	  },
 	  events: {
-	    'modal.hide': function modalHide() {
-	      this.hideModal();
+	    'modal.hide': function modalHide(except) {
+	      if (!_.includes(_.ensureArray(except), this.modalId)) this.show = false;
 	    },
 	    'modal.show': function modalShow(config, id) {
 	      if (id && this.modalId !== id) return;
 	      this.config = config || this.config;
-	      this.showModal();
+	      this.show = true;
 	    },
 	    'modal.opening': function modalOpening() {
-	      var _this = this;
+	      var _this3 = this;
 	
 	      setTimeout(function () {
-	        _this.$emit('modal.open');
+	        _this3.$emit('modal.open');
 	      }, 0);
 	    },
 	    'modal.open': function modalOpen() {
@@ -13723,10 +13901,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.$emit('shown.bs.modal');
 	    },
 	    'modal.closing': function modalClosing() {
-	      var _this2 = this;
+	      var _this4 = this;
 	
 	      setTimeout(function () {
-	        _this2.$emit('modal.close');
+	        _this4.$emit('modal.close');
 	      }, 0);
 	    },
 	    'modal.close': function modalClose() {
@@ -13740,7 +13918,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 116 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div @click=\"clickAway\">\n  <div v-if=\"show\" :transition=\"animation !== 'none' ? animation : null\" v-el:modal class=\"modal\"\n    style=\"display: block;\"\n    :style=\"{ 'z-index': zIndex + 1 }\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\"\n    role=\"dialog\">\n    <div class=\"modal-dialog\" role=\"document\" style=\"z-index: 2000\">\n      <div v-el:content class=\"modal-content\">\n        <div v-if=\"config.showHeader !== false\"\n             class=\"modal-header\"\n             :class=\"config.headerClass\"\n             :style=\"config.headerStyle\">\n          <slot name=\"header\">\n            <button v-if=\"config.headerClose !== false\" type=\"button\" class=\"close\" @click=\"hideModal()\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <h4 class=\"modal-title\">\n              <span v-if=\"config.headerIconClass\" :class=\"config.headerIconClass\"></span>\n              {{ title || config.title }}\n            </h4>\n          </slot>\n        </div>\n        <div v-if=\"config.showBody !== false\"\n             class=\"modal-body\"\n             :class=\"config.bodyClass\"\n             :style=\"config.bodyStyle\">\n          <slot name=\"body\">\n            {{{ isFunction(config.body) ? config.body(this) : config.body }}}\n          </slot>\n        </div>\n        <div v-if=\"config.showFooter !== false\"\n             class=\"modal-footer\"\n             :class=\"config.footerClass\"\n             :style=\"config.footerStyle\">\n          <slot name=\"footer\">\n            {{{ isFunction(config.footer) ? config.footer(this) : config.footer }}}\n            <button v-for=\"button in config.footerButtons\"\n              @click=\"button.onClick ? button.onClick($event, this) : null\" :class=\"button.class\"\n              :style=\"button.style\">\n              {{{ button.content }}}\n            </button>\n          </slot>\n        </div>\n      </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n  </div><!-- /.modal -->\n  <div :transition=\"animation !== 'none' ? animation : null\"\n    v-if=\"backdrop && show\"\n    class=\"backdrop-container\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\">\n    <div class=\"modal-backdrop\"\n      :style=\"{ 'z-index': zIndex, 'opacity': backdropOpacity }\">\n    </div>\n  </div>\n</div>\n";
+	module.exports = "\n<div @click=\"clickAway\">\n  <div v-if=\"show\" :transition=\"animation !== 'none' ? animation : null\" v-el:modal class=\"modal\"\n    style=\"display: block;\"\n    :style=\"{ 'z-index': zIndex + 1 }\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\"\n    role=\"dialog\">\n    <div class=\"modal-dialog\" role=\"document\" style=\"z-index: 2000\">\n      <div v-el:content class=\"modal-content\">\n        <div v-if=\"config.showHeader !== false\"\n             class=\"modal-header\"\n             :class=\"config.headerClass\"\n             :style=\"config.headerStyle\">\n          <slot name=\"header\">\n            <button v-if=\"config.headerClose !== false\" type=\"button\" class=\"close\" @click=\"show = false\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <h4 class=\"modal-title\">\n              <span v-if=\"config.headerIconClass\" :class=\"config.headerIconClass\"></span>\n              {{ title || config.title }}\n            </h4>\n          </slot>\n        </div>\n        <div v-if=\"config.showBody !== false\"\n             class=\"modal-body\"\n             :class=\"config.bodyClass\"\n             :style=\"config.bodyStyle\">\n          <slot name=\"body\">\n            {{{ isFunction(config.body) ? config.body(this) : config.body }}}\n          </slot>\n        </div>\n        <div v-if=\"config.showFooter !== false\"\n             class=\"modal-footer\"\n             :class=\"config.footerClass\"\n             :style=\"config.footerStyle\">\n          <slot name=\"footer\">\n            {{{ isFunction(config.footer) ? config.footer(this) : config.footer }}}\n            <button v-for=\"button in config.footerButtons\"\n              @click=\"button.onClick ? button.onClick($event, this) : null\" :class=\"button.class\"\n              :style=\"button.style\">\n              {{{ button.content }}}\n            </button>\n          </slot>\n        </div>\n      </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n  </div><!-- /.modal -->\n  <!-- Deprecating\n  <div :transition=\"animation !== 'none' ? animation : null\"\n    v-if=\"backdrop && show\"\n    class=\"backdrop-container\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\" style=\"{ 'z-index': zIndex }\">\n    <div class=\"modal-backdrop\"\n      :style=\"{ 'opacity': backdropOpacity }\">\n    </div>\n  </div>\n  -->\n</div>\n";
 
 /***/ },
 /* 117 */
@@ -13762,7 +13940,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-4657c1f3/FTabs.vue"
+	  var id = "_v-0ecf7f58/FTabs.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {

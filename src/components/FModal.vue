@@ -12,7 +12,7 @@
                :class="config.headerClass"
                :style="config.headerStyle">
             <slot name="header">
-              <button v-if="config.headerClose !== false" type="button" class="close" @click="hideModal()">
+              <button v-if="config.headerClose !== false" type="button" class="close" @click="show = false">
                 <span aria-hidden="true">&times;</span>
               </button>
               <h4 class="modal-title">
@@ -45,24 +45,31 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <!-- Deprecating
     <div :transition="animation !== 'none' ? animation : null"
       v-if="backdrop && show"
       class="backdrop-container"
-      :class="{ 'mopen': open, 'mclose': !open }">
+      :class="{ 'mopen': open, 'mclose': !open }" style="{ 'z-index': zIndex }">
       <div class="modal-backdrop"
-        :style="{ 'z-index': zIndex, 'opacity': backdropOpacity }">
+        :style="{ 'opacity': backdropOpacity }">
       </div>
     </div>
+    -->
   </div>
 </template>
 <script type="text/babel">
-  // import $ from '../utils/helpers'
+  import * as _ from '../utils/utils'
+  import $ from '../utils/helpers'
 
   export default {
     data () {
       return {
         opener: false,
-        open: false
+        open: false,
+        _backdrop: null,
+        _scrollWidth: 0,
+        _bodyPad: 0,
+        _bodyMargin: 0
       }
     },
     methods: {
@@ -73,7 +80,7 @@
         if (this.$els &&
           this.$els.content &&
           !this.$els.content.contains(event.target) &&
-          this.open) this.hideModal()
+          this.open) this.show = false
       },
       toggleModal () {
         this.show = !this.show
@@ -81,21 +88,71 @@
       toggle () {
         this.toggleModal()
       },
-      hideModal (noSet) {
+      hideModal () {
         if (this.opener) return
         this.$emit('modal.closing')
         this.$emit('hide.bs.modal')
-        if (!noSet) this.show = false
+        this.removeBackdrop()
       },
       hide () {
-        this.hideModal()
+        this.show = false
       },
-      showModal (noSet) {
+      showModal () {
         this.opener = true
         this.$emit('modal.opening')
         this.$emit('show.bs.modal')
-        if (this.exclusive) this.$root.$broadcast('modal.hide')
-        if (!noSet) this.show = true
+        if (this.exclusive) this.$root.$broadcast('modal.hide', [this.modalId])
+        this.checkScrollbar()
+        $('body').css('paddingRight', `${this._scrollWidth + this._bodyPad + this._bodyMargin}px`)
+        this.addBackdrop()
+      },
+      addBackdrop () {
+        if (!this.backdrop) return
+        let a = this.animation
+        let tClass = a === 'none' ? '' : `${a}-transition ${a}-enter`
+        this._backdrop = $(document.createElement('div'))
+          .addClass(`backdrop-container ${tClass}`)
+          .css('zIndex', this.zIndex)
+          .css('position', 'absolute')
+          .appendTo('body')
+          .append(
+            $(document.createElement('div'))
+              .addClass('modal-backdrop')
+          )
+        this.$nextTick(() => {
+          this._backdrop.css('opacity', this.backdropOpacity)
+          $('body').addClass('modal-open')
+        })
+      },
+      checkScrollbar () {
+        let hasScroll = $(document.documentElement).hasScroll()
+        this._bodyPad = hasScroll ? $('body').css('paddingRight') : 0
+        this._bodyMargin = hasScroll ? $('body').css('marginRight') : 0
+        this._scrollWidth = hasScroll ? this.measureScrollbar() : 0
+      },
+      removeBackdrop () {
+        if (!this._backdrop) return
+
+        let _remove = () => {
+          $(this._backdrop).remove()
+          this._backdrop = null
+          $('body').removeClass('modal-open').css('paddingRight', `${this._bodyPad + this._bodyMargin}px`)
+        }
+
+        if (this.animation) {
+          this._backdrop.removeClass(`${this.animation}-enter`).addClass(`mopen ${this.animation}-leave`)
+          this.$nextTick(() => { this._backdrop.once('transitionend', () => _remove()).css('opacity', 0) })
+        } else {
+          _remove()
+        }
+      },
+      measureScrollbar () { // taken/modified from bootstrap.js
+        let scrollDiv = document.createElement('div')
+        scrollDiv.className = 'modal-scrollbar-measure'
+        $('body').append(scrollDiv)
+        var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
+        $(scrollDiv).remove()
+        return scrollbarWidth
       }
     },
     props: {
@@ -111,7 +168,8 @@
         }
       },
       modalId: {
-        type: String
+        type: String,
+        default: `modal${Date.now()}`
       },
       backdrop: {
         type: Boolean,
@@ -136,17 +194,17 @@
     },
     watch: {
       show (val) {
-        val ? this.showModal(true) : this.hideModal(true)
+        val ? this.showModal() : this.hideModal()
       }
     },
     events: {
-      'modal.hide': function () {
-        this.hideModal()
+      'modal.hide': function (except) {
+        if (!_.includes(_.ensureArray(except), this.modalId)) this.show = false
       },
       'modal.show': function (config, id) {
         if (id && this.modalId !== id) return
         this.config = config || this.config
-        this.showModal()
+        this.show = true
       },
       'modal.opening': function () {
         setTimeout(() => { this.$emit('modal.open') }, 0)

@@ -90,6 +90,11 @@
                       :style="form.style"
                       :id="formId(rIdx, fIdx)"
                       :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
+                      @keyup="form.onKeyUp ? form.onKeyUp($event, this) : null"
+                      @keydown="form.onKeyDown ? form.onKeyDown($event, this) : null"
+                      @blur="form.onBlur ? form.onBlur($event, this) : null"
+                      @focus="form.onFocus ? form.onFocus($event, this) : null"
+                      @change="form.onChange ? form.onChange($event, this) : null"
                       v-model="formData[form.model]">
                     {{ form.text }}
                   </label>
@@ -105,6 +110,11 @@
                       :id="formId(rIdx, fIdx)"
                       :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
                       :value="radio.value"
+                      @keyup="form.onKeyUp ? form.onKeyUp($event, this) : null"
+                      @keydown="form.onKeyDown ? form.onKeyDown($event, this) : null"
+                      @blur="form.onBlur ? form.onBlur($event, this) : null"
+                      @focus="form.onFocus ? form.onFocus($event, this) : null"
+                      @change="form.onChange ? form.onChange($event, this) : null"
                       v-model="formData[form.model]">
                       {{ radio.label }}
                   </label>
@@ -116,8 +126,11 @@
                   <select class="form-control"
                     :id="formId(rIdx, fIdx)"
                     :disabled="has(form, 'bind.disabled') ? form.bind.disabled() : formDisabled()"
-                    @blur="form.onBlur ? form.onBlur(event, utils) : null"
-                    @change="form.onChange ? form.onChange(event, utils) : null"
+                    @keyup="form.onKeyUp ? form.onKeyUp($event, this) : null"
+                    @keydown="form.onKeyDown ? form.onKeyDown($event, this) : null"
+                    @blur="form.onBlur ? form.onBlur($event, this) : null"
+                    @focus="form.onFocus ? form.onFocus($event, this) : null"
+                    @change="form.onChange ? form.onChange($event, this) : null"
                     v-model="formData[form.model]">
                       <option v-for="opt in form.filter ? form.filter(formData[form.model], form.options) : form.options"
                         :value="opt.value"
