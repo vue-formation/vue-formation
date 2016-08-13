@@ -104,7 +104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-2ad3ecfe/Formation.vue"
+	  var id = "_v-636da3a0/Formation.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -1868,7 +1868,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Thrash, waste and sodomy: IE GC bug
 	  var iframe = __webpack_require__(22)('iframe')
 	    , i      = enumBugKeys.length
-	    , lt     = '<'
 	    , gt     = '>'
 	    , iframeDocument;
 	  iframe.style.display = 'none';
@@ -1878,7 +1877,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // html.removeChild(iframe);
 	  iframeDocument = iframe.contentWindow.document;
 	  iframeDocument.open();
-	  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
+	  iframeDocument.write('<script>document.F=Object</script' + gt);
 	  iframeDocument.close();
 	  createDict = iframeDocument.F;
 	  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
@@ -1896,7 +1895,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  } else result = createDict();
 	  return Properties === undefined ? result : dPs(result, Properties);
 	};
-
 
 /***/ },
 /* 59 */
@@ -13213,7 +13211,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-14bafb52/FSelect.vue"
+	  var id = "_v-1ebedd9e/FSelect.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -13675,7 +13673,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-093f6d47/FModal.vue"
+	  var id = "_v-73701f88/FModal.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -13718,7 +13716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.fade-modal-enter, .fade-modal-leave {\n  opacity: 0;\n}\n.fade-modal-transition.modal {\n  -webkit-transition: opacity 0.3s ease;\n  transition: opacity 0.3s ease;\n}\n.fade-modal-transition.backdrop-container {\n  -webkit-transition: opacity 0.5s ease;\n  transition: opacity 0.5s ease;\n}\n.fade-modal-transition.modal.mclose, .fade-modal-transition.backdrop-container.mopen {\n  -webkit-transition-delay: 0.2s;\n          transition-delay: 0.2s;\n}\n", ""]);
+	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.fade-modal-enter, .fade-modal-leave {\n  opacity: 0;\n}\n.fade-modal-transition.modal {\n  -webkit-transition: opacity 0.3s ease;\n  transition: opacity 0.3s ease;\n}\n.fade-modal-transition.backdrop-container {\n  -webkit-transition: opacity 0.5s ease;\n  transition: opacity 0.5s ease;\n}\n.fade-modal-transition.modal.mclose, .fade-modal-transition.backdrop-container.mopen {\n  -webkit-transition-delay: 0.2s;\n          transition-delay: 0.2s;\n}\n", ""]);
 	
 	// exports
 
@@ -13749,11 +13747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  data: function data() {
 	    return {
 	      opener: false,
-	      open: false,
-	      _backdrop: null,
-	      _scrollWidth: 0,
-	      _bodyPad: 0,
-	      _bodyMargin: 0
+	      open: false
 	    };
 	  },
 	
@@ -13794,7 +13788,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.opener) return;
 	      this.$emit('modal.closing');
 	      this.$emit('hide.bs.modal');
-	      this.removeBackdrop();
+	      (0, _helpers2.default)('body').removeClass('modal-open');
 	    },
 	    hide: function hide() {
 	      this.show = false;
@@ -13804,57 +13798,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.$emit('modal.opening');
 	      this.$emit('show.bs.modal');
 	      if (this.exclusive) this.$root.$broadcast('modal.hide', [this.modalId]);
-	      this.checkScrollbar();
-	      (0, _helpers2.default)('body').css('paddingRight', this._scrollWidth + this._bodyPad + this._bodyMargin + 'px');
-	      this.addBackdrop();
-	    },
-	    addBackdrop: function addBackdrop() {
-	      var _this = this;
-	
-	      if (!this.backdrop) return;
-	      var a = this.animation;
-	      var tClass = a === 'none' ? '' : a + '-transition ' + a + '-enter';
-	      this._backdrop = (0, _helpers2.default)(document.createElement('div')).addClass('backdrop-container ' + tClass).css('zIndex', this.zIndex).css('position', 'absolute').appendTo('body').append((0, _helpers2.default)(document.createElement('div')).addClass('modal-backdrop'));
-	      this.$nextTick(function () {
-	        _this._backdrop.css('opacity', _this.backdropOpacity);
-	        (0, _helpers2.default)('body').addClass('modal-open');
-	      });
-	    },
-	    checkScrollbar: function checkScrollbar() {
-	      var hasScroll = (0, _helpers2.default)(document.documentElement).hasScroll();
-	      this._bodyPad = hasScroll ? (0, _helpers2.default)('body').css('paddingRight') : 0;
-	      this._bodyMargin = hasScroll ? (0, _helpers2.default)('body').css('marginRight') : 0;
-	      this._scrollWidth = hasScroll ? this.measureScrollbar() : 0;
-	    },
-	    removeBackdrop: function removeBackdrop() {
-	      var _this2 = this;
-	
-	      if (!this._backdrop) return;
-	
-	      var _remove = function _remove() {
-	        (0, _helpers2.default)(_this2._backdrop).remove();
-	        _this2._backdrop = null;
-	        (0, _helpers2.default)('body').removeClass('modal-open').css('paddingRight', _this2._bodyPad + _this2._bodyMargin + 'px');
-	      };
-	
-	      if (this.animation) {
-	        this._backdrop.removeClass(this.animation + '-enter').addClass('mopen ' + this.animation + '-leave');
-	        this.$nextTick(function () {
-	          _this2._backdrop.once('transitionend', function () {
-	            return _remove();
-	          }).css('opacity', 0);
-	        });
-	      } else {
-	        _remove();
-	      }
-	    },
-	    measureScrollbar: function measureScrollbar() {
-	      var scrollDiv = document.createElement('div');
-	      scrollDiv.className = 'modal-scrollbar-measure';
-	      (0, _helpers2.default)('body').append(scrollDiv);
-	      var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-	      (0, _helpers2.default)(scrollDiv).remove();
-	      return scrollbarWidth;
+	      (0, _helpers2.default)('body').addClass('modal-open');
 	    }
 	  },
 	  props: {
@@ -13915,10 +13859,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.show = true;
 	    },
 	    'modal.opening': function modalOpening() {
-	      var _this3 = this;
+	      var _this = this;
 	
 	      setTimeout(function () {
-	        _this3.$emit('modal.open');
+	        _this.$emit('modal.open');
 	      }, 0);
 	    },
 	    'modal.open': function modalOpen() {
@@ -13928,10 +13872,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.onOpen) this.onOpen(this);
 	    },
 	    'modal.closing': function modalClosing() {
-	      var _this4 = this;
+	      var _this2 = this;
 	
 	      setTimeout(function () {
-	        _this4.$emit('modal.close');
+	        _this2.$emit('modal.close');
 	      }, 0);
 	    },
 	    'modal.close': function modalClose() {
@@ -13946,7 +13890,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 116 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div @click=\"clickAway\">\n  <div v-if=\"show\" :transition=\"animation !== 'none' ? animation : null\" v-el:modal class=\"modal\"\n    style=\"display: block;\"\n    :style=\"{ 'z-index': zIndex + 1 }\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\"\n    role=\"dialog\">\n    <div class=\"modal-dialog\" :class=\"dialogClass\" role=\"document\">\n      <div v-el:content class=\"modal-content\">\n        <div v-if=\"config.showHeader !== false\"\n             class=\"modal-header\"\n             :class=\"config.headerClass\"\n             :style=\"config.headerStyle\">\n          <slot name=\"header\">\n            <button v-if=\"config.headerClose !== false\" type=\"button\" class=\"close\" @click=\"show = false\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <h4 class=\"modal-title\">\n              <span v-if=\"config.headerIconClass\" :class=\"config.headerIconClass\"></span>\n              {{ title || config.title }}\n            </h4>\n          </slot>\n        </div>\n        <div v-if=\"config.showBody !== false\"\n             class=\"modal-body\"\n             :class=\"config.bodyClass\"\n             :style=\"config.bodyStyle\">\n          <slot name=\"body\">\n            {{{ isFunction(config.body) ? config.body(this) : config.body }}}\n          </slot>\n        </div>\n        <div v-if=\"config.showFooter !== false\"\n             class=\"modal-footer\"\n             :class=\"config.footerClass\"\n             :style=\"config.footerStyle\">\n          <slot name=\"footer\">\n            {{{ isFunction(config.footer) ? config.footer(this) : config.footer }}}\n            <button v-for=\"button in config.footerButtons\"\n              @click=\"button.onClick ? button.onClick($event, this) : null\" :class=\"button.class\"\n              :style=\"button.style\">\n              {{{ button.content }}}\n            </button>\n          </slot>\n        </div>\n      </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n  </div><!-- /.modal -->\n  <!-- Deprecating\n  <div :transition=\"animation !== 'none' ? animation : null\"\n    v-if=\"backdrop && show\"\n    class=\"backdrop-container\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\" style=\"{ 'z-index': zIndex }\">\n    <div class=\"modal-backdrop\"\n      :style=\"{ 'opacity': backdropOpacity }\">\n    </div>\n  </div>\n  -->\n</div>\n";
+	module.exports = "\n<div @click=\"clickAway\">\n  <div v-if=\"show\" :transition=\"animation !== 'none' ? animation : null\" v-el:modal class=\"modal\"\n    style=\"display: block;\"\n    :style=\"{ 'z-index': zIndex + 1 }\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\"\n    role=\"dialog\">\n    <div class=\"modal-dialog\" :class=\"dialogClass\" role=\"document\">\n      <div v-el:content class=\"modal-content\">\n        <div v-if=\"config.showHeader !== false\"\n             class=\"modal-header\"\n             :class=\"config.headerClass\"\n             :style=\"config.headerStyle\">\n          <slot name=\"header\">\n            <button v-if=\"config.headerClose !== false\" type=\"button\" class=\"close\" @click=\"show = false\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <h4 class=\"modal-title\">\n              <span v-if=\"config.headerIconClass\" :class=\"config.headerIconClass\"></span>\n              {{ title || config.title }}\n            </h4>\n          </slot>\n        </div>\n        <div v-if=\"config.showBody !== false\"\n             class=\"modal-body\"\n             :class=\"config.bodyClass\"\n             :style=\"config.bodyStyle\">\n          <slot name=\"body\">\n            {{{ isFunction(config.body) ? config.body(this) : config.body }}}\n          </slot>\n        </div>\n        <div v-if=\"config.showFooter !== false\"\n             class=\"modal-footer\"\n             :class=\"config.footerClass\"\n             :style=\"config.footerStyle\">\n          <slot name=\"footer\">\n            {{{ isFunction(config.footer) ? config.footer(this) : config.footer }}}\n            <button v-for=\"button in config.footerButtons\"\n              @click=\"button.onClick ? button.onClick($event, this) : null\" :class=\"button.class\"\n              :style=\"button.style\">\n              {{{ button.content }}}\n            </button>\n          </slot>\n        </div>\n      </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n  </div><!-- /.modal -->\n  <!-- backdrop -->\n  <div :transition=\"animation !== 'none' ? animation : null\"\n    v-if=\"backdrop && show\"\n    class=\"backdrop-container\"\n    :class=\"{ 'mopen': open, 'mclose': !open }\" :style=\"{ 'z-index': zIndex, position: 'absolute' }\">\n    <div class=\"modal-backdrop\"\n      :style=\"{ 'opacity': backdropOpacity }\">\n    </div>\n  </div>\n  <!-- /.backdrop -->\n</div>\n";
 
 /***/ },
 /* 117 */
@@ -13968,7 +13912,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-0ecf7f58/FTabs.vue"
+	  var id = "_v-4657c1f3/FTabs.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {

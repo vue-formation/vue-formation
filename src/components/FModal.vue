@@ -45,16 +45,16 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    <!-- Deprecating
+    <!-- backdrop -->
     <div :transition="animation !== 'none' ? animation : null"
       v-if="backdrop && show"
       class="backdrop-container"
-      :class="{ 'mopen': open, 'mclose': !open }" style="{ 'z-index': zIndex }">
+      :class="{ 'mopen': open, 'mclose': !open }" :style="{ 'z-index': zIndex, position: 'absolute' }">
       <div class="modal-backdrop"
         :style="{ 'opacity': backdropOpacity }">
       </div>
     </div>
-    -->
+    <!-- /.backdrop -->
   </div>
 </template>
 <script type="text/babel">
@@ -65,11 +65,7 @@
     data () {
       return {
         opener: false,
-        open: false,
-        _backdrop: null,
-        _scrollWidth: 0,
-        _bodyPad: 0,
-        _bodyMargin: 0
+        open: false
       }
     },
     computed: {
@@ -111,7 +107,7 @@
         if (this.opener) return
         this.$emit('modal.closing')
         this.$emit('hide.bs.modal')
-        this.removeBackdrop()
+        $('body').removeClass('modal-open')
       },
       hide () {
         this.show = false
@@ -121,57 +117,7 @@
         this.$emit('modal.opening')
         this.$emit('show.bs.modal')
         if (this.exclusive) this.$root.$broadcast('modal.hide', [this.modalId])
-        this.checkScrollbar()
-        $('body').css('paddingRight', `${this._scrollWidth + this._bodyPad + this._bodyMargin}px`)
-        this.addBackdrop()
-      },
-      addBackdrop () {
-        if (!this.backdrop) return
-        let a = this.animation
-        let tClass = a === 'none' ? '' : `${a}-transition ${a}-enter`
-        this._backdrop = $(document.createElement('div'))
-          .addClass(`backdrop-container ${tClass}`)
-          .css('zIndex', this.zIndex)
-          .css('position', 'absolute')
-          .appendTo('body')
-          .append(
-            $(document.createElement('div'))
-              .addClass('modal-backdrop')
-          )
-        this.$nextTick(() => {
-          this._backdrop.css('opacity', this.backdropOpacity)
-          $('body').addClass('modal-open')
-        })
-      },
-      checkScrollbar () {
-        let hasScroll = $(document.documentElement).hasScroll()
-        this._bodyPad = hasScroll ? $('body').css('paddingRight') : 0
-        this._bodyMargin = hasScroll ? $('body').css('marginRight') : 0
-        this._scrollWidth = hasScroll ? this.measureScrollbar() : 0
-      },
-      removeBackdrop () {
-        if (!this._backdrop) return
-
-        let _remove = () => {
-          $(this._backdrop).remove()
-          this._backdrop = null
-          $('body').removeClass('modal-open').css('paddingRight', `${this._bodyPad + this._bodyMargin}px`)
-        }
-
-        if (this.animation) {
-          this._backdrop.removeClass(`${this.animation}-enter`).addClass(`mopen ${this.animation}-leave`)
-          this.$nextTick(() => { this._backdrop.once('transitionend', () => _remove()).css('opacity', 0) })
-        } else {
-          _remove()
-        }
-      },
-      measureScrollbar () { // taken/modified from bootstrap.js
-        let scrollDiv = document.createElement('div')
-        scrollDiv.className = 'modal-scrollbar-measure'
-        $('body').append(scrollDiv)
-        var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
-        $(scrollDiv).remove()
-        return scrollbarWidth
+        $('body').addClass('modal-open')
       }
     },
     props: {
