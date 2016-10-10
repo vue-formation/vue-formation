@@ -14,8 +14,7 @@
           <div class="row form-group"
             :class="{ 'form-group-autoheight': row.type !== 'section', 'no-vertical-spacing': row.type === 'section' }"
             :style="{ 'height': row.height }">
-            <div v-if="row.columns"
-              v-for="(fIdx, form) in row.columns"
+            <div v-for="(fIdx, form) in row.columns"
               class="form-group"
               :id="formGroupId(rIdx, fIdx)"
               :class="colClass(row.columns, rIdx, fIdx, form.model)"

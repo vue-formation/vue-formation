@@ -46,7 +46,7 @@
           <about></about>
         </div>
         <div slot="examples">
-          <div v-for="(exampleId, example) in Examples" v-if="example.showExample !== false">
+          <div v-for="(exampleId, example) in Examples | showExample">
             <h3><a><span @click="showCode(exampleId)" class="fa fa-code"></span></a> {{ example.title }}</h3>
             <p>{{ example.description }}</p>
             <div v-if="example.exampleType === 'formation'" class="row well">
@@ -100,7 +100,6 @@
     </f-modal>
   </div>
 </template>
-
 <script type="text/babel">
   //  local
   import * as _ from '../utils/utils'
@@ -156,6 +155,11 @@
     },
     events: {
       'formation.error': (evt) => { console.log(evt) }
+    },
+    filters: {
+      showExample (value) {
+        return _.omitBy(value, (v) => v.showExample === false)
+      }
     },
     methods: {
       showCode (id) {

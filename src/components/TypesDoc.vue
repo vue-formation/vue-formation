@@ -31,7 +31,7 @@
               <td>{{{ prop.default }}}</td>
               <td>{{{ prop.description }}}</td>
             </tr>
-            <tr v-if="type.extends" v-for="(eIdx, eRow) in getInherited(type.extends)" :class="{ active: (eIdx % 2) === 0 }">
+            <tr v-for="(eIdx, eRow) in getInherited(type.extends)" :class="{ active: (eIdx % 2) === 0 }">
               <td colspan="5">
                 {{{ eRow }}}
               </td>
