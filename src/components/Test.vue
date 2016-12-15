@@ -2,6 +2,12 @@
   <div class="container">
     <formation :data.sync="formData" :config="formConfig"></formation>
     <pre>{{ formData | json }}</pre>
+    <button class="btn btn-primary" @click="showModal = true">Modal</button>
+    <label>
+      Can Click Away?
+      <input type="checkbox" v-model="canClickAway" :checked="canClickAway">
+    </label>
+    <f-modal :show.sync="showModal" :config="modalConfig" :click-away="canClickAway"></f-modal>
   </div>
 </template>
 
@@ -9,10 +15,12 @@
   import * as _ from '../utils/utils'
   import validator from 'validator'
   import Formation from './Formation'
+  import FModal from './FModal'
 
   export default {
     components: {
-      Formation
+      Formation,
+      FModal
     },
     methods: {
       updateSocialInclude () {
@@ -37,6 +45,7 @@
     computed: {
       formConfig () {
         return {
+          progress: true,
           decorateRequired: true,
           rows: [
             {
@@ -119,16 +128,16 @@
                     { value: 'instagram', text: 'instagram' }
                   ],
                   onChange: () => {
-                    this.$nextTick(() => {
-                      this.updateSocialInclude()
-                    })
+                    this.updateSocialInclude()
                   }
                 },
                 {
                   type: 'fselect',
                   label: 'Use Avatar',
                   model: 'social.useAvatar',
-                  options: this.formData.accounts
+                  options: () => {
+                    return this.formData.accounts.slice()
+                  }
                 }
               ]
             },
@@ -144,8 +153,9 @@
                     {
                       text: 'Reset',
                       class: 'btn-default',
-                      onClick: () => {
+                      onClick: (event, vm) => {
                         console.log(this)
+                        vm.reset()
                       }
                     },
                     {
@@ -165,9 +175,15 @@
     },
     data () {
       return {
+        canClickAway: true,
+        showModal: false,
+        modalConfig: {
+          title: 'Modal Test'
+        },
+        selectedAccounts: [],
         formData: {
-          firstName: '',
-          lastName: '',
+          firstName: 'John',
+          lastName: 'Doe',
           email: '',
           password1: '',
           password2: '',

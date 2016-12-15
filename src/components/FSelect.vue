@@ -1,45 +1,42 @@
 <template>
   <div class="dropdown fselect" :class="{ 'open': open }" :class="{ 'has-error': !valid }">
     <div type="text" v-el:selectcontainer
-      class="dropdown-toggle form-control"
-      @click="toggleDropdown"
-      :style="{ 'width': width, 'text-align': align !== 'center' ? 'left' : null, 'height': 'auto', 'display': 'flex' }"
-      style="position: relative; font-weight: normal; height: auto; display: flex;">
+         class="dropdown-toggle form-control"
+         @click="toggleDropdown"
+         :style="{ 'width': width, 'text-align': align !== 'center' ? 'left' : null, 'height': 'auto', 'display': 'flex' }"
+         style="position: relative; font-weight: normal; height: auto; display: flex;">
       <div class="select-body" v-el:selectbody>
-        <span v-if="value.length === 0" v-el:placeholder class="placeholder-text">{{ placeholder }}</span>
-        <span v-if="value.length > 0 && !multiple" class="placeholder-text">{{ singleValueText }}</span>
-        <span v-if="value.length > 0 && multiple"
-        v-for="item in multiValue"
-        track-by="$index"
-        class="select-tag" :class="tagClass">
+        <span v-if="value && value.length === 0" v-el:placeholder class="placeholder-text">{{ placeholder }}</span>
+        <span v-if="value && value.length && !multiple" class="placeholder-text">{{ singleValueText }}</span>
+        <span v-for="item in multiValue" track-by="$index" class="select-tag" :class="tagClass">
           <span v-if="!disabled"
-            :class="removeClass"
-            @click="emitChange('remove', item[valueKey], selectId)"></span>
+                :class="removeClass"
+                @click="emitChange('remove', item[valueKey], selectId)"></span>
           <span>{{ item[textKey] }}</span>
         </span>
       </div>
       <span class="caret-position"
-        :class="interactClass"
-        @click="emitChange('clear', undefined, selectId)"></span>
+            :class="interactClass"
+            @click="emitChange('clear', undefined, selectId)"></span>
       <select class="form-control" style="width: 1px; float: right; visibility: hidden;"></select>
     </div>
     <ul class="dropdown-menu scrollable-dropdown" :style="{ 'width': width }">
       <li class="search-field">
         <input v-show="searchable" v-el:search
-          @keydown="searchHandler"
-          type="text"
-          v-model="search"
-          class="form-control"
-          style="width: 100%; margin-bottom: 5px;"
-          placeholder="Search...">
+               @keydown="searchHandler"
+               type="text"
+               v-model="search"
+               class="form-control"
+               style="width: 100%; margin-bottom: 5px;"
+               placeholder="Search...">
         <span v-if="searchable && !searchResults.length">
           <i>No Results Found...</i>
         </span>
       </li>
-      <li v-for="opt in options | selectable" :class="{ active: isSelected(opt) }"
-        @mouseover="activeOption = $index">
+      <li v-for="opt in opts | selectable" :class="{ active: isSelected(opt) }"
+          @mouseover="activeOption = $index">
         <a @click="emitChange('add', opt[valueKey], selectId)"
-          :class="{ hovered: activeOption === $index }">{{ opt[textKey] }}</a>
+           :class="{ hovered: activeOption === $index }">{{ opt[textKey] }}</a>
       </li>
     </ul>
   </div>
@@ -122,7 +119,7 @@
         if (this.$el && !this.$el.contains(event.target) && this.open) this.closeDropdown(true)
       },
       getValue (id) {
-        return !this.storeObject ? id : _.find(this.options, (v) => {
+        return !this.storeObject ? id : _.find(this.opts, (v) => {
           return v[this.valueKey] === id
         })
       },
@@ -154,6 +151,9 @@
       }
     },
     computed: {
+      opts () {
+        return _.isFunction(this.options) ? this.options() : this.options
+      },
       interactClass () {
         if (!this.disabled) {
           if (!this.multiple || !this.value.length) {
@@ -165,15 +165,18 @@
         return null
       },
       multiValue () {
-        return this.storeObject ? this.value : _.map(this.value, (val) => {
-          return _.find(this.options, (opt) => {
-            return opt[this.valueKey] === val
+        if (this.value && this.value.length && this.multiple) {
+          return this.storeObject ? this.value : _.map(this.value, (val) => {
+            return _.find(this.opts, (opt) => {
+              return opt[this.valueKey] === val
+            })
           })
-        })
+        }
+        return []
       },
       multiValueText () {
         return _.map(
-          _.filter(this.options, (opt) => {
+          _.filter(this.opts, (opt) => {
             return _.find(this.value, (val) => {
               let v = this.storeObject ? val[this.valueKey] : val
               return opt[this.valueKey] === v
@@ -184,7 +187,7 @@
       },
       singleValueText () {
         return _.get(
-          _.find(this.options, (opt) => {
+          _.find(this.opts, (opt) => {
             let v = this.storeObject ? this.value[0][this.valueKey] : this.value[0]
             return opt[this.valueKey] === v
           }),
@@ -216,7 +219,7 @@
       multiple: { type: Boolean, default: false },
       onChange: { type: Function },
       onChanging: { type: Function, default: () => true },
-      options: { type: Array, required: true },
+      options: { required: true },
       placeholder: { type: String, default: '' },
       removeClass: { validator: validateClassProp, default: 'icon formation-remove x-remove' },
       removeSelectedOptions: { type: Boolean, default: false },

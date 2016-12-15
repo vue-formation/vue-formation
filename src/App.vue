@@ -3,9 +3,11 @@
   import Main from './components/Main'
   import HeadCss from './components/HeadCss'
   import store from './vuex/store'
+  import 'prismjs/plugins/toolbar/prism-toolbar'
+  import 'prismjs/plugins/show-language/prism-show-language'
 
   import 'prismjs/themes/prism.css'
-  import 'prismjs/plugins/show-language/prism-show-language.css'
+  import 'prismjs/plugins/toolbar/prism-toolbar.css'
 
   Prism.languages.flowtype = Prism.languages.extend('javascript', {})
 

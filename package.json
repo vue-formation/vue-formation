@@ -1,6 +1,6 @@
 {
   "name": "vue-formation",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "A vue.js form builder",
   "author": "Branden Horiuchi <bhoriuchi@gmail.com>",
   "license": "MIT",
@@ -20,6 +20,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "lodash": "^4.17.2",
     "vue": "^1.0.21",
     "vue-router": "^0.7.0",
     "vuex-router-sync": "^2.0.0",

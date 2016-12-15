@@ -180,44 +180,12 @@
   import * as _ from '../utils/utils'
   import $ from '../utils/helpers'
   import fSelect from './FSelect.vue'
-  import Vue from 'vue'
 
   export default {
     components: {
       fSelect
     },
     methods: {
-      breakOp () {
-        if (this.config.debug) {
-          if (this.opCount > this.opMax) return true
-          this.opCount++
-        }
-        return false
-      },
-      clearData (path, onNextTick) {
-        this.setData(path, undefined, onNextTick)
-      },
-      setData (path, value, onNextTick) {
-        let doClear = () => {
-          path = _.ensureArray(path)
-          _.forEach(path, (p) => {
-            let pathRx = _.escapeRegExp(p)
-            _.forEach(this.formData, (val, key) => {
-              if (key.match(pathRx)) {
-                this.formData[key] = value
-              }
-            })
-          })
-        }
-        onNextTick ? this.$nextTick(doClear) : doClear()
-      },
-      jsonEquals (a, b) {
-        try {
-          return JSON.stringify(a) === JSON.stringify(b)
-        } catch (err) {
-          return false
-        }
-      },
       multiClickaway (evt) {
         this.$broadcast('hide::dropdown')
       },
@@ -321,43 +289,42 @@
         })
         return this.valid
       },
-      updateSource () {
-        if (this.breakOp()) return
-        this.pauseWatch = true
-        let paths = []
-        let progress = this.calcProgress()
-        if (this.config.progress) {
-          let progKey = this.config.progress === true ? '$$progress' : this.config.progress
-          Vue.set(this.data, progKey, progress)
+      findModels (rows) {
+        let models = []
+        if (_.isArray(rows)) {
+          _.forEach(rows, (row) => {
+            if (_.isArray(_.get(row, 'columns'))) {
+              _.forEach(row.columns, (col) => {
+                if (col.model) models.push(col.model)
+              })
+            }
+          })
         }
-        _.forEach(this.formConfig, (row) => {
-          _.forEach(row.columns, (col) => {
-            if (this.formData[col.model] !== undefined) {
-              paths.push(col.model)
-              _.vueSet(this.data, col.model, this.formData[col.model])
-            }
-          })
-        })
-        _.forEach(this.formData, (d, k) => {
-          if (!_.includes(paths, k)) delete this.formData[k]
-        })
-        this.$nextTick(() => { this.pauseWatch = false })
+        return models
       },
-      updateLocal () {
-        if (this.breakOp()) return
-        this.pauseWatch = true
-        _.forEach(this.formConfig, (row) => {
-          _.forEach(row.columns, (form) => {
-            if (_.has(this.data, form.model)) {
-              let val = _.get(this.data, form.model)
-              Vue.set(this.formData, form.model, val)
-            }
-          })
+      syncModelProps () {
+        _.forEach(_.uniq(this.findModels(this.formConfig)), (model) => {
+          if (!_.has(this.formData, model)) {
+            Object.defineProperty(this.formData, model, {
+              configurable: true,
+              enumerable: true,
+              get: () => _.get(this.data, model),
+              set: (v) => _.vueSet(this.data, model, v)
+            })
+          }
         })
-        this.$nextTick(() => { this.pauseWatch = false })
+      },
+      reset () {
+        this.data = _.merge({}, this.resetData)
       }
     },
+    created () {
+      this.uuid = `form_${Date.now()}`
+      this.resetData = _.merge({}, this.data)
+      this.syncModelProps()
+    },
     computed: {
+      /*
       utils () {
         return Object.assign({
           setData: this.setData,
@@ -368,6 +335,7 @@
           localData: this.formData
         }, _)
       },
+      */
       formConfig () {
         let rows = []
         _.forEach(this.config.rows, (row) => {
@@ -382,10 +350,6 @@
             rows.push(row)
           }
         })
-        // prevent unnecessary form config updates. this resolves an issue where form
-        // configs relying on data they set blur input fields on each input
-        if (this.jsonEquals(this.lastConfig, rows)) return this.lastConfig
-        this.lastConfig = rows
         return rows
       },
       isBootstrapFormat () {
@@ -394,6 +358,7 @@
     },
     data () {
       return {
+        resetData: {},
         opMax: 50,
         opCount: 0,
         lastConfig: [],
@@ -426,27 +391,21 @@
         ]
       }
     },
-    created () {
-      this.uuid = `form_${Date.now()}`
-      this.updateLocal()
-    },
     watch: {
-      formData: {
+      formConfig: {
         handler () {
-          if (this.pauseWatch) return
-          this.updateSource()
+          this.$nextTick(this.syncModelProps)
         },
         deep: true
       },
       data: {
         handler () {
-          if (this.pauseWatch) return
-          this.updateLocal()
+          if (this.config.progress) {
+            let progKey = this.config.progress === true ? '$$progress' : this.config.progress
+            _.vueSet(this.data, progKey, this.calcProgress())
+          }
         },
         deep: true
-      },
-      opCount (v) {
-        console.log(v)
       }
     },
     props: {

@@ -1,5 +1,5 @@
 <template>
-  <div @click="clickAway">
+  <div @click="onClickAway">
     <div v-if="show" :transition="animation !== 'none' ? animation : null" v-el:modal class="modal"
       style="display: block;"
       :style="{ 'z-index': zIndex + 1 }"
@@ -91,8 +91,9 @@
       isFunction (obj) {
         return typeof obj === 'function'
       },
-      clickAway (event) {
-        if (this.$els &&
+      onClickAway (event) {
+        if (this.clickAway &&
+          this.$els &&
           this.$els.content &&
           !this.$els.content.contains(event.target) &&
           this.open) this.show = false
@@ -161,6 +162,10 @@
       animation: {
         type: String,
         default: 'fade-modal'
+      },
+      clickAway: {
+        type: Boolean,
+        default: true
       }
     },
     watch: {
