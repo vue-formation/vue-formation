@@ -8,3 +8,17 @@ test/unit/coverage
 test/e2e/reports
 dist/static/
 dist/index.html
+vue1/node_modules/
+vue1/npm-debug.log
+vue1/selenium-debug.log
+vue1/test/unit/coverage
+vue1/test/e2e/reports
+vue1/dist/static/
+vue1/dist/index.html
+vue2/node_modules/
+vue2/npm-debug.log
+vue2/selenium-debug.log
+vue2/test/unit/coverage
+vue2/test/e2e/reports
+vue2/dist/static/
+vue2/dist/index.html
