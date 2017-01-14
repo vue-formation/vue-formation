@@ -3,7 +3,7 @@ A Bootstrap themeable Vue.js form builder
 
 *Note: This project is still under initial development and provides limited support/documentation*
 
-[`Project Page`](https://bhoriuchi.github.io/vue-formation/)
+[`Project Page`](https://vue-formation.github.io/vue-formation/)
 
 ### Bootstrap
 Formation relies on [Bootstrap.css](http://getbootstrap.com/) for styling and it must be included in your project for formation to work properly. You may also use bootstrap themes like [Bootswatch](https://bootswatch.com/)
