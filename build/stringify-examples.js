@@ -1,6 +1,6 @@
-import { stringify } from '../src/utils/stringify'
-import Examples from '../src/examples'
-import * as _ from '../src/utils/utils'
+import { stringify } from '../src-v0/utils/stringify'
+import Examples from '../src-v0/examples'
+import * as _ from '../src-v0/utils/utils'
 let fs = require('fs')
 let path = require('path')
 let o = {}

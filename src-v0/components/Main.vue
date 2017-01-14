@@ -11,8 +11,8 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#" style="height: 100%">
-            <img v-if="cookie.logoInverted" src="../../src/assets/formation-inverted.png" style="display: inline-block; height: 35px; width: 50px;">
-            <img v-if="!cookie.logoInverted" src="../../src/assets/formation.png" style="display: inline-block; height: 35px; width: 50px;">
+            <img v-if="cookie.logoInverted" src="..//assets/formation-inverted.png" style="display: inline-block; height: 35px; width: 50px;">
+            <img v-if="!cookie.logoInverted" src="..//assets/formation.png" style="display: inline-block; height: 35px; width: 50px;">
           </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right" style="height: 100%; top: 1em; position: relative;">
