@@ -7,7 +7,7 @@
   "main": "dist/vue-formation.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bhoriuchi/vue-formation.git"
+    "url": "git+https://github.com/vue-formation/vue-formation.git"
   },
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -90,9 +90,9 @@
     "webpack-merge": "^0.8.3"
   },
   "bugs": {
-    "url": "https://github.com/bhoriuchi/vue-formation/issues"
+    "url": "https://github.com/vue-formation/vue-formation/issues"
   },
-  "homepage": "https://github.com/bhoriuchi/vue-formation#readme",
+  "homepage": "https://github.com/vue-formation/vue-formation#readme",
   "directories": {
     "test": "test"
   },
