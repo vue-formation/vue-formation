@@ -25,7 +25,7 @@
         obj.container = true
       }
     },
-    init () {
+    created () {
       registerComponents(this.$options.components, ['FContainer'])
     }
   }

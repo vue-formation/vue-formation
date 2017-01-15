@@ -29,7 +29,7 @@
         }, this.config.class)
       }
     },
-    init () {
+    created () {
       registerComponents(this.$options.components, ['FButton'])
     }
   }

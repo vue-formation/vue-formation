@@ -24,7 +24,7 @@
         return mergeClass(this.config.class || {}, {})
       }
     },
-    init () {
+    created () {
       registerComponents(this.$options.components, ['FDiv'])
     }
   }

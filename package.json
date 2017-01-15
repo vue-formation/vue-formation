@@ -18,7 +18,13 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "build:dist": "webpack --bail --progress --hide-modules --config  build/webpack.build.min.js && webpack --bail --progress --hide-modules --config  build/webpack.build.js"
   },
-  "dependencies": {},
+  "peerDependencies": {
+    "vue": ">= 1.0.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "vue-multi-version": "^0.1.0"
+  },
   "devDependencies": {
     "lodash": "^4.17.2",
     "vue": "^1.0.21",
