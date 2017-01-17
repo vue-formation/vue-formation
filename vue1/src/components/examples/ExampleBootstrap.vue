@@ -7,7 +7,7 @@
 
 <script type="text/babel">
   // import $ from 'jquery'
-  import FDiv from '../formation/bootstrap/FDiv.vue'
+  import FDiv from '../../../src/components/formation/bootstrap/FDiv.vue'
   // import ExampleFormation from './ExampleFormation'
   export default {
     components: {
