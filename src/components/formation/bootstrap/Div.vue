@@ -1,7 +1,7 @@
 <template>
   <div :class="clazz" :style="config.style">
     <component v-for="c in components"
-      :is="c.type"
+      :is="'formation-' + c.type"
       :config="c.config"
       :components='c.components'
       :model.sync="model"></component>
@@ -9,11 +9,10 @@
 </template>
 
 <script type="text/babel">
-  import registerComponents from './components'
-  import { mergeClass } from '../common'
+  import { mergeClass } from '../common/index'
 
   export default {
-    name: 'FDiv',
+    name: 'formation-div',
     props: {
       model: { type: Object },
       config: { type: Object, default () { return {} } },
@@ -21,12 +20,8 @@
     },
     computed: {
       clazz () {
-        let obj = mergeClass(this.config.class || {}, {})
-        obj.container = true
+        return mergeClass(this.config.class || {}, {})
       }
-    },
-    created () {
-      registerComponents(this.$options.components, ['FContainer'])
     }
   }
 </script>

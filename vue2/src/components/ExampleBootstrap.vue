@@ -7,12 +7,14 @@
 
 <script type="text/babel">
   // import $ from 'jquery'
+  // import FDiv from '../../../src/components/formation/bootstrap/FDiv.vue'
   // import ExampleFormation from './ExampleFormation'
   export default {
     components: {
       // ExampleFormation
+      // FDiv
     },
-    ready () {
+    mounted () {
       document.getElementById('style-framework').setAttribute('href', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     },
     data () {

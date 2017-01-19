@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export function mergeClass (c, def = {}) {
+export default function mergeClass (c, def = {}) {
   let obj = {}
   c = _.isString(c) ? c.split(/\s+/) : c
   if (_.isArray(c)) {
@@ -10,8 +10,4 @@ export function mergeClass (c, def = {}) {
   }
 
   return _.merge({}, def, obj)
-}
-
-export default {
-  mergeClass
 }

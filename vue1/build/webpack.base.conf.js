@@ -2,7 +2,8 @@ var path = require('path')
 var config = require('../config')
 var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
-
+var srcRoot = path.resolve(projectRoot, '../src')
+console.log(srcRoot)
 module.exports = {
   entry: {
     app: './src/main.js'
@@ -29,13 +30,13 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'eslint',
-        include: projectRoot,
+        include: [projectRoot, srcRoot],
         exclude: /node_modules/
       },
       {
         test: /\.js$/,
         loader: 'eslint',
-        include: projectRoot,
+        include: [projectRoot, srcRoot],
         exclude: /node_modules/
       }
     ],
@@ -47,7 +48,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
-        include: projectRoot,
+        include: [projectRoot, srcRoot],
         exclude: /node_modules/
       },
       {

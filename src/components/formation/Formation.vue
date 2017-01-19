@@ -3,7 +3,7 @@
 </template>
 
 <script type="text/babel">
-  import * as _ from './dash'
+  import * as _ from './common/dash'
   import Bootstrap from './bootstrap/index'
 
   const FRAMEWORKS = [

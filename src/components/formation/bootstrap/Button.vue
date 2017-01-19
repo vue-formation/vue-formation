@@ -3,18 +3,17 @@
     <span v-if='config.iconClassLeft' :class="config.iconClassLeft"></span>
     <span>{{config.text}}</span>
     <span v-if='config.iconClassRight' :class="config.iconClassRight"></span>
-    {{{config.html}}}
+    <div v-if="config.html" v-html="config.html"></div>
   </button>
 </template>
 
 <script type="text/babel">
   import _ from 'lodash'
-  import registerComponents from './components'
-  import { BTN_CLASS } from './constants'
-  import { mergeClass } from '../common'
+  import { BTN_CLASS } from './common/constants'
+  import { mergeClass } from '../common/index'
 
   export default {
-    name: 'FButton',
+    name: 'formation-button',
     props: {
       model: { type: Object },
       config: { type: Object, default () { return {} } },
@@ -28,9 +27,6 @@
           [type]: true
         }, this.config.class)
       }
-    },
-    created () {
-      registerComponents(this.$options.components, ['FButton'])
     }
   }
 </script>

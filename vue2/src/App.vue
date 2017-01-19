@@ -2,16 +2,19 @@
   <div id="app">
     <img src="./assets/logo.png">
     <hello></hello>
+    <example-bootstrap></example-bootstrap>
   </div>
 </template>
 
 <script>
 import Hello from './components/Hello'
+import ExampleBootstrap from './components/ExampleBootstrap'
 
 export default {
   name: 'app',
   components: {
-    Hello
+    Hello,
+    ExampleBootstrap
   }
 }
 </script>

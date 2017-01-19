@@ -15,11 +15,11 @@ export function isDate (obj) {
 }
 
 export function isEmpty (obj) {
-  return obj === null
-    || obj === undefined
-    || obj === ''
-    || (Array.isArray(obj) && !obj.length)
-    || (typeof obj === 'object' && !Object.keys(obj).length)
+  return obj === null ||
+    obj === undefined ||
+    obj === '' ||
+    (Array.isArray(obj) && !obj.length) ||
+    (typeof obj === 'object' && !Object.keys(obj).length)
 }
 
 export function isError (obj) {
@@ -27,11 +27,11 @@ export function isError (obj) {
 }
 
 export function isHash (obj) {
-  return typeof obj === 'object'
-    && !Array.isArray(obj)
-    && !(obj instanceof Date)
-    && !(obj instanceof Error)
-    && obj !== null
+  return typeof obj === 'object' &&
+    !Array.isArray(obj) &&
+    !(obj instanceof Date) &&
+    !(obj instanceof Error) &&
+    obj !== null
 }
 
 export function isNumber (obj) {

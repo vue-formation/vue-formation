@@ -1,13 +1,9 @@
-import FButton from './FButton.vue'
-import FContainer from './FContainer.vue'
-import FDiv from './FDiv.vue'
+import Button from './Button'
+import Container from './Container'
+import Div from './Div'
 
-export { FButton }
-export { FContainer }
-export { FDiv }
-
-export default {
-  FButton,
-  FContainer,
-  FDiv
+export default function (Vue) {
+  Vue.component('formation-button', Vue.extend(Button))
+  Vue.component('formation-container', Vue.extend(Container))
+  Vue.component('formation-div', Vue.extend(Div))
 }
