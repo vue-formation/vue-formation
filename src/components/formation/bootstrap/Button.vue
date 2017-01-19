@@ -8,14 +8,14 @@
 </template>
 
 <script type="text/babel">
-  import _ from 'lodash'
+  import _ from 'lodash/lodash.min'
   import { BTN_CLASS } from './common/constants'
   import { mergeClass } from '../common/index'
 
   export default {
     name: 'formation-button',
     props: {
-      model: { type: Object },
+      value: { type: Object },
       config: { type: Object, default () { return {} } },
       components: { type: Array, default () { return [] } }
     },

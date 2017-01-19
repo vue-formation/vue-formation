@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash/lodash.min'
 
 export default function mergeClass (c, def = {}) {
   let obj = {}

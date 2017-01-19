@@ -1,26 +1,32 @@
 <template>
   <div :class="clazz" :style="config.style">
     <component v-for="c in components"
-      :is="'formation-' + c.type"
+      :is="kebab('formation-' + c.type)"
       :config="c.config"
       :components='c.components'
-      :model.sync="model"></component>
+      :value.sync="value"></component>
   </div>
 </template>
 
 <script type="text/babel">
+  import _ from 'lodash/lodash.min'
   import { mergeClass } from '../common/index'
 
   export default {
     name: 'formation-div',
     props: {
-      model: { type: Object },
+      value: { type: Object },
       config: { type: Object, default () { return {} } },
       components: { type: Array, default () { return {} } }
     },
     computed: {
       clazz () {
         return mergeClass(this.config.class || {}, {})
+      }
+    },
+    methods: {
+      kebab (name) {
+        return _.kebabCase(name)
       }
     }
   }

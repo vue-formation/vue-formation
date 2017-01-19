@@ -3,7 +3,8 @@
 </template>
 
 <script type="text/babel">
-  import * as _ from './common/dash'
+  // import * as _ from './common/dash'
+  import _ from 'lodash'
   import Bootstrap from './bootstrap/index'
 
   const FRAMEWORKS = [
@@ -15,7 +16,7 @@
 
   export default {
     props: {
-      model: {
+      value: {
         type: Object,
         required: true,
         twoWay: true
@@ -62,7 +63,6 @@
           }
         })
       }
-    }
     }
   }
 </script>

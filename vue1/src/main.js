@@ -4,6 +4,7 @@ import { sync } from 'vuex-router-sync'
 import router from './router/index'
 import store from './store/index'
 import Formation from '../../src/components/formation/formation'
+// import Formation from '../../dist/vue-formation'
 
 import 'font-awesome/css/font-awesome.min.css'
 

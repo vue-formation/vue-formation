@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "npm run build:dist && node build/build.js && node build/move-headcss.js",
+    "build:formation": "rollup -c build/rollup.config.js",
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
@@ -23,9 +24,11 @@
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "vue-multi-version": "^0.1.0"
+    "vue-multi-version": "^0.2.0"
   },
   "devDependencies": {
+    "rollup": "^0.41.0",
+    "rollup-plugin-vue": "^2.2.16",
     "lodash": "^4.17.2",
     "vue": "^1.0.21",
     "vue-router": "^0.7.0",
