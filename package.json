@@ -1,7 +1,7 @@
 {
   "name": "vue-formation",
   "version": "1.0.0",
-  "description": "A vue.js form builder",
+  "description": "A themeable Vue.js layout builder",
   "author": "Branden Horiuchi <bhoriuchi@gmail.com>",
   "license": "MIT",
   "main": "dist/vue-formation.js",

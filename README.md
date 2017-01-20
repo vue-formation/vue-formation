@@ -1,62 +1,68 @@
 # vue-formation
-A Bootstrap themeable Vue.js form builder
-
-*Note: This project is still under initial development and provides limited support/documentation*
+A themeable Vue.js layout builder
 
 [`Project Page`](https://vue-formation.github.io/vue-formation/)
 
-### Bootstrap
-Formation relies on [Bootstrap.css](http://getbootstrap.com/) for styling and it must be included in your project for formation to work properly. You may also use bootstrap themes like [Bootswatch](https://bootswatch.com/)
+Compatible with Vue.js 1.x and 2.x
 
+**Note** as of version `1.0.0`, `vue-formation` is now a Vue.js plugin instead of a component
 
 ### Example
 
-```js
-import { Formation } from 'vue-formation'
-import 'bootstrap.css'
-import 'bootstrap-theme.css' // optional
+**main.js**
 
-new Vue({
-  el: '#app',
-  components: { Formation },
-  template: '<formation :data.sync="formData" :config="formConfig"></formation>',
-  data: {
-    formData: {
-      firstName: '',
-      lastName: ''
-    },
-    formConfig: {
-      rows: [
-        {
-          columns: [
-            {
-              type: 'text',
-              label: 'First Name',
-              model: 'firstName'
-            },
-            {
-              type: 'text',
-              label: 'Last Name',
-              model: 'lastName'
-            }
-          ]
+```js
+import Vue from 'vue'
+import VueFormation from 'vue-formation'
+import 'bootstrap.css'
+
+Vue.use(VueFormation)
+
+...
+```
+
+**Vue1.x.vue** 
+
+```js
+<template>
+  <formation :value.sync="data" :config="config">
+</template>
+
+<script type='text/babel'>
+  export default {
+    data () {
+      return {
+        data: {
+          
         },
-        {
-          columns: [
-            {
-              type: 'button',
-              text: 'OK',
-              class: 'btn-primary',
-              iconClass: 'glyphicon glyphicon-ok',
-              onClick (event, vm) {
-                vm.validate()
-                console.log(vm.data)
-              }
-            }
-          ]
+        config: {
+          components: []
         }
-      ]
+      }
     }
   }
-})
+</script>
+```
+
+**Vue2.x.vue** 
+
+```js
+<template>
+  <formation v-model="data" :config="config">
+</template>
+
+<script type='text/babel'>
+  export default {
+    data () {
+      return {
+        data: {
+          
+        },
+        config: {
+          components: []
+        }
+      }
+    }
+  }
+</script>
 ```
