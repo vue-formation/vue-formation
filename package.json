@@ -27,6 +27,7 @@
     "vue-multi-version": "^0.2.0"
   },
   "devDependencies": {
+    "liteutils": "git+https://github.com/bhoriuchi/liteutils.git#master",
     "rollup": "^0.41.0",
     "rollup-plugin-vue": "^2.2.16",
     "lodash": "^4.17.2",

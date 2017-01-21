@@ -33,11 +33,9 @@ export default function evalEvent (event, vm) {
     ? modifiers
     : []
 
-  return function () {
-    let args = [...arguments]
-    let e = _.first(args)
+  return function (e, config, value) {
     let keys = []
-    let keyModifier = false
+    let modKeys = _.without(modifiers, 'stop', 'prevent', 'capture', 'self', 'once')
 
     _.forEach(modifiers, (mod) => {
       switch (mod) {
@@ -53,46 +51,39 @@ export default function evalEvent (event, vm) {
         default:
           // get combo modifier keys
           if (mod === 'ctrl' && (isKey(e, mod) || e.ctrlKey)) {
-            keyModifier = true
             keys.push(mod)
           }
           if (mod === 'alt' && (isKey(e, mod) || e.altKey)) {
-            keyModifier = true
             keys.push(mod)
           }
           if (mod === 'shift' && (isKey(e, mod) || e.shiftKey)) {
-            keyModifier = true
             keys.push(mod)
           }
           if (mod === 'meta' && (isKey(e, mod) || e.metaKey)) {
-            keyModifier = true
             keys.push(mod)
           }
 
           // get keycode number keys
           if (_.isNumber(mod) && (e.keyCode === mod || e.which === mod)) {
-            keyModifier = true
             keys.push(mod)
           }
 
           // get keymap keys or strings
           if (_.has(KEYMAP, mod)) {
             if (isKey(e, mod)) {
-              keyModifier = true
               keys.push(mod)
             }
           } else if (_.isString(mod) && (e.key === mod || e.code === mod)) {
-            keyModifier = true
             keys.push(mod)
           }
           break
       }
     })
 
-    // check if there was a key modifier and no keys
-    if (keyModifier && !keys.length) return false
+    // check that the correct key combo was entered
+    if (modKeys.length && _.intersection(modKeys, keys).length !== modKeys.length) return false
 
     // call the original handler with hte
-    handler.apply(vm, args)
+    handler.apply(vm, [e, config, value])
   }
 }

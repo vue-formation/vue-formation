@@ -7,7 +7,17 @@ export default {
       {
         type: 'text-input',
         config: {
-          model: 'text1'
+          model: 'text1',
+          onkeydown: {
+            handler (event, config, data) {
+              console.log({
+                event,
+                vm: this,
+                value: data[config.model]
+              })
+            },
+            modifiers: ['ctrl', 'shift', 'delete']
+          }
         }
       },
       {
