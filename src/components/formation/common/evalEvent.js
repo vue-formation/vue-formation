@@ -1,4 +1,4 @@
-import _ from 'lodash/lodash.min'
+import _ from './dash/dash.index'
 
 const KEYMAP = {
   enter: ['Enter', 13],
@@ -21,7 +21,7 @@ function isKey (e, key) {
 }
 
 export default function evalEvent (event, vm) {
-  if (_.isFunction(event)) return event.bind(vm)
+  if (_.isFunction(event)) return (e) => event.bind(vm)(e, vm.config, vm.value)
   if (!_.isObject(event)) return () => false
 
   let { handler, modifiers } = event
@@ -33,9 +33,11 @@ export default function evalEvent (event, vm) {
     ? modifiers
     : []
 
-  return function (e, config, value) {
+  return function (e) {
     let keys = []
     let modKeys = _.without(modifiers, 'stop', 'prevent', 'capture', 'self', 'once')
+    let config = vm.config
+    let value = vm.value
 
     _.forEach(modifiers, (mod) => {
       switch (mod) {

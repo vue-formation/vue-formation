@@ -3,7 +3,7 @@ import Container from './Container.vue'
 import Div from './Div.vue'
 import TextInput from './TextInput.vue'
 
-export default function (Vue) {
+export default function (Vue, bindings) {
   Vue.component('formation-button', Button)
   Vue.component('formation-container', Container)
   Vue.component('formation-div', Div)

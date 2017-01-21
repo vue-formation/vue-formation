@@ -1,4 +1,4 @@
-import _ from 'lodash/lodash.min'
+import _ from './dash/dash.index'
 
 export default function evalProp (types, value, vm, config, data, defaultValue) {
   for (let type of types) {

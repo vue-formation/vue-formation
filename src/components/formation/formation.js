@@ -1,8 +1,7 @@
-import _ from 'lodash/lodash.min'
 import VueMultiVersion from 'vue-multi-version'
 import bootstrapComponents from './bootstrap/index'
 import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
-import { vueSet } from './common/index'
+import { vueSet, extractBindings, dash as _ } from './common/index'
 
 export default {
   install (Vue) {
@@ -45,7 +44,7 @@ export default {
         this.syncModelProps()
         switch (this.framework) {
           case BOOTSTRAP:
-            bootstrapComponents(Vue)
+            bootstrapComponents(Vue, extractBindings(this.config))
             break
           default:
             break

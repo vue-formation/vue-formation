@@ -1,4 +1,4 @@
-import _ from 'lodash/lodash.min'
+import _ from './dash/dash.index'
 import Vue from 'vue'
 
 export default function vueSet (obj, path, val) {

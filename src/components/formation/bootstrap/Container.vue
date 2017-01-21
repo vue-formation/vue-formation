@@ -9,8 +9,7 @@
 </template>
 
 <script type="text/babel">
-  import _ from 'lodash/lodash.min'
-  import { mergeClass } from '../common/index'
+  import { mergeClass, dash as _ } from '../common/index'
 
   export default {
     name: 'formation-container',
