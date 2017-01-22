@@ -2,13 +2,37 @@ import multi from 'vue-multi-version'
 import {
   makeTemplateBindings,
   extendMethods,
-  query as $,
   dash as _
 } from './common/index'
-import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
+import { FRAMEWORKS, BOOTSTRAP, SEMANTICUI, MATERIALIZE } from './common/constants'
 
 export default function TextInput (binding, framework) {
-  let template = `<input type="text" class="form-control" v-model="value[config.model]" ${makeTemplateBindings(binding)}>`
+  let template = ''
+
+  switch (framework) {
+    case BOOTSTRAP:
+      template = `
+<input type="text" class="form-control" v-model="value[config.model]" ${makeTemplateBindings(binding)}>
+`
+      break
+
+    case MATERIALIZE:
+      template = `
+<input type="text" v-model="value[config.model]" ${makeTemplateBindings(binding)}>
+`
+      break
+
+    case SEMANTICUI:
+      template = `
+<div class="ui input">
+  <input type="text" v-model="value[config.model]" ${makeTemplateBindings(binding)}>
+</div>
+`
+      break
+
+    default:
+      break
+  }
 
   // return the vue.js component
   return {
@@ -20,14 +44,6 @@ export default function TextInput (binding, framework) {
         required: true,
         twoWay: multi.select(true, undefined)
       },
-      /**
-       * @property {String} model - model path
-       * @property {*} [class] - css class settings
-       * @property {*} [style] - css style settings
-       * @property {Boolean|Function} [readonly=false] - make form readonly
-       * @property {Boolean|Function} [disabled=false] - disable form
-       * @placeholder {String|Function} [placeholder=""] - placeholder text
-       */
       config: { type: Object, default () { return {} } },
       components: { type: Array, default () { return [] } },
       bindings: { type: Object, default () { return {} } },
@@ -42,14 +58,6 @@ export default function TextInput (binding, framework) {
     methods: extendMethods({}),
     created () {
       this.$registerFormationComponents(this, this.components, this.bindings, this.framework)
-    },
-    ready () {
-      console.log(this)
-      console.log($(this.$el))
-    },
-    mounted () {
-      console.log(this)
-      console.log($(this.$el))
     }
   }
 }

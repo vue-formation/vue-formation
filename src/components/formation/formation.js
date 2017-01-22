@@ -48,13 +48,7 @@ export default {
       },
       created () {
         this.syncModelProps()
-        switch (this.framework) {
-          case BOOTSTRAP:
-            registerFormationComponents(this, this._config.components, this._bindings, BOOTSTRAP)
-            break
-          default:
-            break
-        }
+        registerFormationComponents(this, this._config.components, this._bindings, this.framework)
       },
       computed: {
         _bindings () {

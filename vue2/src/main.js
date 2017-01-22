@@ -8,6 +8,9 @@ import store from './store/index'
 import Formation from '../../src/components/formation/formation'
 // import Formation from '../../dist/vue-formation'
 
+Vue.filter('json', function (val) {
+  return JSON.stringify(val, null, '  ')
+})
 Vue.use(Formation)
 
 import 'font-awesome/css/font-awesome.min.css'

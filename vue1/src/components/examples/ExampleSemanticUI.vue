@@ -1,7 +1,7 @@
 <template lang="jade">
   div
     h2 Bootstrap
-    formation(:config='divdata', v-model='modelData')
+    formation(:config='divdata', :value.sync='modelData', framework='semanticui')
     pre {{modelData|json}}
 </template>
 
@@ -9,8 +9,8 @@
   import bootstrapFormation from '../../../../src/data/bootstrapFormation'
 
   export default {
-    mounted () {
-      document.getElementById('style-framework').setAttribute('href', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    ready () {
+      document.getElementById('style-framework').setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css')
     },
     data () {
       return bootstrapFormation
