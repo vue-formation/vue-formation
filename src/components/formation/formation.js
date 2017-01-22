@@ -1,12 +1,16 @@
 import VueMultiVersion from 'vue-multi-version'
-import bootstrapComponents from './bootstrap/index'
 import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
 import { vueSet, extractBindings, dash as _ } from './common/index'
+import register from './common/registerFormationComponents'
 
 export default {
   install (Vue) {
     // create a new multi version instance
     let multi = VueMultiVersion(Vue)
+    let registerFormationComponents = register(Vue)
+
+    // register global formation register function
+    Vue.prototype.$registerFormationComponents = registerFormationComponents
 
     // register the formation component
     Vue.component('formation', {
@@ -17,6 +21,8 @@ export default {
     :is="'formation-' + c.type"
     :config="c.config"
     :components='c.components'
+    :bindings="_bindings"
+    :framework="framework"
     ${multi.select(':value.sync', 'v-model')}="modelData"></component>
 </div>
 `,
@@ -44,13 +50,16 @@ export default {
         this.syncModelProps()
         switch (this.framework) {
           case BOOTSTRAP:
-            bootstrapComponents(Vue, extractBindings(this.config))
+            registerFormationComponents(this, this._config.components, this._bindings, BOOTSTRAP)
             break
           default:
             break
         }
       },
       computed: {
+        _bindings () {
+          return extractBindings(this._config)
+        },
         _config () {
           return this.config
         }

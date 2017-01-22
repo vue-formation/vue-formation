@@ -5,9 +5,10 @@ import {
   eventHandler,
   query as $,
   dash as _
-} from '../common/index'
+} from './common/index'
+import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
 
-export default function TextInput (binding) {
+export default function TextInput (binding, framework) {
   let { attrs, on } = binding
   let bindings = []
 
@@ -39,7 +40,15 @@ export default function TextInput (binding) {
        * @placeholder {String|Function} [placeholder=""] - placeholder text
        */
       config: { type: Object, default () { return {} } },
-      components: { type: Array, default () { return [] } }
+      components: { type: Array, default () { return [] } },
+      bindings: { type: Object, default () { return {} } },
+      framework: {
+        type: String,
+        default: BOOTSTRAP,
+        validator (value) {
+          return _.includes(FRAMEWORKS, value)
+        }
+      }
     },
     methods: {
       eventHandler,
@@ -52,6 +61,7 @@ export default function TextInput (binding) {
       }
     },
     created () {
+      this.$registerFormationComponents(this, this.components, this.bindings, this.framework)
       ensureConfig(this.config)
     },
     ready () {
