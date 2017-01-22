@@ -1,25 +1,14 @@
 import multi from 'vue-multi-version'
 import {
-  ensureConfig,
-  getAttr,
-  eventHandler,
+  makeTemplateBindings,
+  extendMethods,
   query as $,
   dash as _
 } from './common/index'
 import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
 
 export default function TextInput (binding, framework) {
-  let { attrs, on } = binding
-  let bindings = []
-
-  _.forEach(attrs, (attr) => {
-    bindings.push(`:${attr}="hasAttr('${attr}') ? getAttr('${attr}', 'String') : null"`)
-  })
-  _.forEach(on, (evt) => {
-    bindings.push(`v-on:${evt}="hasEvent('${evt}') ? eventHandler('${evt}', $event) : null"`)
-  })
-
-  let template = `<input type="text" class="form-control" v-model="value[config.model]" ${bindings.join(' ')}>`
+  let template = `<input type="text" class="form-control" v-model="value[config.model]" ${makeTemplateBindings(binding)}>`
 
   // return the vue.js component
   return {
@@ -50,19 +39,9 @@ export default function TextInput (binding, framework) {
         }
       }
     },
-    methods: {
-      eventHandler,
-      getAttr,
-      hasAttr (name) {
-        return _.has(this, `config.attrs.${name}`)
-      },
-      hasEvent (name) {
-        return _.has(this, `config.on.${name}`)
-      }
-    },
+    methods: extendMethods({}),
     created () {
       this.$registerFormationComponents(this, this.components, this.bindings, this.framework)
-      ensureConfig(this.config)
     },
     ready () {
       console.log(this)

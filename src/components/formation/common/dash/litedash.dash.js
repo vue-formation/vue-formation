@@ -643,6 +643,41 @@ var uniq = function uniq(list) {
 uniq._accepts = [Array];
 
 /* eslint-disable */
+// taken from hat - https://github.com/substack/node-hat
+var uuid = function uuid(bits, base) {
+  if (!base) base = 16;
+  if (bits === undefined) bits = 128;
+  if (bits <= 0) return '0';
+
+  var digits = Math.log(Math.pow(2, bits)) / Math.log(base);
+  for (var i = 2; digits === Infinity; i *= 2) {
+    digits = Math.log(Math.pow(2, bits / i)) / Math.log(base) * i;
+  }
+
+  var rem = digits - Math.floor(digits);
+
+  var res = '';
+
+  for (var _i = 0; _i < Math.floor(digits); _i++) {
+    var x = Math.floor(Math.random() * base).toString(base);
+    res = x + res;
+  }
+
+  if (rem) {
+    var b = Math.pow(base, rem);
+    var _x = Math.floor(Math.random() * b).toString(base);
+    res = _x + res;
+  }
+
+  var parsed = parseInt(res, base);
+  if (parsed !== Infinity && parsed >= Math.pow(2, bits)) {
+    return uuid(bits, base);
+  } else return res;
+};
+
+uuid._accepts = [];
+
+/* eslint-disable */
 var without = function without() {
   var output = [];
   var args = [].concat(Array.prototype.slice.call(arguments));
@@ -700,6 +735,7 @@ var _dash = {
   toUpper: toUpper,
   union: union,
   uniq: uniq,
+  uuid: uuid,
   without: without
 };
 

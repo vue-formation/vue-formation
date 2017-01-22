@@ -16,7 +16,7 @@ export default {
     Vue.component('formation', {
       name: 'formation',
       template: `
-<div>
+<div class="formation">
   <component v-for="c in _config.components"
     :is="'formation-' + c.type"
     :config="c.config"

@@ -25,8 +25,10 @@ export default {
       {
         type: 'button',
         config: {
-          type: 'primary',
-          text: 'click me'
+          text: 'click me',
+          attrs: {
+            class: 'btn-primary'
+          }
         }
       },
       {

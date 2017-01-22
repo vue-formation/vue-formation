@@ -39,6 +39,7 @@ import toPath from './dash.toPath'
 import toUpper from './dash.toUpper'
 import union from './dash.union'
 import uniq from './dash.uniq'
+import uuid from './dash.uuid'
 import without from './dash.without'
 
 export { capitalize }
@@ -81,6 +82,7 @@ export { toPath }
 export { toUpper }
 export { union }
 export { uniq }
+export { uuid }
 export { without }
 
 export default {
@@ -124,5 +126,6 @@ export default {
   toUpper,
   union,
   uniq,
+  uuid,
   without
 }

@@ -12,16 +12,16 @@ export default function (Vue) {
       if (binding) {
         switch (type) {
           case 'button':
-            vm.$options.components['formation-button'] = Vue.extend(Button(bindings['button'], framework))
+            vm.$options.components['formation-button'] = Vue.extend(Button(bindings['button'], framework, component))
             break
           case 'container':
-            vm.$options.components['formation-container'] = Vue.extend(Container(bindings['container'], framework))
+            vm.$options.components['formation-container'] = Vue.extend(Container(bindings['container'], framework, component))
             break
           case 'div':
-            vm.$options.components['formation-div'] = Vue.extend(Div(bindings['div'], framework))
+            vm.$options.components['formation-div'] = Vue.extend(Div(bindings['div'], framework, component))
             break
           case 'text-input':
-            vm.$options.components['formation-text-input'] = Vue.extend(TextInput(bindings['text-input'], framework))
+            vm.$options.components['formation-text-input'] = Vue.extend(TextInput(bindings['text-input'], framework, component))
             break
           default:
             break

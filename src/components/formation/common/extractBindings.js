@@ -9,7 +9,7 @@ export default function extractBindings (component, types = {}) {
   let { attrs, data, on } = config || {}
 
   if (type) {
-    types[type] = types[type] || { attrs: [], data: [], on: [] }
+    types[type] = types[type] || { attrs: ['class'], data: [], on: [] }
     if (attrs) types[type].attrs = _.union(types[type].attrs, _.keys(attrs))
     if (data) types[type].data = _.union(types[type].data, _.keys(data))
     if (on) types[type].on = _.union(types[type].on, _.keys(on))
