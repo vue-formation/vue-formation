@@ -1,5 +1,5 @@
-import { makeTemplateBindings, extendMethods, defaultClass, dash as _ } from './common/index'
-import { FRAMEWORKS, BOOTSTRAP, MATERIALIZE, SEMANTICUI } from './common/constants'
+import { makeTemplateBindings, extendMethods, extendProps, defaultClass } from './common/index'
+import { BOOTSTRAP, MATERIALIZE, SEMANTICUI } from './common/constants'
 
 const BTN_CLASS = {
   [BOOTSTRAP]: {
@@ -31,7 +31,7 @@ const BTN_CLASS = {
   }
 }
 
-export default function Button (binding, framework, component) {
+export default function Button (binding, framework, component, version) {
   let template = ''
   let btnClass = defaultClass(BTN_CLASS[framework], component)
 
@@ -75,22 +75,10 @@ export default function Button (binding, framework, component) {
   return {
     template,
     name: 'formation-button',
-    props: {
-      value: { type: Object },
-      config: { type: Object, default () { return {} } },
-      components: { type: Array, default () { return [] } },
-      bindings: { type: Object, default () { return {} } },
-      framework: {
-        type: String,
-        default: BOOTSTRAP,
-        validator (value) {
-          return _.includes(FRAMEWORKS, value)
-        }
-      }
-    },
-    methods: extendMethods({}),
+    props: extendProps(version),
+    methods: extendMethods(),
     created () {
-      this.$registerFormationComponents(this, this.components, this.bindings, this.framework)
+      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework)
     }
   }
 }

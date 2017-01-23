@@ -1,22 +1,21 @@
 import { makeTemplateBindings, extendMethods, extendProps } from './common/index'
 
-export default function Div (binding, framework, component, version) {
-  let template = `<div ${makeTemplateBindings(binding)}>
+export default function A (binding, framework, component, version) {
+  let template = `<a ${makeTemplateBindings(binding)}>
   <component v-for="c in components"
     :is="kebab('formation-' + c.type)"
     :config="c.config"
     :components='c.components'
     :bindings="bindings"
     :framework="framework"
-    :version="${version}"
-    ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>
-</div>`
+    :value.sync="value"></component>
+</a>`
 
   return {
     template,
-    name: 'formation-div',
+    name: 'formation-a',
     props: extendProps(version),
-    methods: extendMethods(),
+    methods: extendMethods({}),
     created () {
       this.$formationRegisterComponents(this, this.components, this.bindings, this.framework)
     }

@@ -3,16 +3,15 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var VueMultiVersion = _interopDefault(require('vue-multi-version'));
+var validator = _interopDefault(require('validator'));
 var Vue = _interopDefault(require('vue'));
 
 const BOOTSTRAP = 'bootstrap';
-const FOUNDATION = 'foundation';
 const MATERIALIZE = 'materialize';
 const SEMANTICUI = 'semanticui';
 
 const FRAMEWORKS = [
   BOOTSTRAP,
-  FOUNDATION,
   MATERIALIZE,
   SEMANTICUI
 ];
@@ -856,7 +855,7 @@ function eventHandler (name, event) {
     : null
 }
 
-function extendMethods (methods) {
+function extendMethods (methods = {}) {
   return dash.merge({}, methods, {
     eventHandler,
     getAttr (name) {
@@ -890,6 +889,45 @@ function extendMethods (methods) {
     },
     kebab (name) {
       return dash.kebabCase(name)
+    }
+  })
+}
+
+function extendProps (version, props = {}) {
+  return dash.merge({}, props, {
+    value: {
+      type: Object,
+      required: true,
+      twoWay: version === 1 ? 'true' : undefined
+    },
+    config: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    components: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    bindings: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    version: {
+      type: Number,
+      default: version
+    },
+    framework: {
+      type: String,
+      default: BOOTSTRAP,
+      validator (value) {
+        return dash.includes(FRAMEWORKS, value)
+      }
     }
   })
 }
@@ -1418,6 +1456,28 @@ query.fn[Symbol.iterator] = function values () {
   }
 };
 
+function A (binding, framework, component, version) {
+  let template = `<a ${makeTemplateBindings(binding)}>
+  <component v-for="c in components"
+    :is="kebab('formation-' + c.type)"
+    :config="c.config"
+    :components='c.components'
+    :bindings="bindings"
+    :framework="framework"
+    :value.sync="value"></component>
+</a>`;
+
+  return {
+    template,
+    name: 'formation-a',
+    props: extendProps(version),
+    methods: extendMethods({}),
+    created () {
+      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
+    }
+  }
+}
+
 const BTN_CLASS = {
   [BOOTSTRAP]: {
     default: 'btn-default',
@@ -1448,7 +1508,7 @@ const BTN_CLASS = {
   }
 };
 
-function Button (binding, framework, component) {
+function Button (binding, framework, component, version) {
   let template = '';
   let btnClass = defaultClass(BTN_CLASS[framework], component);
 
@@ -1492,27 +1552,15 @@ function Button (binding, framework, component) {
   return {
     template,
     name: 'formation-button',
-    props: {
-      value: { type: Object },
-      config: { type: Object, default () { return {} } },
-      components: { type: Array, default () { return [] } },
-      bindings: { type: Object, default () { return {} } },
-      framework: {
-        type: String,
-        default: BOOTSTRAP,
-        validator (value) {
-          return dash.includes(FRAMEWORKS, value)
-        }
-      }
-    },
-    methods: extendMethods({}),
+    props: extendProps(version),
+    methods: extendMethods(),
     created () {
-      this.$registerFormationComponents(this, this.components, this.bindings, this.framework);
+      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
     }
   }
 }
 
-function Container (binding, framework) {
+function Container (binding, framework, component, version) {
   let template = `<div class="container" ${makeTemplateBindings(binding)}>
   <component v-for="c in components"
     :is="kebab('formation-' + c.type)"
@@ -1520,33 +1568,22 @@ function Container (binding, framework) {
     :components='c.components'
     :bindings="bindings"
     :framework="framework"
-    :value.sync="value"></component>
+    :version="${version}"
+    ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>
 </div>`;
 
   return {
     template,
     name: 'formation-container',
-    props: {
-      value: { type: Object },
-      config: { type: Object, default () { return {} } },
-      components: { type: Array, default () { return {} } },
-      bindings: { type: Object, default () { return {} } },
-      framework: {
-        type: String,
-        default: BOOTSTRAP,
-        validator (value) {
-          return dash.includes(FRAMEWORKS, value)
-        }
-      }
-    },
+    props: extendProps(version),
+    methods: extendMethods(),
     created () {
-      this.$registerFormationComponents(this, this.components, this.bindings, this.framework);
-    },
-    methods: extendMethods({})
+      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
+    }
   }
 }
 
-function Div (binding, framework) {
+function Div (binding, framework, component, version) {
   let template = `<div ${makeTemplateBindings(binding)}>
   <component v-for="c in components"
     :is="kebab('formation-' + c.type)"
@@ -1554,33 +1591,22 @@ function Div (binding, framework) {
     :components='c.components'
     :bindings="bindings"
     :framework="framework"
-    :value.sync="value"></component>
+    :version="${version}"
+    ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>
 </div>`;
 
   return {
     template,
     name: 'formation-div',
-    props: {
-      value: { type: Object },
-      config: { type: Object, default () { return {} } },
-      components: { type: Array, default () { return {} } },
-      bindings: { type: Object, default () { return {} } },
-      framework: {
-        type: String,
-        default: BOOTSTRAP,
-        validator (value) {
-          return dash.includes(FRAMEWORKS, value)
-        }
-      }
-    },
+    props: extendProps(version),
+    methods: extendMethods(),
     created () {
-      this.$registerFormationComponents(this, this.components, this.bindings, this.framework);
-    },
-    methods: extendMethods({})
+      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
+    }
   }
 }
 
-function TextInput (binding, framework) {
+function TextInput (binding, framework, component, version) {
   let template = '';
 
   switch (framework) {
@@ -1612,48 +1638,68 @@ function TextInput (binding, framework) {
   return {
     template,
     name: 'formation-text-input',
-    props: {
-      value: {
-        type: Object,
-        required: true,
-        twoWay: VueMultiVersion.select(true, undefined)
-      },
-      config: { type: Object, default () { return {} } },
-      components: { type: Array, default () { return [] } },
-      bindings: { type: Object, default () { return {} } },
-      framework: {
-        type: String,
-        default: BOOTSTRAP,
-        validator (value) {
-          return dash.includes(FRAMEWORKS, value)
-        }
+    props: extendProps(version),
+    methods: extendMethods({
+      validate () {
+        return this.touched && this.valid
+      }
+    }),
+    computed: {
+      _value () {
+        return dash.has(this.config, 'model') ? this.value[this.config.model] : null
       }
     },
-    methods: extendMethods({}),
     created () {
-      this.$registerFormationComponents(this, this.components, this.bindings, this.framework);
+      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
+    },
+    watch: {
+      _value (val) {
+        this.touched = true;
+        this.valid = dash.isFunction(this.config.validate)
+          ? this.config.validate.call(this, val, validator)
+          : true;
+      }
+    },
+    data () {
+      return {
+        valid: false,
+        touched: false
+      }
     }
   }
 }
 
-var registerFormationComponents = function (Vue$$1) {
+var registerFormationComponents = function (Vue$$1, version) {
   return function registerFormationComponents (vm, components, bindings, framework) {
     dash.forEach(components, (component) => {
       let { type } = component;
       let binding = dash.get(bindings, type);
       if (binding) {
         switch (type) {
+          case 'a':
+            vm.$options.components['formation-a'] = Vue$$1.extend(
+              A(bindings['a'], framework, component, version)
+            );
+            break
           case 'button':
-            vm.$options.components['formation-button'] = Vue$$1.extend(Button(bindings['button'], framework, component));
+            vm.$options.components['formation-button'] = Vue$$1.extend(
+              Button(bindings['button'], framework, component, version)
+            );
             break
           case 'container':
-            vm.$options.components['formation-container'] = Vue$$1.extend(Container(bindings['container'], framework, component));
+            vm.$options.components['formation-container'] = Vue$$1.extend(
+              Container(bindings['container'], framework, component, version)
+            );
             break
           case 'div':
-            vm.$options.components['formation-div'] = Vue$$1.extend(Div(bindings['div'], framework, component));
+            vm.$options.components['formation-div'] = Vue$$1.extend(
+              Div(bindings['div'], framework, component, version)
+            );
             break
           case 'text-input':
-            vm.$options.components['formation-text-input'] = Vue$$1.extend(TextInput(bindings['text-input'], framework, component));
+            vm.$options.components['formation-text-input'] = Vue$$1.extend(
+              TextInput(bindings['text-input'], framework, component, version)
+            );
             break
           default:
             break
@@ -1677,12 +1723,17 @@ function vueSet (obj, path, val) {
 
 var formation = {
   install (Vue$$1) {
+    let eventHub = new Vue$$1();
+
     // create a new multi version instance
     let multi = VueMultiVersion(Vue$$1);
-    let registerFormationComponents$$1 = registerFormationComponents(Vue$$1);
+    let version = multi.select(1, 2);
+    let registerFormationComponents$$1 = registerFormationComponents(Vue$$1, version);
 
-    // register global formation register function
-    Vue$$1.prototype.$registerFormationComponents = registerFormationComponents$$1;
+    // register global formation functions
+    Vue$$1.prototype.$formationRegisterComponents = registerFormationComponents$$1;
+    Vue$$1.prototype.$formationEmit = eventHub.$emit;
+    Vue$$1.prototype.$formationOn = eventHub.$on;
 
     // register the formation component
     Vue$$1.component('formation', {
@@ -1695,7 +1746,8 @@ var formation = {
     :components='c.components'
     :bindings="_bindings"
     :framework="framework"
-    ${multi.select(':value.sync', 'v-model')}="modelData"></component>
+    :version="${version}"
+    ${version === 1 ? ':value.sync' : 'v-model'}="modelData"></component>
 </div>
 `,
       props: {

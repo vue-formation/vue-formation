@@ -1,7 +1,6 @@
-import { makeTemplateBindings, extendMethods, dash as _ } from './common/index'
-import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
+import { makeTemplateBindings, extendMethods, extendProps } from './common/index'
 
-export default function Container (binding, framework) {
+export default function Container (binding, framework, component, version) {
   let template = `<div class="container" ${makeTemplateBindings(binding)}>
   <component v-for="c in components"
     :is="kebab('formation-' + c.type)"
@@ -9,28 +8,17 @@ export default function Container (binding, framework) {
     :components='c.components'
     :bindings="bindings"
     :framework="framework"
-    :value.sync="value"></component>
+    :version="${version}"
+    ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>
 </div>`
 
   return {
     template,
     name: 'formation-container',
-    props: {
-      value: { type: Object },
-      config: { type: Object, default () { return {} } },
-      components: { type: Array, default () { return {} } },
-      bindings: { type: Object, default () { return {} } },
-      framework: {
-        type: String,
-        default: BOOTSTRAP,
-        validator (value) {
-          return _.includes(FRAMEWORKS, value)
-        }
-      }
-    },
+    props: extendProps(version),
+    methods: extendMethods(),
     created () {
-      this.$registerFormationComponents(this, this.components, this.bindings, this.framework)
-    },
-    methods: extendMethods({})
+      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework)
+    }
   }
 }

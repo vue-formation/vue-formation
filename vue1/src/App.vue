@@ -2,8 +2,6 @@
   div(id='app')
     a(v-link='{ path: "/bootstrap"}') Bootstrap
     span &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    a(v-link='{ path: "/foundation"}') Foundation
-    span &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
     a(v-link='{ path: "/materialize"}') Materialize
     span &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
     a(v-link='{ path: "/semanticui"}') SemanticUI

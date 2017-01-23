@@ -5,12 +5,17 @@ import register from './common/registerFormationComponents'
 
 export default {
   install (Vue) {
+    let eventHub = new Vue()
+
     // create a new multi version instance
     let multi = VueMultiVersion(Vue)
-    let registerFormationComponents = register(Vue)
+    let version = multi.select(1, 2)
+    let registerFormationComponents = register(Vue, version)
 
-    // register global formation register function
-    Vue.prototype.$registerFormationComponents = registerFormationComponents
+    // register global formation functions
+    Vue.prototype.$formationRegisterComponents = registerFormationComponents
+    Vue.prototype.$formationEmit = eventHub.$emit
+    Vue.prototype.$formationOn = eventHub.$on
 
     // register the formation component
     Vue.component('formation', {
@@ -23,7 +28,8 @@ export default {
     :components='c.components'
     :bindings="_bindings"
     :framework="framework"
-    ${multi.select(':value.sync', 'v-model')}="modelData"></component>
+    :version="${version}"
+    ${version === 1 ? ':value.sync' : 'v-model'}="modelData"></component>
 </div>
 `,
       props: {

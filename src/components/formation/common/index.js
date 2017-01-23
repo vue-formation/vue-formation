@@ -6,6 +6,7 @@ import evalEvent from './evalEvent'
 import evalProp from './evalProp'
 import eventHandler from './eventHandler'
 import extendMethods from './extendMethods'
+import extendProps from './extendProps'
 import extractBindings from './extractBindings'
 import makeTemplateBindings from './makeTemplateBindings'
 import mergeClass from './mergeClass'
@@ -21,6 +22,7 @@ export { evalEvent }
 export { evalProp }
 export { eventHandler }
 export { extendMethods }
+export { extendProps }
 export { extractBindings }
 export { makeTemplateBindings }
 export { mergeClass }
@@ -37,6 +39,7 @@ export default {
   evalProp,
   eventHandler,
   extendMethods,
+  extendProps,
   extractBindings,
   makeTemplateBindings,
   mergeClass,

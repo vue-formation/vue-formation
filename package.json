@@ -23,14 +23,14 @@
     "vue": ">= 1.0.0"
   },
   "dependencies": {
-    "lodash": "^4.17.4",
-    "vue-multi-version": "^0.2.0"
+    "vue-multi-version": "^0.2.0",
+    "validator": "^6.2.1"
   },
   "devDependencies": {
+    "lodash": "^4.17.4",
     "liteutils": "git+https://github.com/bhoriuchi/liteutils.git#master",
     "rollup": "^0.41.0",
     "rollup-plugin-vue": "^2.2.16",
-    "lodash": "^4.17.2",
     "vue": "^1.0.21",
     "vue-router": "^0.7.0",
     "vuex-router-sync": "^2.0.0",

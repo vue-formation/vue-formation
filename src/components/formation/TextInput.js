@@ -1,12 +1,8 @@
-import multi from 'vue-multi-version'
-import {
-  makeTemplateBindings,
-  extendMethods,
-  dash as _
-} from './common/index'
-import { FRAMEWORKS, BOOTSTRAP, SEMANTICUI, MATERIALIZE } from './common/constants'
+import validator from 'validator'
+import { makeTemplateBindings, extendMethods, extendProps, dash as _ } from './common/index'
+import { BOOTSTRAP, SEMANTICUI, MATERIALIZE } from './common/constants'
 
-export default function TextInput (binding, framework) {
+export default function TextInput (binding, framework, component, version) {
   let template = ''
 
   switch (framework) {
@@ -38,26 +34,33 @@ export default function TextInput (binding, framework) {
   return {
     template,
     name: 'formation-text-input',
-    props: {
-      value: {
-        type: Object,
-        required: true,
-        twoWay: multi.select(true, undefined)
-      },
-      config: { type: Object, default () { return {} } },
-      components: { type: Array, default () { return [] } },
-      bindings: { type: Object, default () { return {} } },
-      framework: {
-        type: String,
-        default: BOOTSTRAP,
-        validator (value) {
-          return _.includes(FRAMEWORKS, value)
-        }
+    props: extendProps(version),
+    methods: extendMethods({
+      validate () {
+        return this.touched && this.valid
+      }
+    }),
+    computed: {
+      _value () {
+        return _.has(this.config, 'model') ? this.value[this.config.model] : null
       }
     },
-    methods: extendMethods({}),
     created () {
-      this.$registerFormationComponents(this, this.components, this.bindings, this.framework)
+      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework)
+    },
+    watch: {
+      _value (val) {
+        this.touched = true
+        this.valid = _.isFunction(this.config.validate)
+          ? this.config.validate.call(this, val, validator)
+          : true
+      }
+    },
+    data () {
+      return {
+        valid: false,
+        touched: false
+      }
     }
   }
 }

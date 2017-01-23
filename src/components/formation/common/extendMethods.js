@@ -2,7 +2,7 @@ import _ from './dash/dash.index'
 import eventHandler from './eventHandler'
 import evalProp from './evalProp'
 
-export default function extendMethods (methods) {
+export default function extendMethods (methods = {}) {
   return _.merge({}, methods, {
     eventHandler,
     getAttr (name) {
