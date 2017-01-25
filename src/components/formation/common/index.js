@@ -13,7 +13,6 @@ import mergeClass from './mergeClass'
 import query from './query/query.index'
 import registerFormationComponents from './registerFormationComponents'
 import vueSet from './vueSet'
-import vuexHelper from './vuexHelper'
 
 export { constants }
 export { defaultClass }
@@ -30,7 +29,6 @@ export { mergeClass }
 export { query }
 export { registerFormationComponents }
 export { vueSet }
-export { vuexHelper }
 
 export default {
   constants,
@@ -47,6 +45,5 @@ export default {
   mergeClass,
   query,
   registerFormationComponents,
-  vueSet,
-  vuexHelper
+  vueSet
 }

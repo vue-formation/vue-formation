@@ -3,23 +3,9 @@ A themeable Vue.js layout builder
 
 [`Project Page`](https://vue-formation.github.io/vue-formation/)
 
-Compatible with Vue.js 1.x and 2.x
-
-**Note** as of version `1.0.0`, `vue-formation` is now a Vue.js plugin instead of a component
+Compatible with Vue.js 1.x and 2.x as well as Vuex 1.x and 2.x
 
 ### Example
-
-**main.js**
-
-```js
-import Vue from 'vue'
-import VueFormation from 'vue-formation'
-import 'bootstrap.css'
-
-Vue.use(VueFormation)
-
-...
-```
 
 **Vue1.x.vue** 
 
@@ -29,12 +15,15 @@ Vue.use(VueFormation)
 </template>
 
 <script type='text/babel'>
+  import { component as Formation } from 'vue-formation'
+  
   export default {
+    components: {
+      Formation
+    },
     data () {
       return {
-        data: {
-          
-        },
+        data: {},
         config: {
           components: []
         }
@@ -52,12 +41,15 @@ Vue.use(VueFormation)
 </template>
 
 <script type='text/babel'>
+  import { component as Formation } from 'vue-formation'
+  
   export default {
+    components: {
+      Formation
+    },
     data () {
       return {
-        data: {
-          
-        },
+        data: {},
         config: {
           components: []
         }

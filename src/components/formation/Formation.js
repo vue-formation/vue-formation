@@ -1,9 +1,8 @@
-import VueMultiVersion from 'vue-multi-version'
 import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
 import { vueSet, extractBindings, registerFormationComponents, dash as _ } from './common/index'
 
 export default function (Vue) {
-  const VUE_VERSION = VueMultiVersion(Vue).select(1, 2)
+  const VUE_VERSION = Number((_.isString(Vue.version) ? Vue.version : '1.0.0').split('.')[0])
 
   return {
     name: 'formation',
@@ -17,7 +16,7 @@ export default function (Vue) {
     :framework="framework"
     :register="register"
     :event-hub="eventHub"
-    :VUE_VERSION="${VUE_VERSION}"
+    :version="${VUE_VERSION}"
     ${VUE_VERSION === 1 ? ':value.sync' : 'v-model'}="modelData"></component>
 </div>
 `,

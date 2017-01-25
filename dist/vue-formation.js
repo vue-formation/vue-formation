@@ -5,7 +5,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var Vue = _interopDefault(require('vue'));
-var VueMultiVersion = _interopDefault(require('vue-multi-version'));
 
 const BOOTSTRAP = 'bootstrap';
 const MATERIALIZE = 'materialize';
@@ -1732,7 +1731,7 @@ function vueSet (obj, path, val) {
 }
 
 var Formation = function (Vue$$1) {
-  const VUE_VERSION = VueMultiVersion(Vue$$1).select(1, 2);
+  const VUE_VERSION = Number((dash.isString(Vue$$1.version) ? Vue$$1.version : '1.0.0').split('.')[0]);
 
   return {
     name: 'formation',
@@ -1746,7 +1745,7 @@ var Formation = function (Vue$$1) {
     :framework="framework"
     :register="register"
     :event-hub="eventHub"
-    :VUE_VERSION="${VUE_VERSION}"
+    :version="${VUE_VERSION}"
     ${VUE_VERSION === 1 ? ':value.sync' : 'v-model'}="modelData"></component>
 </div>
 `,
