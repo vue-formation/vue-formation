@@ -15,10 +15,7 @@ export default function extendProps (version, props = {}) {
       }
     },
     components: {
-      type: Array,
-      default () {
-        return []
-      }
+      type: Array
     },
     bindings: {
       type: Object,
@@ -29,6 +26,12 @@ export default function extendProps (version, props = {}) {
     version: {
       type: Number,
       default: version
+    },
+    register: {
+      type: Function
+    },
+    eventHub: {
+      type: Object
     },
     framework: {
       type: String,

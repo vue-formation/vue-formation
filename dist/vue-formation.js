@@ -1,10 +1,11 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var VueMultiVersion = _interopDefault(require('vue-multi-version'));
-var validator = _interopDefault(require('validator'));
 var Vue = _interopDefault(require('vue'));
+var VueMultiVersion = _interopDefault(require('vue-multi-version'));
 
 const BOOTSTRAP = 'bootstrap';
 const MATERIALIZE = 'materialize';
@@ -922,6 +923,12 @@ function extendProps (version, props = {}) {
       type: Number,
       default: version
     },
+    register: {
+      type: Function
+    },
+    eventHub: {
+      type: Object
+    },
     framework: {
       type: String,
       default: BOOTSTRAP,
@@ -1464,6 +1471,8 @@ function A (binding, framework, component, version) {
     :components='c.components'
     :bindings="bindings"
     :framework="framework"
+    :register="register"
+    :event-hub="eventHub"
     :value.sync="value"></component>
 </a>`;
 
@@ -1473,7 +1482,7 @@ function A (binding, framework, component, version) {
     props: extendProps(version),
     methods: extendMethods({}),
     created () {
-      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
+      this.register(this, this.components, this.bindings, this.framework);
     }
   }
 }
@@ -1555,7 +1564,7 @@ function Button (binding, framework, component, version) {
     props: extendProps(version),
     methods: extendMethods(),
     created () {
-      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
+      this.register(this, this.components, this.bindings, this.framework);
     }
   }
 }
@@ -1568,6 +1577,8 @@ function Container (binding, framework, component, version) {
     :components='c.components'
     :bindings="bindings"
     :framework="framework"
+    :register="register"
+    :event-hub="eventHub"
     :version="${version}"
     ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>
 </div>`;
@@ -1578,7 +1589,7 @@ function Container (binding, framework, component, version) {
     props: extendProps(version),
     methods: extendMethods(),
     created () {
-      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
+      this.register(this, this.components, this.bindings, this.framework);
     }
   }
 }
@@ -1591,6 +1602,8 @@ function Div (binding, framework, component, version) {
     :components='c.components'
     :bindings="bindings"
     :framework="framework"
+    :register="register"
+    :event-hub="eventHub"
     :version="${version}"
     ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>
 </div>`;
@@ -1601,7 +1614,7 @@ function Div (binding, framework, component, version) {
     props: extendProps(version),
     methods: extendMethods(),
     created () {
-      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
+      this.register(this, this.components, this.bindings, this.framework);
     }
   }
 }
@@ -1650,13 +1663,13 @@ function TextInput (binding, framework, component, version) {
       }
     },
     created () {
-      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework);
+      this.register(this, this.components, this.bindings, this.framework);
     },
     watch: {
       _value (val) {
         this.touched = true;
         this.valid = dash.isFunction(this.config.validate)
-          ? this.config.validate.call(this, val, validator)
+          ? this.config.validate.call(this, val)
           : true;
       }
     },
@@ -1721,114 +1734,146 @@ function vueSet (obj, path, val) {
   }
 }
 
-var formation = {
-  install (Vue$$1) {
-    let eventHub = new Vue$$1();
+function vuex (store = {}) {
+  let version = dash.isFunction(store.commit) ? 2 : 1;
+  console.log('Vuex Version', version);
+}
 
-    // create a new multi version instance
-    let multi = VueMultiVersion(Vue$$1);
-    let version = multi.select(1, 2);
-    let registerFormationComponents$$1 = registerFormationComponents(Vue$$1, version);
+var Formation = function (Vue$$1) {
+  const VUE_VERSION = VueMultiVersion(Vue$$1).select(1, 2);
 
-    // register global formation functions
-    Vue$$1.prototype.$formationRegisterComponents = registerFormationComponents$$1;
-    Vue$$1.prototype.$formationEmit = eventHub.$emit;
-    Vue$$1.prototype.$formationOn = eventHub.$on;
-
-    // register the formation component
-    Vue$$1.component('formation', {
-      name: 'formation',
-      template: `
+  return {
+    name: 'formation',
+    template: `
 <div class="formation">
   <component v-for="c in _config.components"
     :is="'formation-' + c.type"
     :config="c.config"
-    :components='c.components'
+    :components='c.components ? c.components : null'
     :bindings="_bindings"
     :framework="framework"
-    :version="${version}"
-    ${version === 1 ? ':value.sync' : 'v-model'}="modelData"></component>
+    :register="register"
+    :event-hub="eventHub"
+    :VUE_VERSION="${VUE_VERSION}"
+    ${VUE_VERSION === 1 ? ':value.sync' : 'v-model'}="modelData"></component>
 </div>
 `,
-      props: {
-        value: {
-          type: Object,
-          defaultValue () {
-            return {}
-          },
-          twoWay: multi.select(true, undefined)
+    props: {
+      value: {
+        type: Object,
+        defaultValue () {
+          return {}
         },
-        config: {
-          type: Object,
-          required: true
-        },
-        framework: {
-          type: String,
-          default: BOOTSTRAP,
-          validator (value) {
-            return dash.includes(FRAMEWORKS, value)
-          }
+        twoWay: VUE_VERSION === 1 ? true : undefined
+      },
+      vuex: {
+        type: String
+      },
+      config: {
+        type: Object,
+        required: true
+      },
+      framework: {
+        type: String,
+        default: BOOTSTRAP,
+        validator (value) {
+          return dash.includes(FRAMEWORKS, value)
         }
+      }
+    },
+    vuex: VUE_VERSION === 1 ? {} : undefined,
+    created () {
+      console.log('Vue', VUE_VERSION);
+      this.syncModelProps();
+      this.register(this, this._config.components, this._bindings, this.framework);
+      if (this.vuex && this.$store) {
+        vuex(this.$store);
+      }
+    },
+    computed: {
+      _bindings () {
+        return extractBindings(this._config)
       },
-      created () {
-        this.syncModelProps();
-        registerFormationComponents$$1(this, this._config.components, this._bindings, this.framework);
+      _config () {
+        return this.config
+      }
+    },
+    methods: {
+      register (vm, components, bindings, framework) {
+        return registerFormationComponents(Vue$$1, VUE_VERSION)(vm, components, bindings, framework)
       },
-      computed: {
-        _bindings () {
-          return extractBindings(this._config)
-        },
-        _config () {
-          return this.config
+      findModels (obj, models = []) {
+        if (dash.has(obj, 'config.model')) models.push(obj.config.model);
+        if (dash.isArray(dash.get(obj, 'components'))) {
+          dash.forEach(obj.components, (c) => {
+            this.findModels(c, models);
+          });
         }
-      },
-      methods: {
-        findModels (obj, models = []) {
-          if (dash.has(obj, 'config.model')) models.push(obj.config.model);
-          if (dash.isArray(dash.get(obj, 'components'))) {
-            dash.forEach(obj.components, (c) => {
-              this.findModels(c, models);
-            });
-          }
-          if (dash.isArray(dash.get(obj, 'rows'))) {
-            dash.forEach(obj.rows, (row) => {
-              if (dash.isArray(dash.get(row, 'columns'))) {
-                dash.forEach(row.columns, (col) => {
-                  if (col.model) models.push(col.model);
-                });
-              }
-            });
-          }
-          return models
-        },
-        syncModelProps () {
-          dash.forEach(dash.uniq(this.findModels(this._config)), (model) => {
-            if (!this.modelData.hasOwnProperty(model)) {
-              Object.defineProperty(this.modelData, model, {
-                configurable: true,
-                enumerable: true,
-                get: () => dash.get(this.value, model),
-                set: (v) => vueSet(this.value, model, v)
+        if (dash.isArray(dash.get(obj, 'rows'))) {
+          dash.forEach(obj.rows, (row) => {
+            if (dash.isArray(dash.get(row, 'columns'))) {
+              dash.forEach(row.columns, (col) => {
+                if (col.model) models.push(col.model);
               });
             }
           });
         }
+        return models
       },
-      watch: {
-        _config: {
-          handler () {
-            this.$nextTick(this.syncModelProps);
-          },
-          deep: true
-        }
-      },
-      data () {
-        return {
-          modelData: {}
-        }
+      syncModelProps () {
+        dash.forEach(dash.uniq(this.findModels(this._config)), (model) => {
+          if (!this.modelData.hasOwnProperty(model)) {
+            Object.defineProperty(this.modelData, model, {
+              configurable: true,
+              enumerable: true,
+              get: () => dash.get(this.value, model),
+              set: (v) => vueSet(this.value, model, v)
+            });
+          }
+        });
       }
-    });
+    },
+    watch: {
+      _config: {
+        handler () {
+          this.$nextTick(this.syncModelProps);
+        },
+        deep: true
+      }
+    },
+    data () {
+      return {
+        modelData: {},
+        eventHub: new Vue$$1()
+      }
+    }
+  }
+};
+/*
+export default {
+  install (Vue) {
+    let eventHub = new Vue()
+
+    // create a new multi version instance
+    let multi = VueMultiVersion(Vue)
+    let version = multi.select(1, 2)
+    let registerFormationComponents = register(Vue, version)
+
+    // register global formation functions
+    Vue.prototype.$formationRegisterComponents = registerFormationComponents
+    Vue.prototype.$formationEmit = eventHub.$emit
+    Vue.prototype.$formationOn = eventHub.$on
+  }
+}
+*/
+
+var component = Formation(Vue);
+
+var plugin = {
+  install (Vue$$1) {
+    Vue$$1.component('formation', Formation(Vue$$1));
   }
 };
 
-module.exports = formation;
+exports.component = component;
+exports.plugin = plugin;

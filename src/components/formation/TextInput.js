@@ -1,4 +1,3 @@
-import validator from 'validator'
 import { makeTemplateBindings, extendMethods, extendProps, dash as _ } from './common/index'
 import { BOOTSTRAP, SEMANTICUI, MATERIALIZE } from './common/constants'
 
@@ -46,13 +45,13 @@ export default function TextInput (binding, framework, component, version) {
       }
     },
     created () {
-      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework)
+      this.register(this, this.components, this.bindings, this.framework)
     },
     watch: {
       _value (val) {
         this.touched = true
         this.valid = _.isFunction(this.config.validate)
-          ? this.config.validate.call(this, val, validator)
+          ? this.config.validate.call(this, val)
           : true
       }
     },

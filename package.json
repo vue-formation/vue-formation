@@ -23,10 +23,10 @@
     "vue": ">= 1.0.0"
   },
   "dependencies": {
-    "vue-multi-version": "^0.2.0",
-    "validator": "^6.2.1"
+    "vue-multi-version": "^0.2.0"
   },
   "devDependencies": {
+    "validator": "^6.2.1",
     "lodash": "^4.17.4",
     "liteutils": "git+https://github.com/bhoriuchi/liteutils.git#master",
     "rollup": "^0.41.0",

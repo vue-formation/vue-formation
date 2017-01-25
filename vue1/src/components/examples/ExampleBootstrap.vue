@@ -1,14 +1,18 @@
 <template lang="jade">
   div
     h2 Bootstrap
-    formation(:config='divdata', :value.sync='modelData')
+    formation(:config='divdata', :value.sync='modelData', vuex='formation')
     pre {{modelData|json}}
 </template>
 
 <script type="text/babel">
+  import { component as Formation } from '../../../../src/components'
   import bootstrapFormation from '../../../../src/data/bootstrapFormation'
 
   export default {
+    components: {
+      Formation
+    },
     ready () {
       document.getElementById('style-framework').setAttribute('href', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     },

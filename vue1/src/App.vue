@@ -9,6 +9,13 @@
     router-view
 </template>
 
+<script type="text/babel">
+  import store from './store/index'
+  export default {
+    store
+  }
+</script>
+
 <style>
   html {
     height: 100%;

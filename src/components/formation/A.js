@@ -4,10 +4,12 @@ export default function A (binding, framework, component, version) {
   let template = `<a ${makeTemplateBindings(binding)}>
   <component v-for="c in components"
     :is="kebab('formation-' + c.type)"
-    :config="c.config"
-    :components='c.components'
+    :config="c.config || {}"
+    :components='c.components || []'
     :bindings="bindings"
     :framework="framework"
+    :register="register"
+    :event-hub="eventHub"
     :value.sync="value"></component>
 </a>`
 
@@ -17,7 +19,7 @@ export default function A (binding, framework, component, version) {
     props: extendProps(version),
     methods: extendMethods({}),
     created () {
-      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework)
+      this.register(this, this.components, this.bindings, this.framework)
     }
   }
 }

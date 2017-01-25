@@ -5,7 +5,7 @@ import { sync } from 'vuex-router-sync'
 import App from './App'
 import router from './router/index'
 import store from './store/index'
-import Formation from '../../src/components/formation/formation'
+import { plugin as Formation } from '../../src/components'
 // import Formation from '../../dist/vue-formation'
 
 Vue.filter('json', function (val) {

@@ -78,7 +78,7 @@ export default function Button (binding, framework, component, version) {
     props: extendProps(version),
     methods: extendMethods(),
     created () {
-      this.$formationRegisterComponents(this, this.components, this.bindings, this.framework)
+      this.register(this, this.components, this.bindings, this.framework)
     }
   }
 }
