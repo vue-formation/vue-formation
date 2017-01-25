@@ -1,3 +1,3 @@
 import Vue from 'vue'
-import Formation from './formation/formation'
+import Formation from './formation/Formation'
 export default Formation(Vue)

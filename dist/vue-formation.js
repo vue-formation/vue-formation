@@ -908,10 +908,7 @@ function extendProps (version, props = {}) {
       }
     },
     components: {
-      type: Array,
-      default () {
-        return []
-      }
+      type: Array
     },
     bindings: {
       type: Object,
@@ -1467,8 +1464,8 @@ function A (binding, framework, component, version) {
   let template = `<a ${makeTemplateBindings(binding)}>
   <component v-for="c in components"
     :is="kebab('formation-' + c.type)"
-    :config="c.config"
-    :components='c.components'
+    :config="c.config || {}"
+    :components='c.components || []'
     :bindings="bindings"
     :framework="framework"
     :register="register"
@@ -1573,8 +1570,8 @@ function Container (binding, framework, component, version) {
   let template = `<div class="container" ${makeTemplateBindings(binding)}>
   <component v-for="c in components"
     :is="kebab('formation-' + c.type)"
-    :config="c.config"
-    :components='c.components'
+    :config="c.config || {}"
+    :components='c.components || []'
     :bindings="bindings"
     :framework="framework"
     :register="register"
@@ -1598,8 +1595,8 @@ function Div (binding, framework, component, version) {
   let template = `<div ${makeTemplateBindings(binding)}>
   <component v-for="c in components"
     :is="kebab('formation-' + c.type)"
-    :config="c.config"
-    :components='c.components'
+    :config="c.config || {}"
+    :components='c.components || []'
     :bindings="bindings"
     :framework="framework"
     :register="register"
@@ -1734,11 +1731,6 @@ function vueSet (obj, path, val) {
   }
 }
 
-function vuex (store = {}) {
-  let version = dash.isFunction(store.commit) ? 2 : 1;
-  console.log('Vuex Version', version);
-}
-
 var Formation = function (Vue$$1) {
   const VUE_VERSION = VueMultiVersion(Vue$$1).select(1, 2);
 
@@ -1746,10 +1738,10 @@ var Formation = function (Vue$$1) {
     name: 'formation',
     template: `
 <div class="formation">
-  <component v-for="c in _config.components"
+  <component v-for="c in config.components || []"
     :is="'formation-' + c.type"
-    :config="c.config"
-    :components='c.components ? c.components : null'
+    :config="c.config || {}"
+    :components='c.components || []'
     :bindings="_bindings"
     :framework="framework"
     :register="register"
@@ -1761,7 +1753,7 @@ var Formation = function (Vue$$1) {
     props: {
       value: {
         type: Object,
-        defaultValue () {
+        default () {
           return {}
         },
         twoWay: VUE_VERSION === 1 ? true : undefined
@@ -1769,9 +1761,15 @@ var Formation = function (Vue$$1) {
       vuex: {
         type: String
       },
+      vuexMutation: {
+        type: String,
+        default: 'FORMATION_SET'
+      },
       config: {
         type: Object,
-        required: true
+        default () {
+          return {}
+        }
       },
       framework: {
         type: String,
@@ -1779,15 +1777,27 @@ var Formation = function (Vue$$1) {
         validator (value) {
           return dash.includes(FRAMEWORKS, value)
         }
+      },
+      debug: {
+        type: Boolean,
+        default: false
       }
     },
-    vuex: VUE_VERSION === 1 ? {} : undefined,
+    vuex: VUE_VERSION === 1
+      ? {}
+      : undefined,
     created () {
-      console.log('Vue', VUE_VERSION);
+      this.dbg('Vue', VUE_VERSION);
       this.syncModelProps();
       this.register(this, this._config.components, this._bindings, this.framework);
-      if (this.vuex && this.$store) {
-        vuex(this.$store);
+
+      // check vuex mutation has been included
+      if (this.vuex) {
+        if (!dash.has(this, `$store._mutations["${this.vuexMutation}"]`)) {
+          console.warn('[vue-formation]: unable to find formation mutation "' +
+            this.vuexMutation +
+            '", please ensure it is included during the Vuex store initialization');
+        }
       }
     },
     computed: {
@@ -1795,10 +1805,14 @@ var Formation = function (Vue$$1) {
         return extractBindings(this._config)
       },
       _config () {
+        this.$nextTick(this.syncModelProps);
         return this.config
       }
     },
     methods: {
+      dbg () {
+        if (this.debug) console.log.apply(null, [...arguments]);
+      },
       register (vm, components, bindings, framework) {
         return registerFormationComponents(Vue$$1, VUE_VERSION)(vm, components, bindings, framework)
       },
@@ -1826,19 +1840,22 @@ var Formation = function (Vue$$1) {
             Object.defineProperty(this.modelData, model, {
               configurable: true,
               enumerable: true,
-              get: () => dash.get(this.value, model),
-              set: (v) => vueSet(this.value, model, v)
+              get: () => {
+                return this.vuex
+                  ? dash.get(this.$store.state, `${this.vuex}${model.match(/^\[/) ? '' : '.'}${model}`)
+                  : dash.get(this.value, model)
+              },
+              set: (v) => {
+                return this.vuex
+                  ? this.$store[this.$store.commit ? 'commit' : 'dispatch'](this.vuexMutation, {
+                    path: `${this.vuex}${model.match(/^\[/) ? '' : '.'}${model}`,
+                    value: v
+                  })
+                  : vueSet(this.value, model, v)
+              }
             });
           }
         });
-      }
-    },
-    watch: {
-      _config: {
-        handler () {
-          this.$nextTick(this.syncModelProps);
-        },
-        deep: true
       }
     },
     data () {
@@ -1849,23 +1866,6 @@ var Formation = function (Vue$$1) {
     }
   }
 };
-/*
-export default {
-  install (Vue) {
-    let eventHub = new Vue()
-
-    // create a new multi version instance
-    let multi = VueMultiVersion(Vue)
-    let version = multi.select(1, 2)
-    let registerFormationComponents = register(Vue, version)
-
-    // register global formation functions
-    Vue.prototype.$formationRegisterComponents = registerFormationComponents
-    Vue.prototype.$formationEmit = eventHub.$emit
-    Vue.prototype.$formationOn = eventHub.$on
-  }
-}
-*/
 
 var component = Formation(Vue);
 
@@ -1875,5 +1875,34 @@ var plugin = {
   }
 };
 
+/**
+ * Helper method for setting values in a vuex state
+ * @param state
+ * @param path
+ * @param value
+ * @constructor
+ */
+function FORMATION_SET (state, { path, value }) {
+  return vueSet(state, path, value)
+}
+
+/**
+ * Helper method for extending a mutation object with the formation set mutation
+ * @param mutations
+ * @param name
+ * @return {*}
+ */
+function extendMutations (mutations = {}, name = 'FORMATION_SET') {
+  return Object.assign(mutations, { [name]: FORMATION_SET })
+}
+
+/**
+ * @name vue-formation
+ * @author Branden Horiuchi <bhoriuchi@gmail.com>
+ * @description Build full layouts in a programmatic way with JSON style objects
+ */
+
+exports.FORMATION_SET = FORMATION_SET;
+exports.extendMutations = extendMutations;
 exports.component = component;
 exports.plugin = plugin;

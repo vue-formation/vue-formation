@@ -1,6 +1,6 @@
 import VueMultiVersion from 'vue-multi-version'
 import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
-import { vueSet, vuexHelper, extractBindings, registerFormationComponents, dash as _ } from './common/index'
+import { vueSet, extractBindings, registerFormationComponents, dash as _ } from './common/index'
 
 export default function (Vue) {
   const VUE_VERSION = VueMultiVersion(Vue).select(1, 2)
@@ -32,6 +32,10 @@ export default function (Vue) {
       vuex: {
         type: String
       },
+      vuexMutation: {
+        type: String,
+        default: 'FORMATION_SET'
+      },
       config: {
         type: Object,
         default () {
@@ -44,15 +48,27 @@ export default function (Vue) {
         validator (value) {
           return _.includes(FRAMEWORKS, value)
         }
+      },
+      debug: {
+        type: Boolean,
+        default: false
       }
     },
-    vuex: VUE_VERSION === 1 ? {} : undefined,
+    vuex: VUE_VERSION === 1
+      ? {}
+      : undefined,
     created () {
-      console.log('Vue', VUE_VERSION)
+      this.dbg('Vue', VUE_VERSION)
       this.syncModelProps()
       this.register(this, this._config.components, this._bindings, this.framework)
-      if (this.vuex && this.$store) {
-        vuexHelper(this.$store)
+
+      // check vuex mutation has been included
+      if (this.vuex) {
+        if (!_.has(this, `$store._mutations["${this.vuexMutation}"]`)) {
+          console.warn('[vue-formation]: unable to find formation mutation "' +
+            this.vuexMutation +
+            '", please ensure it is included during the Vuex store initialization')
+        }
       }
     },
     computed: {
@@ -65,6 +81,9 @@ export default function (Vue) {
       }
     },
     methods: {
+      dbg () {
+        if (this.debug) console.log.apply(null, [...arguments])
+      },
       register (vm, components, bindings, framework) {
         return registerFormationComponents(Vue, VUE_VERSION)(vm, components, bindings, framework)
       },
@@ -92,8 +111,19 @@ export default function (Vue) {
             Object.defineProperty(this.modelData, model, {
               configurable: true,
               enumerable: true,
-              get: () => _.get(this.value, model),
-              set: (v) => vueSet(this.value, model, v)
+              get: () => {
+                return this.vuex
+                  ? _.get(this.$store.state, `${this.vuex}${model.match(/^\[/) ? '' : '.'}${model}`)
+                  : _.get(this.value, model)
+              },
+              set: (v) => {
+                return this.vuex
+                  ? this.$store[this.$store.commit ? 'commit' : 'dispatch'](this.vuexMutation, {
+                    path: `${this.vuex}${model.match(/^\[/) ? '' : '.'}${model}`,
+                    value: v
+                  })
+                  : vueSet(this.value, model, v)
+              }
             })
           }
         })
@@ -107,20 +137,3 @@ export default function (Vue) {
     }
   }
 }
-/*
-export default {
-  install (Vue) {
-    let eventHub = new Vue()
-
-    // create a new multi version instance
-    let multi = VueMultiVersion(Vue)
-    let version = multi.select(1, 2)
-    let registerFormationComponents = register(Vue, version)
-
-    // register global formation functions
-    Vue.prototype.$formationRegisterComponents = registerFormationComponents
-    Vue.prototype.$formationEmit = eventHub.$emit
-    Vue.prototype.$formationOn = eventHub.$on
-  }
-}
-*/

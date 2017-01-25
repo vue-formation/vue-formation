@@ -1,8 +1,9 @@
 <template lang="jade">
   div
     h2 Bootstrap
-    formation(:config='divdata', :value.sync='modelData', framework='semanticui')
+    formation(:config='divdata', :value.sync='modelData', framework='semanticui', :debug='true')
     pre {{modelData|json}}
+    pre {{$store.state.formation|json}}
 </template>
 
 <script type="text/babel">

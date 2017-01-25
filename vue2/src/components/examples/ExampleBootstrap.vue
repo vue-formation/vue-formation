@@ -1,8 +1,9 @@
 <template lang="jade">
   div
     h2 Bootstrap
-    formation(:config='divdata', v-model='modelData', vuex='formation')
+    formation(:config='divdata', v-model='modelData', vuex='formation', :debug='true')
     pre {{modelData|json}}
+    pre {{$store.state.formation|json}}
 </template>
 
 <script type="text/babel">

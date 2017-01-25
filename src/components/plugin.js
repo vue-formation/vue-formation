@@ -1,4 +1,4 @@
-import Formation from './formation/formation'
+import Formation from './formation/Formation'
 
 export default {
   install (Vue) {

@@ -1,5 +1,6 @@
 export default {
   modelData: {
+    type: 'Component Data',
     text1: 'one'
   },
   divdata: {
