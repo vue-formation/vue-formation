@@ -3,6 +3,7 @@ import { vueSet, extractBindings, registerFormationComponents, dbg } from './com
 import _ from 'lodash'
 
 export default function (Vue) {
+  console.log('Vue', Vue.version)
   const VUE_VERSION = Number((_.isString(Vue.version) ? Vue.version : '1.0.0').split('.')[0])
 
   return {

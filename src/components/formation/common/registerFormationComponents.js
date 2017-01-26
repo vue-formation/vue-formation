@@ -9,7 +9,7 @@ export default function (Vue, version) {
       if (binding) {
         _.forEach(widgets, (widget, name) => {
           let typeName = _.kebabCase(name)
-          if (typeName === type) {
+          if (typeName === type && !_.has(vm.$options.components, `formation-${typeName}`)) {
             vm.$options.components[`formation-${typeName}`] = Vue.extend(
               widget(bindings[typeName], framework, component, version)
             )

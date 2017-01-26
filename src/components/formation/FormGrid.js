@@ -66,30 +66,28 @@ export default function FormGrid (binding, framework, component, version) {
       COL_LIMIT = 12
       template = `
 <div ${makeTemplateBindings(binding)}>
-  <div class="row">
-    <form class="col s12">
-      <div v-for="(${rowArgs}) in config.rows" class="row">
-        <div v-for="(${colArgs}) in row.columns" class="col input-field" :class="columnClass(rIdx, cIdx)">
-          <component v-if="hasWidget(col.type)"
-            :is="kebab('formation-' + col.type)"
-            :config="col.config || {}"
-            :components='col.components || []'
-            :bindings="bindings"
-            :framework="framework"
-            :register="register"
-            :event-hub="eventHub"
-            :version="${version}"
-            ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>
-          <label :class="{ active: isFocused['r' + rIdx + 'c' + cIdx] || value[col.config.model] || col.config.placeholder }">
-            {{col.label}}
-            <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">
-                *
-            </span>
-          </label>
-        </div>
+  <form class="col s12">
+    <div v-for="(${rowArgs}) in config.rows" class="row">
+      <div v-for="(${colArgs}) in row.columns" class="col input-field" :class="columnClass(rIdx, cIdx)">
+        <component v-if="hasWidget(col.type)"
+          :is="kebab('formation-' + col.type)"
+          :config="col.config || {}"
+          :components='col.components || []'
+          :bindings="bindings"
+          :framework="framework"
+          :register="register"
+          :event-hub="eventHub"
+          :version="${version}"
+          ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>
+        <label :class="{ active: isFocused['r' + rIdx + 'c' + cIdx] || value[col.config.model] || col.config.placeholder }">
+          {{col.label}}
+          <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">
+              *
+          </span>
+        </label>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
 `
       break
@@ -151,6 +149,10 @@ export default function FormGrid (binding, framework, component, version) {
               `col-sm-${width}`,
               `col-md-${width}`,
               `col-lg-${width}`
+            ]
+          case MATERIALIZE:
+            return [
+              `s${width}`
             ]
           default:
             return []

@@ -17,6 +17,13 @@ export default {
                   config: {
                     model: 'text2'
                   }
+                },
+                {
+                  label: 'Text3',
+                  type: 'text-input',
+                  config: {
+                    model: 'text3'
+                  }
                 }
               ]
             }
@@ -40,8 +47,7 @@ export default {
             }
           }
         }
-      }
-      /* ,
+      },
       {
         type: 'button',
         config: {
@@ -82,7 +88,7 @@ export default {
             ]
           }
         ]
-      } */
+      }
     ]
   }
 }
