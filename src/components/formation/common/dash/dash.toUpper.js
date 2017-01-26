@@ -1,7 +1,7 @@
 /* eslint-disable */
 import isString from './dash.isString'
 
-let toUpper = function (string) {
+function toUpper (string) {
   return isString(string) ? string.toUpperCase() : ''
 }
 

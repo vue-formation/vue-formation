@@ -17,6 +17,10 @@ export function FORMATION_SET (state, { path, value }) {
  * @param name
  * @return {*}
  */
-export function extendMutations (mutations = {}, name = 'FORMATION_SET') {
-  return Object.assign(mutations, { [name]: FORMATION_SET })
+export function extendMutations (mutations = {}, name = 'FORMATION_SET', Vue) {
+  return Object.assign(mutations, {
+    [name]: function (state, { path, value }) {
+      return vueSet(state, path, value, Vue)
+    }
+  })
 }

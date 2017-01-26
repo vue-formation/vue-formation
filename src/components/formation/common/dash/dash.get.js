@@ -2,7 +2,7 @@
 import isArray from './dash.isArray'
 import toPath from './dash.toPath'
 
-let get = function (obj, path, defaultValue) {
+function get (obj, path, defaultValue) {
   let value = obj
   let fields = isArray(path) ? path : toPath(path)
   if (fields.length === 0) return defaultValue

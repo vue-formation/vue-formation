@@ -1,8 +1,8 @@
 /* eslint-disable */
 import isFunction from './dash.isFunction'
 
-let isPromise = function (obj) {
-  return obj && isFunction(obj.then) && isFunction(obj.catch)
+function isPromise (obj) {
+  return obj instanceof Promise || (obj && isFunction(obj.then) && isFunction(obj.catch))
 }
 
 isPromise._accepts = ['ANY']

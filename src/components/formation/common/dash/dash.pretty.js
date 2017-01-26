@@ -1,5 +1,5 @@
 /* eslint-disable */
-let pretty = function (obj, space = '  ') {
+function pretty (obj, space = '  ') {
   try {
     return JSON.stringify(obj, null, space)
   } catch (err) {

@@ -5,7 +5,7 @@ import isFunction from './dash.isFunction'
 import contains from './dash.contains'
 import clone from './dash.clone'
 
-let circular = function (obj, value = '[Circular]') {
+function circular (obj, value = '[Circular]') {
   let circularEx = (_obj, key = null, seen = []) => {
     seen.push(_obj)
     if (isObject(_obj)) {

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import isArray from './dash.isArray'
 
-let union = function () {
+function union () {
   let args = [ ...arguments ]
   if (!args.length) return []
 

@@ -3,7 +3,7 @@ import isArray from './dash.isArray'
 import isDate from './dash.isDate'
 import isObject from './dash.isObject'
 
-let isHash = function (obj) {
+function isHash (obj) {
   return isObject(obj) && !isArray(obj) && !isDate(obj)
 }
 

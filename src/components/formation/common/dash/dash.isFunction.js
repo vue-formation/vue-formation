@@ -1,5 +1,5 @@
 /* eslint-disable */
-let isFunction = function (obj) {
+function isFunction (obj) {
   return typeof obj === 'function'
 }
 

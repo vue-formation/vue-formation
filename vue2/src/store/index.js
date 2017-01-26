@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     }
   },
   actions: {},
-  mutations: extendMutations({}),
+  mutations: extendMutations({}, undefined, Vue),
   getters: {}
 })
 

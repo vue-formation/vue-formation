@@ -2,14 +2,14 @@
 'use strict';
 
 /* eslint-disable */
-var isArray = function isArray(obj) {
+function isArray(obj) {
   return Array.isArray(obj);
-};
+}
 
 isArray._accepts = ['ANY'];
 
 /* eslint-disable */
-var forEach = function forEach(obj, fn) {
+function forEach(obj, fn) {
   try {
     if (isArray(obj)) {
       var idx = 0;
@@ -46,7 +46,7 @@ var forEach = function forEach(obj, fn) {
   } catch (err) {
     return;
   }
-};
+}
 
 forEach._accepts = [Object, Array];
 
@@ -70,9 +70,9 @@ var addClass = function addClass(className) {
 addClass._dependencies = ['query.each', 'dash.forEach'];
 
 /* eslint-disable */
-var isString = function isString(obj) {
+function isString(obj) {
   return typeof obj === 'string';
-};
+}
 
 isString._accepts = ['ANY'];
 
@@ -187,9 +187,9 @@ var toConsumableArray = function (arr) {
 };
 
 /* eslint-disable */
-var isObject = function isObject(obj) {
+function isObject(obj) {
   return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null;
-};
+}
 
 isObject._accepts = ['ANY'];
 
@@ -276,14 +276,14 @@ var each = function each(fn) {
 each._baseutil = true;
 
 /* eslint-disable */
-var mapWith = function mapWith(obj, fn) {
+function mapWith(obj, fn) {
   var newObj = [];
   forEach(obj, function (v, k) {
     var value = fn(v, k);
     if (value !== undefined) newObj.push(value);
   });
   return newObj;
-};
+}
 
 mapWith._accepts = [Object, Array];
 
@@ -298,7 +298,7 @@ mapNodes._chainable = false;
 mapNodes._dependencies = ['dash.mapWith', 'dash.isObject'];
 
 /* eslint-disable */
-var union = function union() {
+function union() {
   var args = [].concat(Array.prototype.slice.call(arguments));
   if (!args.length) return [];
 
@@ -313,7 +313,7 @@ var union = function union() {
     console.error(err);
     return [];
   }
-};
+}
 
 union._accepts = ['ANY'];
 
@@ -330,36 +330,36 @@ find._terminates = true;
 find._dependencies = ['query.mapNodes', 'query.each', 'dash.union'];
 
 /* eslint-disable */
-var isFunction = function isFunction(obj) {
+function isFunction(obj) {
   return typeof obj === 'function';
-};
+}
 
 isFunction._accepts = ['ANY'];
 
 /* eslint-disable */
-var isDate = function isDate(obj) {
+function isDate(obj) {
   return obj instanceof Date;
-};
+}
 
 isDate._accepts = ['ANY'];
 
 /* eslint-disable */
-var isHash = function isHash(obj) {
+function isHash(obj) {
   return isObject(obj) && !isArray(obj) && !isDate(obj);
-};
+}
 
 isHash._accepts = ['ANY'];
 isHash._dependencies = ['dash.isArray', 'dash.isDate', 'dash.isObject'];
 
 /* eslint-disable */
-var includes = function includes(obj, key) {
+function includes(obj, key) {
   return isArray(obj) && obj.indexOf(key) !== -1;
-};
+}
 
 includes._accepts = [Array];
 
 /* eslint-disable */
-var without = function without() {
+function without() {
   var output = [];
   var args = [].concat(Array.prototype.slice.call(arguments));
   if (args.length < 2) return args.length ? args[0] : [];
@@ -369,19 +369,19 @@ var without = function without() {
     if (!includes(search, val)) output.push(val);
   });
   return output;
-};
+}
 
 without._accepts = [Array];
 without._dependencies = ['dash.forEach', 'dash.includes'];
 
 /* eslint-disable */
-var map = function map(obj, fn) {
+function map(obj, fn) {
   var output = [];
   forEach(obj, function (v, k) {
     return output.push(fn(v, k));
   });
   return output;
-};
+}
 
 map._accepts = [Object, Array];
 

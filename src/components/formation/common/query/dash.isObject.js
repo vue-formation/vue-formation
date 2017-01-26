@@ -1,5 +1,5 @@
 /* eslint-disable */
-let isObject = function (obj) {
+function isObject (obj) {
   return typeof obj === 'object' && obj !== null
 }
 

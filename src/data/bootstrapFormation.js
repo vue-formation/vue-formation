@@ -6,6 +6,24 @@ export default {
   divdata: {
     components: [
       {
+        type: 'form-grid',
+        config: {
+          rows: [
+            {
+              columns: [
+                {
+                  label: 'Text2',
+                  type: 'text-input',
+                  config: {
+                    model: 'text2'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
         type: 'text-input',
         config: {
           model: 'text1',
@@ -22,7 +40,8 @@ export default {
             }
           }
         }
-      },
+      }
+      /* ,
       {
         type: 'button',
         config: {
@@ -63,7 +82,7 @@ export default {
             ]
           }
         ]
-      }
+      } */
     ]
   }
 }

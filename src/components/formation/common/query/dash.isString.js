@@ -1,5 +1,5 @@
 /* eslint-disable */
-let isString = function (obj) {
+function isString (obj) {
   return typeof obj === 'string'
 }
 

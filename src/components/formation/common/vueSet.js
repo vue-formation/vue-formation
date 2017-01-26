@@ -1,14 +1,14 @@
 import _ from './dash/dash.index'
 import Vue from 'vue'
 
-export default function vueSet (obj, path, val) {
+export default function vueSet (obj, path, val, vue) {
+  let $set = vue ? vue.set : Vue.set
   let value = obj
   let fields = _.isArray(path) ? path : _.toPath(path)
-  for (let f in fields) {
-    let idx = Number(f)
-    let p = fields[idx]
-    if (idx === fields.length - 1) Vue.set(value, p, val)
-    else if (!value[p]) Vue.set(value, p, _.isNumber(p) ? [] : {})
-    value = value[p]
-  }
+
+  _.forEach(fields, (part, idx) => {
+    if (idx === fields.length - 1) $set(value, part, val)
+    else if (!value.hasOwnProperty(part)) $set(value, part, _.isNumber(part) ? [] : {})
+    value = value[part]
+  })
 }

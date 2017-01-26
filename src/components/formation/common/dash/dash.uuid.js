@@ -1,6 +1,6 @@
 /* eslint-disable */
 // taken from hat - https://github.com/substack/node-hat
-let uuid = function (bits, base) {
+function uuid (bits, base) {
   if (!base) base = 16
   if (bits === undefined) bits = 128
   if (bits <= 0) return '0'

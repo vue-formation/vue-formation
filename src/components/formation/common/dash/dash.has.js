@@ -3,7 +3,7 @@ import forEach from './dash.forEach'
 import isArray from './dash.isArray'
 import toPath from './dash.toPath'
 
-let has = function (obj, path) {
+function has (obj, path) {
   let found = true
   let fields = isArray(path) ? path : toPath(path)
   if (!fields.length) return false

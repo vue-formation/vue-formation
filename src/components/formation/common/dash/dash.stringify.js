@@ -3,7 +3,7 @@ import has from './dash.has'
 import isArray from './dash.isArray'
 import isHash from './dash.isHash'
 
-let stringify = function (obj) {
+function stringify (obj) {
   try {
     if (isHash(obj) || isArray(obj)) return JSON.stringify(obj)
     else if (has(obj, 'toString')) return obj.toString()

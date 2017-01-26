@@ -10,7 +10,7 @@ export default function A (binding, framework, component, version) {
     :framework="framework"
     :register="register"
     :event-hub="eventHub"
-    :value.sync="value"></component>
+    ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>
 </a>`
 
   return {

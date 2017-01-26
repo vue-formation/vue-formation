@@ -1,7 +1,7 @@
 /* eslint-disable */
 import isArray from './dash.isArray'
 
-let forEach = function (obj, fn) {
+function forEach (obj, fn) {
   try {
     if (isArray(obj)) {
       let idx = 0

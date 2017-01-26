@@ -1,5 +1,5 @@
 /* eslint-disable */
-let isNumber = function (obj) {
+function isNumber (obj) {
   return typeof obj === 'number' && !isNaN(obj)
 }
 

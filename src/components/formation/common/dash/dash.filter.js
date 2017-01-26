@@ -2,7 +2,7 @@
 import isArray from './dash.isArray'
 import forEach from './dash.forEach'
 
-let filter = function (obj, fn) {
+function filter (obj, fn) {
   let newObj = []
   if (!isArray(obj)) return newObj
   forEach(obj, function (v, k) {

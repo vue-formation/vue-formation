@@ -2,7 +2,7 @@
 import forEach from './dash.forEach'
 import includes from './dash.includes'
 
-let without = function () {
+function without () {
   let output = []
   let args = [ ...arguments ]
   if (args.length < 2) return args.length ? args[0] : []

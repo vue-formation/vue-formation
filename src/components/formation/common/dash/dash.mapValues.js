@@ -1,7 +1,7 @@
 /* eslint-disable */
 import forEach from './dash.forEach'
 
-let mapValues = function (obj, fn) {
+function mapValues (obj, fn) {
   let newObj = {}
   forEach(obj, (v, k) => {
     newObj[k] = fn(v)

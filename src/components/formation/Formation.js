@@ -1,5 +1,6 @@
 import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
-import { vueSet, extractBindings, registerFormationComponents, dash as _ } from './common/index'
+import { vueSet, extractBindings, registerFormationComponents, dbg } from './common/index'
+import _ from 'lodash'
 
 export default function (Vue) {
   const VUE_VERSION = Number((_.isString(Vue.version) ? Vue.version : '1.0.0').split('.')[0])
@@ -81,7 +82,7 @@ export default function (Vue) {
     },
     methods: {
       dbg () {
-        if (this.debug) console.log.apply(null, [...arguments])
+        if (this.debug) dbg.apply(this, [...arguments])
       },
       register (vm, components, bindings, framework) {
         return registerFormationComponents(Vue, VUE_VERSION)(vm, components, bindings, framework)
@@ -93,11 +94,13 @@ export default function (Vue) {
             this.findModels(c, models)
           })
         }
-        if (_.isArray(_.get(obj, 'rows'))) {
-          _.forEach(obj.rows, (row) => {
+        if (_.isArray(_.get(obj, 'config.rows'))) {
+          _.forEach(obj.config.rows, (row) => {
             if (_.isArray(_.get(row, 'columns'))) {
               _.forEach(row.columns, (col) => {
-                if (col.model) models.push(col.model)
+                if (_.has(col, 'config.model')) {
+                  models.push(col.config.model)
+                }
               })
             }
           })
@@ -109,7 +112,6 @@ export default function (Vue) {
           if (!this.modelData.hasOwnProperty(model)) {
             Object.defineProperty(this.modelData, model, {
               configurable: true,
-              enumerable: true,
               get: () => {
                 return this.vuex
                   ? _.get(this.$store.state, `${this.vuex}${model.match(/^\[/) ? '' : '.'}${model}`)
@@ -121,7 +123,7 @@ export default function (Vue) {
                     path: `${this.vuex}${model.match(/^\[/) ? '' : '.'}${model}`,
                     value: v
                   })
-                  : vueSet(this.value, model, v)
+                  : vueSet(this.value, model, v, Vue)
               }
             })
           }

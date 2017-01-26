@@ -1,4 +1,6 @@
+import columnWidths from './columnWidths'
 import constants from './constants'
+import dbg from './dbg'
 import defaultClass from './defaultClass'
 import ensureConfig from './ensureConfig'
 import dash from './dash/dash.index'
@@ -14,7 +16,9 @@ import query from './query/query.index'
 import registerFormationComponents from './registerFormationComponents'
 import vueSet from './vueSet'
 
+export { columnWidths }
 export { constants }
+export { dbg }
 export { defaultClass }
 export { ensureConfig }
 export { dash }
@@ -31,7 +35,9 @@ export { registerFormationComponents }
 export { vueSet }
 
 export default {
+  columnWidths,
   constants,
+  dbg,
   defaultClass,
   ensureConfig,
   dash,

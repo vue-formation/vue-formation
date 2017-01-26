@@ -1,7 +1,7 @@
 /* eslint-disable */
 import isArray from './dash.isArray'
 
-let difference = function () {
+function difference () {
   let args = [ ...arguments ]
   if (!args.length) return []
 

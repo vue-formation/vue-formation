@@ -2,7 +2,7 @@
 import isHash from './dash.isHash'
 import forEach from './dash.forEach'
 
-let pickBy = function (obj, fn) {
+function pickBy (obj, fn) {
   let newObj = {}
   if (!isHash(obj)) return newObj
   forEach(obj, (v, k) => {

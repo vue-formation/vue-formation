@@ -1,7 +1,7 @@
 /* eslint-disable */
 import isArray from './dash.isArray'
 
-let intersection = function () {
+function intersection () {
   let args = [ ...arguments ]
   if (!args.length) return []
 

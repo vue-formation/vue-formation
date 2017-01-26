@@ -37,15 +37,26 @@ export default function TextInput (binding, framework, component, version) {
     methods: extendMethods({
       validate () {
         return this.touched && this.valid
+      },
+      onBlur (e) {
+        e.target.value = this.value.text1
+        console.log(e.target.value, this.$el.value, this.value.text1)
       }
     }),
+    created () {
+      this.register(this, this.components, this.bindings, this.framework)
+    },
+    beforeCompile () {
+      this.$el.onblur = (e) => {
+        setTimeout(() => {
+          e.target.value = this.value[this.config.model]
+        }, 0)
+      }
+    },
     computed: {
       _value () {
         return _.has(this.config, 'model') ? this.value[this.config.model] : null
       }
-    },
-    created () {
-      this.register(this, this.components, this.bindings, this.framework)
     },
     watch: {
       _value (val) {

@@ -11,7 +11,7 @@ const store = new Vuex.Store({
       text1: 'vuex'
     }
   },
-  mutations: extendMutations({})
+  mutations: extendMutations({}, undefined, Vue)
 })
 
 export default store
