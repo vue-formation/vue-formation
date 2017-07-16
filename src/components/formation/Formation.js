@@ -1,5 +1,6 @@
 import { FRAMEWORKS, BOOTSTRAP } from './common/constants'
-import { vueSet, extractBindings, registerFormationComponents, dbg } from './common/index'
+import { extractBindings, registerFormationComponents, dbg } from './common/index'
+import { vueModel, vuexModel } from 'vue-deepset'
 import _ from 'lodash'
 
 export default function (Vue) {
@@ -10,10 +11,11 @@ export default function (Vue) {
     name: 'formation',
     template: `
 <div class="formation">
-  <component v-for="c in config.components || []"
+  <component v-for="${VUE_VERSION === 1 ? '(idx, c)' : '(c, idx)'} in config.components || []"
+    :key="idx"
     :is="'formation-' + c.type"
     :config="c.config || {}"
-    :components='c.components || []'
+    :components="c.components || []"
     :bindings="_bindings"
     :framework="framework"
     :register="register"
@@ -32,10 +34,6 @@ export default function (Vue) {
       },
       vuex: {
         type: String
-      },
-      vuexMutation: {
-        type: String,
-        default: 'FORMATION_SET'
       },
       config: {
         type: Object,
@@ -60,28 +58,30 @@ export default function (Vue) {
       : undefined,
     created () {
       this.dbg('Vue', VUE_VERSION)
-      this.syncModelProps()
       this.register(this, this._config.components, this._bindings, this.framework)
 
       // check vuex mutation has been included
       if (this.vuex) {
-        if (!_.has(this, `$store._mutations["${this.vuexMutation}"]`)) {
-          console.warn('[vue-formation]: unable to find formation mutation "' +
-            this.vuexMutation +
-            '", please ensure it is included during the Vuex store initialization')
+        if (!_.has(this, '$store._mutations.VUEX_DEEP_SET')) {
+          console.warn('[vue-formation]: unable to find formation mutation "VUEX_DEEP_SET", ' +
+            'please ensure it is included during the Vuex store initialization')
         }
       }
     },
     computed: {
+      modelData () {
+        return this.vuex ? this.vuexModel(this.vuex) : this.vueModel(this.value)
+      },
       _bindings () {
         return extractBindings(this._config)
       },
       _config () {
-        this.$nextTick(this.syncModelProps)
         return this.config
       }
     },
     methods: {
+      vueModel,
+      vuexModel,
       dbg () {
         if (this.debug) dbg.apply(this, [...arguments])
       },
@@ -107,33 +107,10 @@ export default function (Vue) {
           })
         }
         return models
-      },
-      syncModelProps () {
-        _.forEach(_.uniq(this.findModels(this._config)), (model) => {
-          if (!this.modelData.hasOwnProperty(model)) {
-            Object.defineProperty(this.modelData, model, {
-              configurable: true,
-              get: () => {
-                return this.vuex
-                  ? _.get(this.$store.state, `${this.vuex}${model.match(/^\[/) ? '' : '.'}${model}`)
-                  : _.get(this.value, model)
-              },
-              set: (v) => {
-                return this.vuex
-                  ? this.$store[this.$store.commit ? 'commit' : 'dispatch'](this.vuexMutation, {
-                    path: `${this.vuex}${model.match(/^\[/) ? '' : '.'}${model}`,
-                    value: v
-                  })
-                  : vueSet(this.value, model, v, Vue)
-              }
-            })
-          }
-        })
       }
     },
     data () {
       return {
-        modelData: {},
         eventHub: new Vue()
       }
     }

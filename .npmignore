@@ -15,4 +15,5 @@ npm-debug.log
 .travis.yml
 index.html
 TODO.md
+dist
 .*

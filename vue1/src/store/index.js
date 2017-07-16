@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { extendMutations } from '../../../src/components'
+import { extendMutation } from '../../../src/components'
 
 Vue.use(Vuex)
 
@@ -11,7 +11,7 @@ const store = new Vuex.Store({
       text1: 'vuex'
     }
   },
-  mutations: extendMutations({}, undefined, Vue)
+  mutations: extendMutation({})
 })
 
 export default store

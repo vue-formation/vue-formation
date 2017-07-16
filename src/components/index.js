@@ -6,9 +6,10 @@
 
 import component from './component'
 import plugin from './plugin'
-import { FORMATION_SET, extendMutations } from '../vuex/formation-vuex'
+import { extendMutation } from 'vue-deepset'
+// import { FORMATION_SET, extendMutations } from '../vuex/formation-vuex'
 
-export { FORMATION_SET }
-export { extendMutations }
+// export { FORMATION_SET }
+export { extendMutation }
 export { component }
 export { plugin }

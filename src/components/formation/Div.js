@@ -2,7 +2,8 @@ import { makeTemplateBindings, extendMethods, extendProps } from './common/index
 
 export default function Div (binding, framework, component, version) {
   let template = `<div ${makeTemplateBindings(binding)}>
-  <component v-for="c in components"
+  <component v-for="${version === 1 ? '(idx, c)' : '(c, idx)'} in components"
+    :key="idx"
     :is="kebab('formation-' + c.type)"
     :config="c.config || {}"
     :components='c.components || []'
