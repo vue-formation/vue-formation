@@ -1,60 +1,21 @@
 # vue-formation
-A themeable Vue.js layout builder
 
-[`Project Page`](https://vue-formation.github.io/vue-formation/)
+> A Vue.js toolkit
 
-Compatible with Vue.js 1.x and 2.x as well as Vuex 1.x and 2.x
+## Build Setup
 
-### Example
+``` bash
+# install dependencies
+npm install
 
-**Vue1.x.vue** 
+# serve with hot reload at localhost:8080
+npm run dev
 
-```js
-<template>
-  <formation :value.sync="data" :config="config">
-</template>
+# build for production with minification
+npm run build
 
-<script type='text/babel'>
-  import { component as Formation } from 'vue-formation'
-  
-  export default {
-    components: {
-      Formation
-    },
-    data () {
-      return {
-        data: {},
-        config: {
-          components: []
-        }
-      }
-    }
-  }
-</script>
+# build for production and view the bundle analyzer report
+npm run build --report
 ```
 
-**Vue2.x.vue** 
-
-```js
-<template>
-  <formation v-model="data" :config="config">
-</template>
-
-<script type='text/babel'>
-  import { component as Formation } from 'vue-formation'
-  
-  export default {
-    components: {
-      Formation
-    },
-    data () {
-      return {
-        data: {},
-        config: {
-          components: []
-        }
-      }
-    }
-  }
-</script>
-```
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
