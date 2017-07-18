@@ -1,7 +1,7 @@
 <template lang="pug">
   #app
     h3 Vue {{version}}
-    pre.text-left(v-html="json(fdata)")
+    pre.text-left(v-html="json(fdata.fModel)")
     formation(framework="bootstrap", v-model="fdata.fModel", :config="fdata.fConfig")
 </template>
 
