@@ -1,11 +1,12 @@
 <template lang="pug">
   #app
-    h3 Vue {{version}}
-    a.fw-link(@click="changeFramework('bootstrap')") bootstrap
-    a.fw-link(@click="changeFramework('materialize')") materialize
-    a.fw-link(@click="changeFramework('semanticui')") semanticui
+    span.header-version Vue {{version}} :
+    a.fw-link(v-link="{ path: '/bootstrap', activeClass: 'link-active-class' }") bootstrap
+    a.fw-link(v-link="{ path: '/materialize', activeClass: 'link-active-class'  }") materialize
+    a.fw-link(v-link="{ path: '/semanticui', activeClass: 'link-active-class'  }") semanticui
     pre.text-left(v-html="fdata.fModel | json")
-    formation(:framework="framework", :value.sync="fdata.fModel", :config="fdata.fConfig")
+    // formation(:framework="framework", :value.sync="fdata.fModel", :config="fdata.fConfig")
+    router-view
 </template>
 
 <script type="text/babel">
@@ -49,5 +50,13 @@
   a.fw-link {
     padding-left: 10px;
     padding-right: 10px;
+  }
+
+  a.link-active-class {
+    font-weight: 600;
+    color: black;
+  }
+  span.header-version {
+    font-size: 1em;
   }
 </style>
