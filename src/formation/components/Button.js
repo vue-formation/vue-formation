@@ -11,7 +11,7 @@ import { TAG_BINDINGS, TAG_DEFAULT_CLASS } from '../common/constants'
 export default function Button (binding, framework, frameworks, component, version) {
   let classMap = _.get(frameworks, `["${framework}"].components.button.classMap`, {})
 
-  let template = compileTemplate(frameworks, framework, 'button', [
+  let template = compileTemplate(version, frameworks, framework, 'button', [
     {
       tag: TAG_BINDINGS,
       value: ` ${makeTemplateBindings(binding)} `

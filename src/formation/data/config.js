@@ -5,6 +5,31 @@ export default {
   fConfig: {
     components: [
       {
+        type: 'form-grid',
+        config: {
+          rows: [
+            {
+              columns: [
+                {
+                  label: 'Text2',
+                  type: 'text-input',
+                  config: {
+                    model: 'text2'
+                  }
+                },
+                {
+                  label: 'Text3',
+                  type: 'text-input',
+                  config: {
+                    model: 'text3'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
         type: 'text-input',
         config: {
           model: 'text1'

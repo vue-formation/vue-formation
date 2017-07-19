@@ -2,6 +2,7 @@ import { TAG_BINDINGS, TAG_MODEL, TAG_COMPONENTS, TAG_DEFAULT_CLASS } from '../c
 
 export default {
   name: 'semanticui',
+  maxCols: 16,
   components: {
     'a': {
       template: `<a ${TAG_BINDINGS}>${TAG_COMPONENTS}</a>`
@@ -29,8 +30,53 @@ export default {
     'div': {
       template: `<div ${TAG_BINDINGS}>${TAG_COMPONENTS}</div>`
     },
+    'form-grid': {
+      columnClass (width) {
+        var w = [
+          'zero',
+          'one',
+          'two',
+          'three',
+          'four',
+          'five',
+          'six',
+          'seven',
+          'eight',
+          'nine',
+          'ten',
+          'eleven',
+          'twelve',
+          'thirteen',
+          'fourteen',
+          'fifteen',
+          'sixteen'
+        ]
+
+        return [w[width], 'wide', 'field']
+      },
+      template (version) {
+        return `<div ${TAG_BINDINGS}>
+          <form class="ui form">
+            <div class="field" v-for="(${version === 1 ? 'rIdx, row' : 'row, rIdx'}) in config.rows">
+              <div class="fields">
+                <div v-for="(${version === 1 ? 'cIdx, col' : 'col, cIdx'}) in row.columns" :class="columnClass(rIdx, cIdx)">
+                  <label style="width: 100%">
+                    {{col.label}}
+                    <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">
+                        *
+                    </span>
+                    ${TAG_COMPONENTS}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>`
+      }
+    },
     'text-input': {
       template: `<div class="ui input"><input type="text" ${TAG_MODEL} ${TAG_BINDINGS}></div>`
     }
   }
 }
+

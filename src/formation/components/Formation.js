@@ -62,7 +62,8 @@ export default function formation (Vue, options) {
       : undefined,
     created () {
       this.dbg('Vue', VUE_VERSION)
-      this.register(this, this._config.components, this._bindings, this.framework, this.frameworks)
+      // this.register(this, this._config.components, this._bindings, this.framework, this.frameworks)
+      this.render()
 
       // check vuex mutation has been included
       if (this.vuex) {
@@ -89,8 +90,16 @@ export default function formation (Vue, options) {
       dbg () {
         if (this.debug) dbg.apply(this, [...arguments])
       },
-      register (vm, components, bindings, framework, frameworks) {
-        return registerComponents(Vue, VUE_VERSION)(vm, components, bindings, framework, frameworks)
+      register (vm, components, bindings, framework, frameworks, refresh) {
+        return registerComponents(Vue, VUE_VERSION)(vm, components, bindings, framework, frameworks, refresh)
+      },
+      render (refresh) {
+        this.register(this, this._config.components, this._bindings, this.framework, this.frameworks, refresh)
+      }
+    },
+    watch: {
+      framework () {
+        this.render(true)
       }
     },
     data () {

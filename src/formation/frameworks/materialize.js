@@ -2,6 +2,7 @@ import { TAG_BINDINGS, TAG_MODEL, TAG_COMPONENTS, TAG_DEFAULT_CLASS } from '../c
 
 export default {
   name: 'materialize',
+  maxCols: 12,
   components: {
     'a': {
       template: `<a ${TAG_BINDINGS}>${TAG_COMPONENTS}</a>`
@@ -28,6 +29,28 @@ export default {
     },
     'div': {
       template: `<div ${TAG_BINDINGS}>${TAG_COMPONENTS}</div>`
+    },
+    'form-grid': {
+      columnClass (width) {
+        return [`s${width}`]
+      },
+      template (version) {
+        return `<div ${TAG_BINDINGS}>
+          <form class="col s12">
+            <div v-for="(${version === 1 ? 'rIdx, row' : 'row, rIdx'}) in config.rows" class="row">
+              <div v-for="(${version === 1 ? 'cIdx, col' : 'col, cIdx'}) in row.columns" class="col input-field" :class="columnClass(rIdx, cIdx)">
+                ${TAG_COMPONENTS}
+                <label :class="{ active: isFocused['r' + rIdx + 'c' + cIdx] || value[col.config.model] || col.config.placeholder }">
+                  {{col.label}}
+                  <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">
+                      *
+                  </span>
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>`
+      }
     },
     'text-input': {
       template: `<input type="text" class="form-control" ${TAG_MODEL} ${TAG_BINDINGS}>`

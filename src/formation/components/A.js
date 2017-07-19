@@ -3,7 +3,7 @@ import { TAG_COMPONENTS, TAG_BINDINGS } from '../common/constants'
 
 export default function A (binding, framework, frameworks, component, version) {
   return {
-    template: compileTemplate(frameworks, framework, 'a', [
+    template: compileTemplate(version, frameworks, framework, 'a', [
       {
         tag: TAG_BINDINGS,
         value: ` ${makeTemplateBindings(binding)} `
