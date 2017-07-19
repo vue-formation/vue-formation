@@ -34,7 +34,7 @@ export default {
       columnClass (width) {
         return [`s${width}`]
       },
-      template (version) {
+      template ({ version }) {
         return `<div ${TAG_BINDINGS}>
           <form class="col s12">
             <div v-for="(${version === 1 ? 'rIdx, row' : 'row, rIdx'}) in config.rows" class="row">

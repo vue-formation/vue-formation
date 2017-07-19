@@ -54,7 +54,7 @@ export default {
 
         return [w[width], 'wide', 'field']
       },
-      template (version) {
+      template ({ version }) {
         return `<div ${TAG_BINDINGS}>
           <form class="ui form">
             <div class="field" v-for="(${version === 1 ? 'rIdx, row' : 'row, rIdx'}) in config.rows">

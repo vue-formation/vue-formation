@@ -5,27 +5,28 @@ import baseFrameworks from '../frameworks/index'
 import { vueModel, vuexModel } from '../utils/vue-deepset'
 
 export default function formation (Vue, options) {
-  const VUE_VERSION = Number((_.isString(Vue.version) ? Vue.version : '1.0.0').split('.')[0])
+  const VUE_VERSION = Number((_.isString(Vue.version) ? Vue.version : '2.0.0').split('.')[0])
   let frameworks = _.merge({}, baseFrameworks, _.get(options, 'frameworks', {}))
 
   return {
     name: 'formation',
     template: `
-<div class="formation">
-  <component v-for="${VUE_VERSION === 1 ? '(idx, c)' : '(c, idx)'} in config.components || []"
-    :key="idx"
-    :is="'formation-' + c.type"
-    :config="c.config || {}"
-    :components="c.components || []"
-    :bindings="_bindings"
-    :framework="framework"
-    :frameworks="frameworks"
-    :register="register"
-    :event-hub="eventHub"
-    :version="${VUE_VERSION}"
-    ${VUE_VERSION === 1 ? ':value.sync' : 'v-model'}="modelData"></component>
-</div>
-`,
+      <div class="formation">
+        <div v-if="compiled">
+          <component v-for="${VUE_VERSION === 1 ? '(idx, c)' : '(c, idx)'} in config.components || []"
+          :key="idx"
+          :is="'formation-' + c.type"
+          :config="c.config || {}"
+          :components="c.components || []"
+          :bindings="_bindings"
+          :framework="framework"
+          :frameworks="frameworks"
+          :register="register"
+          :event-hub="eventHub"
+          :version="${VUE_VERSION}"
+          ${VUE_VERSION === 1 ? ':value.sync' : 'v-model'}="modelData"></component>
+        </div>
+      </div>`,
     props: {
       value: {
         type: Object,
@@ -62,8 +63,7 @@ export default function formation (Vue, options) {
       : undefined,
     created () {
       this.dbg('Vue', VUE_VERSION)
-      // this.register(this, this._config.components, this._bindings, this.framework, this.frameworks)
-      this.render()
+      this.updateComponents()
 
       // check vuex mutation has been included
       if (this.vuex) {
@@ -72,6 +72,15 @@ export default function formation (Vue, options) {
             'please ensure it is included during the Vuex store initialization')
         }
       }
+
+      // this bit of code is used to re-render the child-components should the framework change
+      this.eventHub.$on('render components', () => {
+        this.updateComponents(true)
+        this.compiled = false
+        this.$nextTick(() => {
+          this.compiled = true
+        })
+      })
     },
     computed: {
       modelData () {
@@ -93,19 +102,20 @@ export default function formation (Vue, options) {
       register (vm, components, bindings, framework, frameworks, refresh) {
         return registerComponents(Vue, VUE_VERSION)(vm, components, bindings, framework, frameworks, refresh)
       },
-      render (refresh) {
+      updateComponents (refresh) {
         this.register(this, this._config.components, this._bindings, this.framework, this.frameworks, refresh)
       }
     },
     watch: {
       framework () {
-        this.render(true)
+        this.eventHub.$emit('render components')
       }
     },
     data () {
       return {
         eventHub: new Vue(),
-        frameworks
+        frameworks,
+        compiled: true
       }
     }
   }

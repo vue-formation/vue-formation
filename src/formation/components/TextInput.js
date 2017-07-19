@@ -3,8 +3,15 @@ import { makeTemplateBindings, extendMethods, extendProps, compileTemplate } fro
 import { TAG_BINDINGS, TAG_MODEL } from '../common/constants'
 
 export default function TextInput (binding, framework, frameworks, component, version) {
+  let info = {
+    binding,
+    framework: frameworks[framework],
+    component,
+    version
+  }
+
   return {
-    template: compileTemplate(version, frameworks, framework, 'text-input', [
+    template: compileTemplate(info, frameworks, framework, 'text-input', [
       {
         tag: TAG_MODEL,
         value: ' v-model="value[config.model]" '

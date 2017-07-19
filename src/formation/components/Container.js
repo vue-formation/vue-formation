@@ -2,8 +2,15 @@ import { makeTemplateBindings, extendMethods, extendProps, compileTemplate, nest
 import { TAG_COMPONENTS, TAG_BINDINGS } from '../common/constants'
 
 export default function Container (binding, framework, frameworks, component, version) {
+  let info = {
+    binding,
+    framework: frameworks[framework],
+    component,
+    version
+  }
+
   return {
-    template: compileTemplate(version, frameworks, framework, 'container', [
+    template: compileTemplate(info, frameworks, framework, 'container', [
       {
         tag: TAG_BINDINGS,
         value: ` ${makeTemplateBindings(binding)} `

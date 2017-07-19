@@ -12,9 +12,15 @@ export default function FormGrid (binding, framework, frameworks, component, ver
   let f = _.get(frameworks, `["${framework}"]`, {})
   let COL_LIMIT = _.get(f, 'maxCols', 12)
   let colClasser = _.get(f, 'components["form-grid"].columnClass', () => [])
+  let info = {
+    binding,
+    framework: frameworks[framework],
+    component,
+    version
+  }
 
   return {
-    template: compileTemplate(version, frameworks, framework, 'form-grid', [
+    template: compileTemplate(info, frameworks, framework, 'form-grid', [
       {
         tag: TAG_BINDINGS,
         value: ` ${makeTemplateBindings(binding)} `
