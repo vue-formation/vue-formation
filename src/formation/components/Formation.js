@@ -84,7 +84,7 @@ export default function formation (Vue, options) {
     },
     computed: {
       modelData () {
-        return this.vuex ? this.vuexModel(this.vuex) : this.vueModel(this.value)
+        return this.vuex ? this.vuexModel(this.vuex, Vue) : this.vueModel(this.value, Vue)
       },
       _bindings () {
         return extractBindings(this._config)

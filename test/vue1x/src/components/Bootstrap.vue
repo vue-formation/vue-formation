@@ -4,6 +4,7 @@
 </template>
 
 <script type="text/babel">
+  import _ from 'lodash'
   import fdata from '../../../../src/formation/data/config'
 
   export default {

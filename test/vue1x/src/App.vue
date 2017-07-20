@@ -11,6 +11,7 @@
 
 <script type="text/babel">
   import Vue from 'vue'
+  import _ from 'lodash'
   import fdata from '../../../src/formation/data/config'
 
   export default {

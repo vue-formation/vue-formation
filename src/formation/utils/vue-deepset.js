@@ -3,7 +3,7 @@
  * @description Deep set Vue.js objects
  */
 import _ from './litedash/dash'
-import Vue from 'vue'
+// import Vue from 'vue'
 
 const INVALID_KEY_RX = /^\d|[^a-zA-Z0-9_]/gm
 
@@ -72,14 +72,13 @@ export function sanitizePath (path) {
  * @param path
  * @param value
  */
-export function vueSet (obj, path, value) {
+export function vueSet (obj, path, value, Vue) {
   let fields = _.isArray(path) ? path : _.toPath(path)
-  for (let i = 0; i < fields.length; i++) {
-    let prop = fields[i]
-    if (i === fields.length - 1) Vue.set(obj, prop, value)
-    else if (!_.has(obj, prop)) Vue.set(obj, prop, _.isNumber(prop) ? [] : {})
-    obj = obj[prop]
-  }
+  let prop = fields.shift()
+
+  if (!fields.length) return Vue.nextTick(() => Vue.set(obj, prop, value))
+  if (!_.has(obj, prop)) Vue.set(obj, prop, _.isNumber(prop) ? [] : {})
+  Vue.nextTick(() => vueSet(obj[prop], fields, value))
 }
 
 /**
@@ -87,10 +86,10 @@ export function vueSet (obj, path, value) {
  * @param path
  * @param value
  */
-export function vuexSet (path, value) {
+export function vuexSet (path, value, Vue) {
   let store = _.get(this, '$store')
   if (!store) throw new Error('VueDeepSet: could not find vuex store object on instance')
-  store[store.commit ? 'commit' : 'dispatch']('VUEX_DEEP_SET', { path, value })
+  store[store.commit ? 'commit' : 'dispatch']('VUEX_DEEP_SET', { path, value, Vue })
 }
 
 /**
@@ -99,7 +98,7 @@ export function vuexSet (path, value) {
  * @param args
  */
 export function VUEX_DEEP_SET (state, args) {
-  vueSet(state, args.path, args.value)
+  vueSet(state, args.path, args.value, args.Vue)
 }
 
 /**
@@ -116,7 +115,7 @@ export function extendMutation (mutations = {}) {
  * @param vuexPath
  * @returns {{}}
  */
-export function vuexModel (vuexPath) {
+export function vuexModel (vuexPath, Vue) {
   if (!_.isString(vuexPath)) throw new Error('VueDeepSet: invalid vuex path string')
 
   if (typeof Proxy === undefined) {
@@ -131,7 +130,7 @@ export function vuexModel (vuexPath) {
           return _.get(this.$store.state, propPath)
         },
         set: (value) => {
-          vuexSet.call(this, propPath, value)
+          vuexSet.call(this, propPath, value, Vue)
         }
       })
     })
@@ -142,7 +141,7 @@ export function vuexModel (vuexPath) {
         return _.get(this.$store.state, pathJoin(vuexPath, property))
       },
       set: (target, property, value) => {
-        vuexSet.call(this, pathJoin(vuexPath, property), value)
+        vuexSet.call(this, pathJoin(vuexPath, property), value, Vue)
         return true
       },
       has: (target, property) => {
@@ -157,7 +156,7 @@ export function vuexModel (vuexPath) {
  * @param obj
  * @returns {Array}
  */
-export function vueModel (obj) {
+export function vueModel (obj, Vue) {
   if (!_.isObject(obj)) throw new Error('VueDeepSet: invalid object')
 
   if (typeof Proxy === 'undefined') {
@@ -170,7 +169,7 @@ export function vueModel (obj) {
           return _.get(obj, path)
         },
         set: (value) => {
-          vueSet.call(this, obj, path, value)
+          vueSet.call(this, obj, path, value, Vue)
         }
       })
     })
@@ -181,7 +180,7 @@ export function vueModel (obj) {
         return _.get(target, property)
       },
       set: (target, property, value) => {
-        vueSet.call(this, target, property, value)
+        vueSet.call(this, target, property, value, Vue)
         return true
       },
       has: (target, property) => {
@@ -196,10 +195,10 @@ export function vueModel (obj) {
  * @param arg
  * @returns {{}}
  */
-export function deepModel (arg) {
+export function deepModel (arg, Vue) {
   return _.isString(arg)
-    ? vuexModel.call(this, arg)
-    : vueModel.call(this, arg)
+    ? vuexModel.call(this, arg, Vue)
+    : vueModel.call(this, arg, Vue)
 }
 
 /**
