@@ -1,3 +1,4 @@
+import animations from './animations'
 import columnWidths from './columnWidths'
 import compileTemplate from './compileTemplate'
 import constants from './constants'
@@ -17,6 +18,7 @@ import query from '../utils/litequery/liteutils.query'
 import nestedComponents from './nestedComponents'
 import registerComponents from './registerComponents'
 
+export { animations }
 export { columnWidths }
 export { compileTemplate }
 export { constants }
@@ -37,6 +39,7 @@ export { nestedComponents }
 export { registerComponents }
 
 export default {
+  animations,
   columnWidths,
   compileTemplate,
   constants,

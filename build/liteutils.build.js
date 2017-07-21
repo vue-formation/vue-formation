@@ -8,7 +8,10 @@ var config = {
     compileDir: path.resolve(__dirname, '../src/formation/utils/litequery'),
     eslint: false,
     babelrc: false,
-    include: ['each']
+    include: [
+      'each',
+      'find'
+    ]
   },
   dash: {
     minify: false,

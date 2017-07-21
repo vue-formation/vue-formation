@@ -5,6 +5,21 @@ export default {
   fConfig: {
     components: [
       {
+        type: 'modal',
+        config: {
+          name: 'mymodal',
+          header: {
+            text: 'Modal Header'
+          },
+          body: {
+            text: 'stuff'
+          },
+          footer: {
+            closeButton: true
+          }
+        }
+      },
+      {
         type: 'form-grid',
         config: {
           rows: [
@@ -67,7 +82,12 @@ export default {
                     type: 'button',
                     config: {
                       type: 'danger',
-                      text: 'DEEP'
+                      text: 'DEEP',
+                      on: {
+                        click () {
+                          this.eventHub.$emit('modal.show')
+                        }
+                      }
                     }
                   }
                 ]

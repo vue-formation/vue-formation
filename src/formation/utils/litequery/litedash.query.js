@@ -93,6 +93,58 @@ var classCallCheck = function (instance, Constructor) {
   }
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var toConsumableArray = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+};
+
 /* eslint-disable */
 function isObject(obj) {
   return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null;
@@ -111,8 +163,41 @@ mapNodes._chainable = false;
 mapNodes._dependencies = ['dash.mapWith', 'dash.isObject'];
 
 /* eslint-disable */
+function union() {
+  var args = [].concat(Array.prototype.slice.call(arguments));
+  if (!args.length) return [];
+
+  try {
+    var u = args.reduce(function (prev, cur) {
+      if (!isArray(prev) || !isArray(cur)) return [];
+      return prev.concat(cur);
+    }, []);
+
+    return [].concat(toConsumableArray(new Set(u)));
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+union._accepts = ['ANY'];
+
+/* eslint-disable */
+var find = function find(selector) {
+  var results = [];
+  this.each(function () {
+    results = union(results, mapNodes(this, selector));
+  });
+  return this.init(results, this);
+};
+
+find._terminates = true;
+find._dependencies = ['query.mapNodes', 'query.each', 'dash.union'];
+
+/* eslint-disable */
 var _query = {
   each: each,
+  find: find,
   mapNodes: mapNodes
 };
 

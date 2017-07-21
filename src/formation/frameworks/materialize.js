@@ -52,8 +52,24 @@ export default {
         </div>`
       }
     },
+    'modal': {
+      template: `<div ${TAG_BINDINGS}>
+          <div :class="{ 'formation-modal-blur-area': hideOnBackdrop }" @click="contentBlur"
+          :style="{ display: show ? 'block' : 'none', position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, height: 'auto', width: 'auto', 'z-index': zIndex }">
+          <div class="modal" :style="{ display: show ? 'block' : 'none', top: '10%' }">
+            <div class="modal-content">
+              <h4 v-if="hasPath(config, 'header.text')" v-text="config.header.text"></h4>
+              ${TAG_COMPONENTS}
+            </div>
+            <div class="modal-footer">
+              
+            </div>
+          </div>
+        </div>
+      </div>`
+    },
     'text-input': {
-      template: `<input type="text" class="form-control" ${TAG_MODEL} ${TAG_BINDINGS}>`
+      template: `<input type="text" class="validate" ${TAG_MODEL} ${TAG_BINDINGS}>`
     }
   }
 }

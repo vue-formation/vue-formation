@@ -1,7 +1,6 @@
 import * as _ from '../utils/litedash/dash'
-import widgets from '../components/index'
 
-export default function (Vue, version) {
+export default function (Vue, version, widgets) {
   return function registerFormationComponents (vm, components, bindings, framework, frameworks, refresh) {
     _.forEach(components, (component) => {
       let { type } = component

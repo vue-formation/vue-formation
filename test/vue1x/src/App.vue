@@ -11,7 +11,6 @@
 
 <script type="text/babel">
   import Vue from 'vue'
-  import _ from 'lodash'
   import fdata from '../../../src/formation/data/config'
 
   export default {
@@ -45,7 +44,7 @@
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+    text-align: left;
     color: #2c3e50;
   }
   a.fw-link {

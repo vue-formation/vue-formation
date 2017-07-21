@@ -25,6 +25,9 @@ export default function extendMethods (methods = {}) {
         null
       )
     },
+    hasPath (obj, path) {
+      return _.has(obj, path)
+    },
     hasAttr (name) {
       return _.has(this, `config.attrs.${name}`)
     },
