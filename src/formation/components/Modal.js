@@ -38,7 +38,7 @@ export default function Modal (binding, framework, frameworks, component, versio
         this.show = false
         window.setTimeout(() => {
           this.eventHub.$emit('backdrop.hide', this._uid)
-        }, 150)
+        }, 200)
       }
     }),
     created () {

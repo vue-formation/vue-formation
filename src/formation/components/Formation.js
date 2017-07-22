@@ -139,7 +139,7 @@ export default function formation (Vue, options) {
           backdrop.style.bottom = 0
           backdrop.style.width = 'auto'
           backdrop.style.height = 'auto'
-          backdrop.style.transition = '0.1s ease-in-out'
+          backdrop.style.transition = '0.5s ease'
           document.body.appendChild(backdrop)
         }
         let bd = document.getElementById('formation-backdrop')
@@ -149,7 +149,7 @@ export default function formation (Vue, options) {
           bd.style.display = 'block'
           window.setTimeout(() => {
             bd.style.opacity = 0.6
-          }, 20)
+          })
         }
       },
       hideBackdrop (requestedBy, force) {
@@ -160,7 +160,7 @@ export default function formation (Vue, options) {
           bd.style.opacity = 0
           window.setTimeout(() => {
             bd.style.display = 'none'
-          }, 100)
+          }, 300)
         }
       }
     },

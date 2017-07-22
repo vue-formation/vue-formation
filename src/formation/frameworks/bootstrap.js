@@ -55,24 +55,29 @@ export default {
       }
     },
     'modal': {
-      template: `<div ${TAG_BINDINGS}>
-        <div :class="{ 'formation-modal-blur-area': hideOnBackdrop, modal: true }" @click="contentBlur" 
-        :style="{ display: show ? 'block' : 'none', zIndex: zIndex }" role="dialog">
-          <div class="modal-dialog" v-show="show">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title" v-if="hasPath(config, 'header.text')" v-text="config.header.text"></h4>
-              </div>
-              <div class="modal-body">
-                ${TAG_COMPONENTS}
-              </div>
-              <div class="modal-footer">
-                
+      template ({ version }) {
+        return `<div ${TAG_BINDINGS}>
+          ${version === 1 ? '' : '<transition name="formation-fade">'}
+          <div v-show="show" ${version === 1 ? 'transition="formation-fade-vue1x"' : ''} 
+          :class="{ 'formation-modal-blur-area': hideOnBackdrop }" @click="contentBlur" 
+          :style="{ zIndex: zIndex, position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: 'auto', height: 'auto' }">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" v-if="hasPath(config, 'header.text')" v-text="config.header.text"></h4>
+                </div>
+                <div class="modal-body">
+                  ${TAG_COMPONENTS}
+                </div>
+                <div class="modal-footer">
+                  
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>`
+          ${version === 1 ? '' : '</transition>'}
+        </div>`
+      }
     },
     'text-input': {
       template: `<input type="text" class="form-control" ${TAG_MODEL} ${TAG_BINDINGS}>`
