@@ -1,4 +1,5 @@
 import animations from './animations'
+import Backdrop from './Backdrop'
 import columnWidths from './columnWidths'
 import compileTemplate from './compileTemplate'
 import constants from './constants'
@@ -19,6 +20,7 @@ import nestedComponents from './nestedComponents'
 import registerComponents from './registerComponents'
 
 export { animations }
+export { Backdrop }
 export { columnWidths }
 export { compileTemplate }
 export { constants }
@@ -40,6 +42,7 @@ export { registerComponents }
 
 export default {
   animations,
+  Backdrop,
   columnWidths,
   compileTemplate,
   constants,

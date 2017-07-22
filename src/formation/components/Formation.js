@@ -1,5 +1,5 @@
 import * as _ from '../utils/litedash/dash'
-import { extractBindings, registerComponents, dbg } from '../common/index'
+import { extractBindings, registerComponents, dbg, Backdrop } from '../common/index'
 import { BOOTSTRAP } from '../common/constants'
 import baseFrameworks from '../frameworks/index'
 import { vueModel, vuexModel } from '../utils/vue-deepset'
@@ -90,9 +90,7 @@ export default function formation (Vue, options) {
       this.eventHub.$emit(`${this.name}.render.components`)
 
       // watch for backdrop events
-      this.eventHub.$on('backdrop.show', this.showBackdrop)
-      this.eventHub.$on('backdrop.hide', this.hideBackdrop)
-      this.eventHub.$on('backdrop.hide.force', requestedBy => this.hideBackdrop(requestedBy, true))
+      this.eventHub.$on('backdrop.show', this.createBackdrop)
     },
     computed: {
       rootClass () {
@@ -125,42 +123,13 @@ export default function formation (Vue, options) {
       updateComponents (refresh) {
         this.register(this, this._config.components, this._bindings, this.framework, this.frameworks, refresh)
       },
-      showBackdrop (requestedBy) {
+      createBackdrop (requestedBy) {
         if (!document.getElementById('formation-backdrop')) {
           let backdrop = document.createElement('div')
           backdrop.setAttribute('id', 'formation-backdrop')
-          backdrop.style.backgroundColor = '#000000'
-          backdrop.style.opacity = 0
-          backdrop.style.position = 'fixed'
-          backdrop.style.display = 'none'
-          backdrop.style.top = 0
-          backdrop.style.left = 0
-          backdrop.style.right = 0
-          backdrop.style.bottom = 0
-          backdrop.style.width = 'auto'
-          backdrop.style.height = 'auto'
-          backdrop.style.transition = '0.5s ease'
-          document.body.appendChild(backdrop)
-        }
-        let bd = document.getElementById('formation-backdrop')
-        if (bd) {
-          let owner = bd.getAttribute('data-owner')
-          if (!owner) bd.setAttribute('data-owner', `${this.name}-${requestedBy}`)
-          bd.style.display = 'block'
-          window.setTimeout(() => {
-            bd.style.opacity = 0.6
-          })
-        }
-      },
-      hideBackdrop (requestedBy, force) {
-        let bd = document.getElementById('formation-backdrop')
-        let owner = bd.getAttribute('data-owner')
-        if (owner === `${this.name}-${requestedBy}` || force || !owner) {
-          bd.setAttribute('data-owner', '')
-          bd.style.opacity = 0
-          window.setTimeout(() => {
-            bd.style.display = 'none'
-          }, 300)
+          this.$root.$el.appendChild(backdrop)
+          Backdrop(Vue, VUE_VERSION, this.eventHub).create().$mount('#formation-backdrop')
+          this.eventHub.$emit('backdrop.show', requestedBy)
         }
       }
     },

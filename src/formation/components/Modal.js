@@ -32,13 +32,13 @@ export default function Modal (binding, framework, frameworks, component, versio
         this.eventHub.$emit('backdrop.show', this._uid)
         window.setTimeout(() => {
           this.show = true
-        }, 150)
+        }, 100)
       },
       hideModal () {
         this.show = false
         window.setTimeout(() => {
           this.eventHub.$emit('backdrop.hide', this._uid)
-        }, 200)
+        }, 100)
       }
     }),
     created () {
