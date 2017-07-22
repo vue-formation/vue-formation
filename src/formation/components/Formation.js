@@ -90,7 +90,13 @@ export default function formation (Vue, options) {
       this.eventHub.$emit(`${this.name}.render.components`)
 
       // watch for backdrop events
-      this.eventHub.$on('backdrop.show', this.createBackdrop)
+      this.$root.$on('backdrop.show', this.createBackdrop)
+      this.eventHub.$on('backdrop.show', requestedBy => {
+        this.$root.$emit('backdrop.show', `${this.name}-${requestedBy}`)
+      })
+      this.eventHub.$on('backdrop.hide', requestedBy => {
+        this.$root.$emit('backdrop.hide', `${this.name}-${requestedBy}`)
+      })
     },
     computed: {
       rootClass () {
@@ -124,12 +130,17 @@ export default function formation (Vue, options) {
         this.register(this, this._config.components, this._bindings, this.framework, this.frameworks, refresh)
       },
       createBackdrop (requestedBy) {
+        /*
+         * The backdrop is a special case component since we only want 1 to exist in a vue application
+         * it is manually created, appended, and mounted to the root app element. the backdrop also
+         * uses the root elements eventing system to communicate
+         */
         if (!document.getElementById('formation-backdrop')) {
           let backdrop = document.createElement('div')
           backdrop.setAttribute('id', 'formation-backdrop')
           this.$root.$el.appendChild(backdrop)
-          Backdrop(Vue, VUE_VERSION, this.eventHub).create().$mount('#formation-backdrop')
-          this.eventHub.$emit('backdrop.show', requestedBy)
+          Backdrop(Vue, VUE_VERSION, this).create().$mount('#formation-backdrop')
+          this.$root.$emit('backdrop.show', requestedBy)
         }
       }
     },

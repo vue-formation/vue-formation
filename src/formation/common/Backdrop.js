@@ -1,4 +1,4 @@
-export default function Backdrop (Vue, version, eventHub) {
+export default function Backdrop (Vue, version, vm) {
   let BackdropComponent = Vue.extend({
     template: `<div>
       ${version === 1 ? '' : '<transition name="formation-backdrop-fade">'}
@@ -6,13 +6,16 @@ export default function Backdrop (Vue, version, eventHub) {
       ${version === 1 ? '' : '</transition>'}
     </div>`,
     created () {
-      eventHub.$on('backdrop.show', requestedBy => {
+      this.$root = vm.$root
+      this.$root.$on('backdrop.show', requestedBy => {
+        console.log('show requestedBy', requestedBy)
         if (!this.requestedBy && !this.show) {
           this.requestedBy = requestedBy
           this.show = true
         }
       })
-      eventHub.$on('backdrop.hide', requestedBy => {
+      this.$root.$on('backdrop.hide', requestedBy => {
+        console.log('hide requestedBy', requestedBy)
         if (!this.requestedBy || this.requestedBy === requestedBy) {
           this.show = false
           this.requestedBy = null
