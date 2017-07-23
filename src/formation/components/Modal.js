@@ -23,7 +23,7 @@ export default function Modal (binding, framework, frameworks, component, versio
     name: 'formation-modal',
     props: extendProps(version),
     methods: extendMethods({
-      contentBlur (e) {
+      dismiss (e) {
         if (e.target.classList.contains('formation-modal-blur-area')) {
           this.hideModal()
         }
@@ -50,6 +50,9 @@ export default function Modal (binding, framework, frameworks, component, versio
       }
       this.eventHub.$on('modal.show', this.showModal)
       this.eventHub.$on('modal.hide', this.hideModal)
+      this.localHub.$on('escape', () => {
+        if (this.show) this.hideModal()
+      })
 
       this.register(this, this.components, this.bindings, this.framework, this.frameworks)
     },
@@ -57,8 +60,7 @@ export default function Modal (binding, framework, frameworks, component, versio
       return {
         show: false,
         zIndex: this.config.zIndex || 9000,
-        hideOnBackdrop: this.config.hideOnBackdrop !== false,
-        hideOnEscape: this.config.hideOnEscape !== false
+        dismissable: this.config.dismissable !== false
       }
     }
   }

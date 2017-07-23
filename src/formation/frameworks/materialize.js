@@ -53,20 +53,26 @@ export default {
       }
     },
     'modal': {
-      template: `<div ${TAG_BINDINGS}>
-          <div :class="{ 'formation-modal-blur-area': hideOnBackdrop }" @click="contentBlur"
-          :style="{ display: show ? 'block' : 'none', position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, height: 'auto', width: 'auto', 'z-index': zIndex }">
-          <div class="modal" :style="{ display: show ? 'block' : 'none', top: '10%' }">
-            <div class="modal-content">
-              <h4 v-if="hasPath(config, 'header.text')" v-text="config.header.text"></h4>
-              ${TAG_COMPONENTS}
-            </div>
-            <div class="modal-footer">
-              
+      template ({ version }) {
+        return `<div ${TAG_BINDINGS}>
+          ${version === 1 ? '' : '<transition name="formation-fade">'}
+          <div v-show="show" ${version === 1 ? 'transition="formation-fade-vue1x"' : ''}
+          :class="{ 'formation-modal-blur-area': dismissable }" @click="dismiss"
+          :style="{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, height: 'auto', width: 'auto', 'z-index': zIndex }">
+            <div class="modal" style="display: block; top: 10%;">
+              <div class="modal-content">
+                <h4 v-if="hasPath(config, 'header.text')" v-text="config.header.text"></h4>
+                <p v-if="hasPath(config, 'body.text')" v-text="config.body.text"></p>
+                ${TAG_COMPONENTS}
+              </div>
+              <div class="modal-footer" v-if="hasPath(config, 'footer')">
+                
+              </div>
             </div>
           </div>
-        </div>
-      </div>`
+          ${version === 1 ? '' : '</transition>'}
+        </div>`
+      }
     },
     'text-input': {
       template: `<input type="text" class="validate" ${TAG_MODEL} ${TAG_BINDINGS}>`

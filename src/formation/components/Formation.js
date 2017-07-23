@@ -25,6 +25,7 @@ export default function formation (Vue, options) {
           :frameworks="frameworks"
           :register="register"
           :event-hub="eventHub"
+          :local-hub="localHub"
           :version="${VUE_VERSION}"
           ${VUE_VERSION === 1 ? ':value.sync' : 'v-model'}="modelData"></component>
         </div>
@@ -97,6 +98,11 @@ export default function formation (Vue, options) {
       this.eventHub.$on('backdrop.hide', requestedBy => {
         this.$root.$emit('backdrop.hide', `${this.name}-${requestedBy}`)
       })
+
+      document.addEventListener('keyup', this.domKeyupListener)
+    },
+    beforeDestroy () {
+      document.removeEventListener('keyup', this.domKeyupListener)
     },
     computed: {
       rootClass () {
@@ -142,6 +148,12 @@ export default function formation (Vue, options) {
           Backdrop(Vue, VUE_VERSION, this).create().$mount('#formation-backdrop')
           this.$root.$emit('backdrop.show', requestedBy)
         }
+      },
+      domKeyupListener (e) {
+        switch (e.keyCode) {
+          case 27:
+            this.localHub.$emit('escape')
+        }
       }
     },
     watch: {
@@ -152,7 +164,8 @@ export default function formation (Vue, options) {
     data () {
       return {
         frameworks,
-        compiled: true
+        compiled: true,
+        localHub: new Vue()
       }
     }
   }

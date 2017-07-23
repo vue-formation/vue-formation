@@ -8,18 +8,20 @@ export default function Backdrop (Vue, version, vm) {
     created () {
       this.$root = vm.$root
       this.$root.$on('backdrop.show', requestedBy => {
-        console.log('show requestedBy', requestedBy)
         if (!this.requestedBy && !this.show) {
           this.requestedBy = requestedBy
           this.show = true
         }
       })
       this.$root.$on('backdrop.hide', requestedBy => {
-        console.log('hide requestedBy', requestedBy)
         if (!this.requestedBy || this.requestedBy === requestedBy) {
           this.show = false
           this.requestedBy = null
         }
+      })
+      this.$root.$on('backdrop.hide.force', requestedBy => {
+        this.show = false
+        this.requestedBy = null
       })
     },
     data () {

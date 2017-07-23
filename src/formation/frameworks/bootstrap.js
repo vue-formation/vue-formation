@@ -59,17 +59,18 @@ export default {
         return `<div ${TAG_BINDINGS}>
           ${version === 1 ? '' : '<transition name="formation-fade">'}
           <div v-show="show" ${version === 1 ? 'transition="formation-fade-vue1x"' : ''} 
-          :class="{ 'formation-modal-blur-area': hideOnBackdrop }" @click="contentBlur" 
+          :class="{ 'formation-modal-blur-area': dismissable }" @click="dismiss" @keyup.esc="dismiss"
           :style="{ zIndex: zIndex, position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: 'auto', height: 'auto' }">
             <div class="modal-dialog">
               <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" v-if="hasPath(config, 'header')">
                   <h4 class="modal-title" v-if="hasPath(config, 'header.text')" v-text="config.header.text"></h4>
                 </div>
                 <div class="modal-body">
+                  <p v-if="hasPath(config, 'body.text')" v-text="config.body.text"></p>
                   ${TAG_COMPONENTS}
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" v-if="hasPath(config, 'footer')">
                   
                 </div>
               </div>

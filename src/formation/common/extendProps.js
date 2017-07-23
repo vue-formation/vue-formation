@@ -42,6 +42,9 @@ export default function extendProps (version, props = {}) {
     eventHub: {
       type: Object
     },
+    localHub: {
+      type: Object
+    },
     framework: {
       type: String
     },

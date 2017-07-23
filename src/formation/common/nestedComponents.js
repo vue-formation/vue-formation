@@ -10,6 +10,7 @@ export default function nestedComponents (version) {
   :frameworks="frameworks"
   :register="register"
   :event-hub="eventHub"
+  :local-hub="localHub"
   :version="${version}"
   ${version === 1 ? ':value.sync' : 'v-model'}="value">
 </component>`
