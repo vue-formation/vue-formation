@@ -1,4 +1,10 @@
-import { makeTemplateBindings, extendMethods, extendProps, compileTemplate, nestedComponents } from '../common/index'
+import {
+  makeTemplateBindings,
+  extendMethods,
+  extendProps,
+  compileTemplate,
+  nestedComponents
+} from '../common/index'
 import { TAG_COMPONENTS, TAG_BINDINGS } from '../common/constants'
 
 export default function Div (binding, framework, frameworks, component, version) {

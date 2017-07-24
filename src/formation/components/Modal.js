@@ -1,5 +1,12 @@
 import _ from '../utils/litedash/dash'
-import { makeTemplateBindings, extendMethods, extendProps, compileTemplate, nestedComponents } from '../common/index'
+import {
+  makeTemplateBindings,
+  extendMethods,
+  extendProps,
+  extractBindings,
+  compileTemplate,
+  nestedComponents
+} from '../common/index'
 import { TAG_COMPONENTS, TAG_HEAD_COMPONENTS, TAG_FOOT_COMPONENTS, TAG_BINDINGS } from '../common/constants'
 
 export default function Modal (binding, framework, frameworks, component, version) {
@@ -76,13 +83,13 @@ export default function Modal (binding, framework, frameworks, component, versio
 
       // register the individual modal components
       if (this.headerComponents.length) {
-        this.register(this, this.headerComponents, this.bindings, this.framework, this.frameworks)
+        this.register(this, this.headerComponents, extractBindings(this.config.header), this.framework, this.frameworks)
       }
       if (this.bodyComponents.length) {
-        this.register(this, this.bodyComponents, this.bindings, this.framework, this.frameworks)
+        this.register(this, this.bodyComponents, extractBindings(this.config.body), this.framework, this.frameworks)
       }
       if (this.footerComponents.length) {
-        this.register(this, this.footerComponents, this.bindings, this.framework, this.frameworks)
+        this.register(this, this.footerComponents, extractBindings(this.config.footer), this.framework, this.frameworks)
       }
     },
     data () {

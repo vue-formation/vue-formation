@@ -4,7 +4,8 @@ import {
   extendMethods,
   extendProps,
   compileTemplate,
-  columnWidths
+  columnWidths,
+  extractBindings
 } from '../common/index'
 import { TAG_COMPONENTS, TAG_BINDINGS } from '../common/constants'
 
@@ -35,6 +36,7 @@ export default function FormGrid (binding, framework, frameworks, component, ver
           :frameworks="frameworks"
           :register="register"
           :event-hub="eventHub"
+          :local-hub="localHub"
           :version="${version}"
           ${version === 1 ? ':value.sync' : 'v-model'}="value"></component>`
       }
@@ -64,7 +66,7 @@ export default function FormGrid (binding, framework, frameworks, component, ver
       }
     },
     created () {
-      this.register(this, this._components, this.bindings, this.framework, this.frameworks)
+      this.register(this, this._components, extractBindings(this.config), this.framework, this.frameworks)
     }
   }
 }

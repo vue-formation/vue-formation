@@ -1,5 +1,11 @@
 import * as _ from '../utils/litedash/dash'
-import { makeTemplateBindings, extendMethods, extendProps, compileTemplate } from '../common/index'
+import {
+  makeTemplateBindings,
+  extendMethods,
+  extendProps,
+  extractBindings,
+  compileTemplate
+} from '../common/index'
 import { TAG_BINDINGS, TAG_MODEL } from '../common/constants'
 
 export default function TextInput (binding, framework, frameworks, component, version) {
@@ -29,7 +35,7 @@ export default function TextInput (binding, framework, frameworks, component, ve
       }
     }),
     created () {
-      this.register(this, this.components, this.bindings, this.framework, this.frameworks)
+      this.register(this, this.components, extractBindings(this.config), this.framework, this.frameworks)
     },
     computed: {
       _value () {

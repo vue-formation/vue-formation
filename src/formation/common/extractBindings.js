@@ -24,7 +24,7 @@ export default function extractBindings (component, types = {}) {
     _.forEach(component.rows, (row) => {
       if (_.isArray(_.get(row, 'columns'))) {
         _.forEach(row.columns, (col) => {
-          if (col.config) extractBindings(col.config, types)
+          if (col.config) extractBindings(col, types)
         })
       }
     })

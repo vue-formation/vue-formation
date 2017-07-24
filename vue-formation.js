@@ -1041,7 +1041,7 @@ function extractBindings$1(component) {
     forEach(component.rows, function (row) {
       if (isArray(get(row, 'columns'))) {
         forEach(row.columns, function (col) {
-          if (col.config) extractBindings$1(col.config, types);
+          if (col.config) extractBindings$1(col, types);
         });
       }
     });
@@ -1605,7 +1605,7 @@ function FormGrid(binding, framework, frameworks, component, version) {
       value: ' ' + makeTemplateBindings(binding) + ' '
     }, {
       tag: TAG_COMPONENTS,
-      value: '<component :is="kebab(\'formation-\' + col.type)"\n          :config="col.config || {}"\n          :components=\'col.components || []\'\n          :bindings="bindings"\n          :framework="framework"\n          :frameworks="frameworks"\n          :register="register"\n          :event-hub="eventHub"\n          :version="' + version + '"\n          ' + (version === 1 ? ':value.sync' : 'v-model') + '="value"></component>'
+      value: '<component :is="kebab(\'formation-\' + col.type)"\n          :config="col.config || {}"\n          :components=\'col.components || []\'\n          :bindings="bindings"\n          :framework="framework"\n          :frameworks="frameworks"\n          :register="register"\n          :event-hub="eventHub"\n          :local-hub="localHub"\n          :version="' + version + '"\n          ' + (version === 1 ? ':value.sync' : 'v-model') + '="value"></component>'
     }]),
     name: 'formation-form-grid',
     props: extendProps(version),
@@ -1627,7 +1627,7 @@ function FormGrid(binding, framework, frameworks, component, version) {
       };
     },
     created: function created() {
-      this.register(this, this._components, this.bindings, this.framework, this.frameworks);
+      this.register(this, this._components, extractBindings$1(this.config), this.framework, this.frameworks);
     }
   };
 }
@@ -1707,13 +1707,13 @@ function Modal(binding, framework, frameworks, component, version) {
 
       // register the individual modal components
       if (this.headerComponents.length) {
-        this.register(this, this.headerComponents, this.bindings, this.framework, this.frameworks);
+        this.register(this, this.headerComponents, extractBindings$1(this.config.header), this.framework, this.frameworks);
       }
       if (this.bodyComponents.length) {
-        this.register(this, this.bodyComponents, this.bindings, this.framework, this.frameworks);
+        this.register(this, this.bodyComponents, extractBindings$1(this.config.body), this.framework, this.frameworks);
       }
       if (this.footerComponents.length) {
-        this.register(this, this.footerComponents, this.bindings, this.framework, this.frameworks);
+        this.register(this, this.footerComponents, extractBindings$1(this.config.footer), this.framework, this.frameworks);
       }
     },
     data: function data() {
@@ -1750,7 +1750,7 @@ function TextInput(binding, framework, frameworks, component, version) {
       }
     }),
     created: function created() {
-      this.register(this, this.components, this.bindings, this.framework, this.frameworks);
+      this.register(this, this.components, extractBindings$1(this.config), this.framework, this.frameworks);
     },
 
     computed: {
