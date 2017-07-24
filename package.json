@@ -10,11 +10,12 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
+    "build:css": "cp src/formation/vue-formation.css vue-formation.css",
     "build:pre": "cp -f build/.build.babelrc src/formation/.babelrc",
     "build:post": "cp -f build/.dev.babelrc src/formation/.babelrc",
     "build:browser": "browserify index.js -s VueFormation > vue-formation.js",
     "build:node": "rollup -c build/rollup.config.js",
-    "build:dist": "npm run build:pre && npm run build:node && npm run build:browser && npm run build:post",
+    "build:dist": "npm run build:pre && npm run build:node && npm run build:browser && npm run build:post && npm run build:css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "browserify": {

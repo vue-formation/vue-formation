@@ -1,0 +1,30 @@
+/*
+ * Modal/Backdrop fade transition
+ */
+.formation-fade-enter-active,
+.formation-fade-leave-active,
+.formation-fade-vue1x-transition,
+.formation-backdrop-fade-enter-active,
+.formation-backdrop-fade-leave-active,
+.formation-backdrop-fade-vue1x-transition {
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+}
+
+.formation-fade-enter,
+.formation-fade-leave-to,
+.formation-fade-vue1x-enter,
+.formation-fade-vue1x-leave {
+  opacity: 0;
+  transform: translate(0px, 20%);
+  -webkit-transform: translate(0px, 20%);
+  -moz-transform: translate(0px, 20%);
+}
+
+.formation-backdrop-fade-enter,
+.formation-backdrop-fade-leave-to,
+.formation-backdrop-fade-vue1x-enter,
+.formation-backdrop-fade-vue1x-leave {
+  opacity: 0;
+}
