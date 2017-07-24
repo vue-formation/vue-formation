@@ -15,7 +15,7 @@ import extendProps from './extendProps'
 import extractBindings from './extractBindings'
 import makeTemplateBindings from './makeTemplateBindings'
 import mergeClass from './mergeClass'
-import query from '../utils/litequery/liteutils.query'
+// import query from '../utils/litequery/liteutils.query'
 import nestedComponents from './nestedComponents'
 import registerComponents from './registerComponents'
 
@@ -36,7 +36,7 @@ export { extendProps }
 export { extractBindings }
 export { makeTemplateBindings }
 export { mergeClass }
-export { query }
+// export { query }
 export { nestedComponents }
 export { registerComponents }
 
@@ -58,7 +58,7 @@ export default {
   extractBindings,
   makeTemplateBindings,
   mergeClass,
-  query,
+//  query,
   nestedComponents,
   registerComponents
 }

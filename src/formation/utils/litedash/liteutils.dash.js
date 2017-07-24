@@ -1,4 +1,3 @@
-/* eslint-disable */
 'use strict';
 
 /* eslint-disable */
@@ -416,6 +415,19 @@ reduce._accepts = [Object, Array];
 reduce._dependencies = ['dash.forEach', 'dash.isObject', 'dash.isArray', 'dash.isFunction', 'dash.identity', 'dash.keys'];
 
 /* eslint-disable */
+function set$1(obj, path, val) {
+  var fields = isArray(path) ? path : toPath(path);
+
+  forEach(fields, function (field, idx) {
+    if (idx === fields.length - 1) obj[field] = val;else if (!obj[field]) obj[field] = isNumber(field) ? [] : {};
+    obj = obj[field];
+  });
+}
+
+set$1._accepts = [Object, Array];
+set$1._dependencies = ['dash.isArray', 'dash.isNumber', 'dash.toPath', 'dash.forEach'];
+
+/* eslint-disable */
 function sum(array) {
   if (!Array.isArray(array) || !array.length) return 0;
   return array.reduce(function (total, val) {
@@ -486,6 +498,7 @@ var _dash = {
   map: map,
   merge: merge,
   reduce: reduce,
+  set: set$1,
   sum: sum,
   toPath: toPath,
   union: union,

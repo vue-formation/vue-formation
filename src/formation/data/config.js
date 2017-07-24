@@ -5,6 +5,16 @@ export default {
   fConfig: {
     components: [
       {
+        type: 'source-code',
+        config: {
+          source: 'npm install vue-formation --save',
+          plugins: ['command-line'],
+          attrs: {
+            class: 'command-line'
+          }
+        }
+      },
+      {
         type: 'modal',
         config: {
           name: 'mymodal',
@@ -15,7 +25,20 @@ export default {
             text: 'stuff'
           },
           footer: {
-            closeButton: true
+            components: [
+              {
+                type: 'button',
+                config: {
+                  type: 'default',
+                  text: 'Close',
+                  on: {
+                    click () {
+                      this.eventHub.$emit('mymodal.modal.hide')
+                    }
+                  }
+                }
+              }
+            ]
           }
         }
       },

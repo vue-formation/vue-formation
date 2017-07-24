@@ -36,6 +36,7 @@ var config = {
       'map',
       'merge',
       'reduce',
+      'set',
       'sum',
       'toPath',
       'union',

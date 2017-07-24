@@ -1,4 +1,11 @@
-import { TAG_BINDINGS, TAG_MODEL, TAG_COMPONENTS, TAG_DEFAULT_CLASS } from '../common/constants'
+import {
+  TAG_BINDINGS,
+  TAG_MODEL,
+  TAG_COMPONENTS,
+  TAG_HEAD_COMPONENTS,
+  TAG_FOOT_COMPONENTS,
+  TAG_DEFAULT_CLASS
+} from '../common/constants'
 
 export default {
   name: 'semanticui',
@@ -82,13 +89,19 @@ export default {
           :class="{ 'formation-modal-blur-area': dismissable }" @click="dismiss"
           :style="{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, height: 'auto', width: 'auto', 'z-index': zIndex }">
             <div class="ui modal" style="display: block; top: 10%;">
-              <div class="header" v-if="hasPath(config, 'header.text')" v-text="config.header.text"></div>
+              <div class="header" v-if="hasPath(config, 'header.text') && !hasPath(config, 'header.components')"
+              v-text="config.header.text"></div>
+              <div class="header" v-if="hasPath(config, 'header.components')">
+                ${TAG_HEAD_COMPONENTS}
+              </div>
               <div class="content">
                 <p v-if="hasPath(config, 'body.text')" v-text="config.body.text"></p>
                 ${TAG_COMPONENTS}
               </div>
               <div class="actions">
-              
+                ${TAG_FOOT_COMPONENTS}
+                <button class="ui button basic" v-if="hasPath(config, 'footer.closeButton')" type="button" 
+                @click="hideModal" v-text="isString(config.footer.closeButton) ? config.footer.closeButton : 'Close'"></button>
               </div>
             </div>
           </div>

@@ -18,6 +18,9 @@ export default function evalProp (types, value, vm, config, data, defaultValue) 
       case Number:
         if (_.isNumber(value)) return value
         break
+      case Object:
+        if (_.isObject(value)) return JSON.stringify(value)
+        break
       default:
         break
     }

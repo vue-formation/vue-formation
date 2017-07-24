@@ -7,7 +7,7 @@ export default function extendMethods (methods = {}) {
     eventHandler,
     getAttr (name) {
       return evalProp(
-        [Function, String, Boolean, Number],
+        [Function, String, Boolean, Number, Object],
         this.config.attrs[name],
         this,
         this.config,
@@ -17,7 +17,7 @@ export default function extendMethods (methods = {}) {
     },
     getData (name) {
       return evalProp(
-        [Function, String, Boolean, Number],
+        [Function, String, Boolean, Number, Object],
         this.config.data[name],
         this,
         this.config,
@@ -39,6 +39,9 @@ export default function extendMethods (methods = {}) {
     },
     kebab (name) {
       return _.kebabCase(name)
+    },
+    isString (val) {
+      return _.isString(val)
     }
   })
 }

@@ -1,5 +1,6 @@
+import _ from '../utils/litedash/dash'
 import { makeTemplateBindings, extendMethods, extendProps, compileTemplate, nestedComponents } from '../common/index'
-import { TAG_COMPONENTS, TAG_BINDINGS } from '../common/constants'
+import { TAG_COMPONENTS, TAG_HEAD_COMPONENTS, TAG_FOOT_COMPONENTS, TAG_BINDINGS } from '../common/constants'
 
 export default function Modal (binding, framework, frameworks, component, version) {
   let info = {
@@ -16,12 +17,31 @@ export default function Modal (binding, framework, frameworks, component, versio
         value: ` ${makeTemplateBindings(binding)} `
       },
       {
+        tag: TAG_HEAD_COMPONENTS,
+        value: nestedComponents(version, 'headerComponents')
+      },
+      {
         tag: TAG_COMPONENTS,
-        value: nestedComponents(version)
+        value: nestedComponents(version, 'bodyComponents')
+      },
+      {
+        tag: TAG_FOOT_COMPONENTS,
+        value: nestedComponents(version, 'footerComponents')
       }
     ]),
     name: 'formation-modal',
     props: extendProps(version),
+    computed: {
+      headerComponents () {
+        return _.get(this, 'config.header.components', [])
+      },
+      bodyComponents () {
+        return _.get(this, 'config.body.components', [])
+      },
+      footerComponents () {
+        return _.get(this, 'config.footer.components', [])
+      }
+    },
     methods: extendMethods({
       dismiss (e) {
         if (e.target.classList.contains('formation-modal-blur-area')) {
@@ -50,11 +70,20 @@ export default function Modal (binding, framework, frameworks, component, versio
       }
       this.eventHub.$on('modal.show', this.showModal)
       this.eventHub.$on('modal.hide', this.hideModal)
-      this.localHub.$on('escape', () => {
+      this.localHub.$on('Escape', () => {
         if (this.show) this.hideModal()
       })
 
-      this.register(this, this.components, this.bindings, this.framework, this.frameworks)
+      // register the individual modal components
+      if (this.headerComponents.length) {
+        this.register(this, this.headerComponents, this.bindings, this.framework, this.frameworks)
+      }
+      if (this.bodyComponents.length) {
+        this.register(this, this.bodyComponents, this.bindings, this.framework, this.frameworks)
+      }
+      if (this.footerComponents.length) {
+        this.register(this, this.footerComponents, this.bindings, this.framework, this.frameworks)
+      }
     },
     data () {
       return {

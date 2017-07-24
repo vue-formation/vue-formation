@@ -1,14 +1,21 @@
 import * as _ from '../utils/litedash/dash'
-import { extractBindings, registerComponents, dbg, Backdrop } from '../common/index'
+import common from '../common/index'
 import { BOOTSTRAP } from '../common/constants'
 import baseFrameworks from '../frameworks/index'
 import { vueModel, vuexModel } from '../utils/vue-deepset'
 import baseWidgets from './index'
+let { extractBindings, registerComponents, dbg, Backdrop } = common
 
-export default function formation (Vue, options) {
+export default function formation (Vue, options, plugins) {
   const VUE_VERSION = Number((_.isString(Vue.version) ? Vue.version : '2.0.0').split('.')[0])
   let frameworks = _.merge({}, baseFrameworks, _.get(options, 'frameworks', {}))
   let widgets = _.merge({}, baseWidgets, _.get(options, 'components', {}))
+
+  // process any plugins
+  _.forEach(plugins, plugin => {
+    if (_.isFunction(plugin.components)) _.merge(widgets, plugin.components(common))
+    if (_.has(plugin, 'frameworks')) _.merge(frameworks, plugin.frameworks)
+  })
 
   return {
     name: 'formation',
@@ -102,6 +109,7 @@ export default function formation (Vue, options) {
       document.addEventListener('keyup', this.domKeyupListener)
     },
     beforeDestroy () {
+      this.$root.$off('backdrop.show', this.createBackdrop)
       document.removeEventListener('keyup', this.domKeyupListener)
     },
     computed: {
@@ -152,7 +160,7 @@ export default function formation (Vue, options) {
       domKeyupListener (e) {
         switch (e.keyCode) {
           case 27:
-            this.localHub.$emit('escape')
+            this.localHub.$emit('Escape')
         }
       }
     },

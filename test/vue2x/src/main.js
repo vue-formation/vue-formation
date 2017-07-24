@@ -3,7 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { plugin as VueFormation } from '../../../src/formation/index'
+import VueFormation from '../../../index' // '../../../src/formation/index'
+import SourceCode from '../../../src/plugins/vue-formation-plugin-source-code'
 import '../../../src/formation/vue-formation.css'
 
 Vue.config.productionTip = false
@@ -16,6 +17,7 @@ Vue.mixin({
   }
 })
 
+VueFormation.use(SourceCode)
 Vue.use(VueFormation)
 
 /* eslint-disable no-new */

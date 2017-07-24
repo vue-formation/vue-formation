@@ -1,9 +1,9 @@
 <template lang="pug">
   #app
     span.header-version Vue {{version}} :
-    router-link.fw-link(:to="{ path: '/bootstrap', activeClass: 'link-active-class' }") bootstrap
-    router-link.fw-link(:to="{ path: '/materialize', activeClass: 'link-active-class'  }") materialize
-    router-link.fw-link(:to="{ path: '/semanticui', activeClass: 'link-active-class'  }") semanticui
+    router-link.fw-link(:to="{ path: '/bootstrap' }") bootstrap
+    router-link.fw-link(:to="{ path: '/materialize'  }") materialize
+    router-link.fw-link(:to="{ path: '/semanticui'  }") semanticui
     pre.text-left(v-html="json(fdata.fModel)")
     router-view
 </template>
@@ -51,7 +51,7 @@
     padding-right: 10px;
   }
 
-  a.link-active-class {
+  .router-link-active {
     font-weight: 600;
     color: black;
   }

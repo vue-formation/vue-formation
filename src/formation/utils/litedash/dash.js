@@ -15,6 +15,7 @@ import keys from './dash.keys'
 import map from './dash.map'
 import merge from './dash.merge'
 import reduce from './dash.reduce'
+import set from './dash.set'
 import sum from './dash.sum'
 import toPath from './dash.toPath'
 import union from './dash.union'
@@ -41,6 +42,7 @@ export { keys }
 export { map }
 export { merge }
 export { reduce }
+export { set }
 export { sum }
 export { toPath }
 export { union }
@@ -68,6 +70,7 @@ export default {
   map,
   merge,
   reduce,
+  set,
   sum,
   toPath,
   union,

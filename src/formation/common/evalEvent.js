@@ -1,6 +1,6 @@
 import * as _ from '../utils/litedash/dash'
 
-const KEYMAP = {
+export const KEYMAP = {
   enter: ['Enter', 13],
   tab: ['Tab', 9],
   delete: ['Delete', 'Backspace', 8, 46],

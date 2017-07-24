@@ -1,4 +1,11 @@
-import { TAG_BINDINGS, TAG_MODEL, TAG_COMPONENTS, TAG_DEFAULT_CLASS } from '../common/constants'
+import {
+  TAG_BINDINGS,
+  TAG_MODEL,
+  TAG_COMPONENTS,
+  TAG_HEAD_COMPONENTS,
+  TAG_FOOT_COMPONENTS,
+  TAG_DEFAULT_CLASS
+} from '../common/constants'
 
 export default {
   name: 'bootstrap',
@@ -65,13 +72,16 @@ export default {
               <div class="modal-content">
                 <div class="modal-header" v-if="hasPath(config, 'header')">
                   <h4 class="modal-title" v-if="hasPath(config, 'header.text')" v-text="config.header.text"></h4>
+                  ${TAG_HEAD_COMPONENTS}
                 </div>
                 <div class="modal-body">
                   <p v-if="hasPath(config, 'body.text')" v-text="config.body.text"></p>
                   ${TAG_COMPONENTS}
                 </div>
                 <div class="modal-footer" v-if="hasPath(config, 'footer')">
-                  
+                  ${TAG_FOOT_COMPONENTS}
+                  <button class="btn btn-default" v-if="hasPath(config, 'footer.closeButton')" type="button" 
+                  @click="hideModal" v-text="isString(config.footer.closeButton) ? config.footer.closeButton : 'Close'"></button>
                 </div>
               </div>
             </div>

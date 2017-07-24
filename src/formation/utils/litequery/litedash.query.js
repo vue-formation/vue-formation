@@ -206,14 +206,34 @@ var infoVersion = '0.1.0';
 
 var arr = [];
 
+function htmlGenerator(html) {
+  var div = document.createElement('div');
+  div.innerHTML = html;
+  return div.childNodes;
+}
+
 var lQuery = function lQuery(selector, context) {
   var _this = this;
 
-  context = context || document;
-  if (selector !== document) this.prevObject = context instanceof lQuery ? context : new query.fn.init(context);
   var nodes = [];
-  if (Array.isArray(selector)) nodes = selector;else if (selector instanceof lQuery) nodes = selector.slice(0, nodes.length);else if (typeof selector === 'string') nodes = mapNodes(context, selector);else nodes = [selector];
+  context = context || document;
+
+  if (selector !== document) {
+    this.prevObject = context instanceof lQuery ? context : new query.fn.init(context);
+  }
+
+  if (Array.isArray(selector)) {
+    nodes = selector;
+  } else if (selector instanceof lQuery) {
+    nodes = selector.slice(0, nodes.length);
+  } else if (typeof selector === 'string') {
+    nodes = selector.match(/^</) ? htmlGenerator(selector) : mapNodes(context, selector);
+  } else {
+    nodes = [selector];
+  }
+
   this.length = nodes.length;
+
   forEach(nodes, function (node, idx) {
     _this[idx] = node;
   });
