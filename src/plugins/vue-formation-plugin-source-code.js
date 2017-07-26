@@ -30,6 +30,84 @@ const plugins = {
 }
 
 export default {
+  components ({ makeTemplateBindings }) {
+    return {
+      SourceCode (info) {
+        return info.f.common.extendComponent(info, [], {
+          components: { Prism },
+          template: `<pre ${info.f.common.makeTemplateBindings(info.binding)}><code :class="codeClass" v-text="source"></code></pre>`,
+          computed: {
+            source () {
+              return typeof this.config.source === 'string'
+                ? this.config.source
+                : ''
+            },
+            language () {
+              return this.config.language || 'javascript'
+            },
+            plugins () {
+              return Array.isArray(this.config.plugins)
+                ? this.config.plugins
+                : []
+            },
+            use () {
+              return typeof this.config.use === 'function'
+                ? this.config.use
+                : () => true
+            },
+            preClass () {
+              return {
+                'command-line': this.hasPlugin('command-line')
+              }
+            },
+            codeClass () {
+              return {
+                [`language-${this.language}`]: true
+              }
+            }
+          },
+          methods: {
+            render () {
+              this.codeText = this.code || this.$el.innerText
+              this.$el.firstChild.innerHTML = this.codeText
+              Prism.highlightElement(this.$el.firstChild)
+            },
+            hasPlugin (plugin) {
+              return this.plugins.indexOf(plugin) !== -1
+            }
+          },
+          created () {
+            if (!Prism.languages[this.language]) {
+              require(`prismjs/components/prism-${this.language}`)
+            }
+
+            this.plugins.forEach(plugin => {
+              let p = plugins[plugin] || {}
+              if (p) require(`prismjs/plugins/${plugin}/prism-${plugin}`)
+              if (p.css) require(`prismjs/plugins/${plugin}/prism-${plugin}.css`)
+            })
+
+            this.use(Prism, this)
+          },
+          mounted () {
+            this.render()
+          },
+          ready () {
+            this.render()
+          },
+          data () {
+            return {
+              codeText: null
+            }
+          }
+        })
+      }
+    }
+  }
+}
+
+/*
+export default {
   components ({ extendProps, extendMethods, makeTemplateBindings, dash }) {
     return {
       SourceCode (binding, framework, frameworks, component, version) {
@@ -107,3 +185,4 @@ export default {
     }
   }
 }
+*/

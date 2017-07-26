@@ -1,4 +1,4 @@
-import * as _ from '../utils/litedash/dash'
+import _ from '../utils/litedash/dash.index'
 import evalEvent from './evalEvent'
 
 export default function eventHandler (name, event) {

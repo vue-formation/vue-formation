@@ -1,4 +1,4 @@
-import * as _ from '../utils/litedash/dash'
+import _ from '../utils/litedash/dash.index'
 
 export default function makeTemplateBindings (binding) {
   let { attrs, data, on } = binding

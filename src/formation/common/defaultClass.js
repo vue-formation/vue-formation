@@ -1,4 +1,4 @@
-import * as _ from '../utils/litedash/dash'
+import _ from '../utils/litedash/dash.index'
 import mergeClass from './mergeClass'
 
 export default function defaultClass (hive, component) {

@@ -13,7 +13,10 @@ import isString from './dash.isString'
 import kebabCase from './dash.kebabCase'
 import keys from './dash.keys'
 import map from './dash.map'
+import mapKeys from './dash.mapKeys'
 import merge from './dash.merge'
+import omit from './dash.omit'
+import properCase from './dash.properCase'
 import reduce from './dash.reduce'
 import set from './dash.set'
 import sum from './dash.sum'
@@ -23,6 +26,7 @@ import uniq from './dash.uniq'
 import without from './dash.without'
 import range from './dash.range'
 import isHash from './dash.isHash'
+import omitBy from './dash.omitBy'
 import identity from './dash.identity'
 import isDate from './dash.isDate'
 
@@ -40,7 +44,10 @@ export { isString }
 export { kebabCase }
 export { keys }
 export { map }
+export { mapKeys }
 export { merge }
+export { omit }
+export { properCase }
 export { reduce }
 export { set }
 export { sum }
@@ -50,6 +57,7 @@ export { uniq }
 export { without }
 export { range }
 export { isHash }
+export { omitBy }
 export { identity }
 export { isDate }
 
@@ -68,7 +76,10 @@ export default {
   kebabCase,
   keys,
   map,
+  mapKeys,
   merge,
+  omit,
+  properCase,
   reduce,
   set,
   sum,
@@ -78,6 +89,7 @@ export default {
   without,
   range,
   isHash,
+  omitBy,
   identity,
   isDate
 }

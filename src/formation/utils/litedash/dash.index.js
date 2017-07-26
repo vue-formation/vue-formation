@@ -19,7 +19,7 @@ for (const name in _dash) {
     DashChain.prototype[name] = function () {
       let args = [this._value].concat([ ...arguments ])
       this._value = fn.apply(this, args)
-      return fn._terminates == true ? this._value : this
+      return fn._terminates === true ? this._value : this
     }
   }
 }

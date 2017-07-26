@@ -1,4 +1,4 @@
-import * as _ from '../utils/litedash/dash'
+import _ from '../utils/litedash/dash.index'
 
 export default function ensureConfig (config) {
   if (!_.isObject(config)) return { attrs: {}, data: {}, on: {} }

@@ -5,13 +5,6 @@ export default function nestedComponents (version, componentsObject = 'component
   :is="kebab('formation-' + c.type)"
   :config="c.config || {}"
   :components='c.components || []'
-  :bindings="bindings"
-  :framework="framework"
-  :frameworks="frameworks"
-  :register="register"
-  :event-hub="eventHub"
-  :local-hub="localHub"
-  :version="${version}"
   ${version === 1 ? ':value.sync' : 'v-model'}="value">
 </component>`
 }

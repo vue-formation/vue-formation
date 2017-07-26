@@ -3,44 +3,47 @@ import {
   TAG_MODEL,
   TAG_COMPONENTS,
   TAG_HEAD_COMPONENTS,
-  TAG_FOOT_COMPONENTS,
-  TAG_DEFAULT_CLASS
+  TAG_FOOT_COMPONENTS
 } from '../common/constants'
+
+const BUTTON_CLASS_MAP = {
+  default: 'teal',
+  primary: 'blue',
+  success: 'green',
+  info: 'cyan',
+  warning: 'amber',
+  danger: 'red',
+  link: 'btn-flat'
+}
+
+function columnClass (width) {
+  return [`s${width}`]
+}
 
 export default {
   name: 'materialize',
   maxCols: 12,
+  columnClass,
+  buttonClassMap: BUTTON_CLASS_MAP,
   components: {
-    'a': {
+    A: {
       template: `<a ${TAG_BINDINGS}>${TAG_COMPONENTS}</a>`
     },
-    'button': {
-      classMap: {
-        default: 'teal',
-        primary: 'blue',
-        success: 'green',
-        info: 'cyan',
-        warning: 'amber',
-        danger: 'red',
-        link: 'btn-flat'
-      },
-      template: `<button type="button" class="btn ${TAG_DEFAULT_CLASS}" ${TAG_BINDINGS}>
-        <i v-if='config.iconClassLeft' class="material-icons left" :class="config.iconClassLeft"></i>
-        <span v-if="config.text" v-text="config.text"></span>
-        <i v-if='config.iconClassRight' class="material-icons right" :class="config.iconClassRight"></i>
-        <div v-if="config.html" v-html="config.html"></div>
-      </button>`
+    Button: {
+      template (f, binding, component) {
+        return `<button type="button" class="btn ${f.common.defaultClass(BUTTON_CLASS_MAP, component)}" ${TAG_BINDINGS}>
+          {{config.text}}
+          ${TAG_COMPONENTS}
+        </button>`
+      }
     },
-    'container': {
+    Container: {
       template: `<div class="container" ${TAG_BINDINGS}>${TAG_COMPONENTS}</div>`
     },
-    'div': {
+    Div: {
       template: `<div ${TAG_BINDINGS}>${TAG_COMPONENTS}</div>`
     },
-    'form-grid': {
-      columnClass (width) {
-        return [`s${width}`]
-      },
+    FormGrid: {
       template ({ version }) {
         return `<div ${TAG_BINDINGS}>
           <form class="col s12">
@@ -59,7 +62,7 @@ export default {
         </div>`
       }
     },
-    'modal': {
+    Modal: {
       template ({ version }) {
         return `<div ${TAG_BINDINGS}>
           ${version === 1 ? '' : '<transition name="formation-fade">'}
@@ -85,7 +88,7 @@ export default {
         </div>`
       }
     },
-    'text-input': {
+    TextInput: {
       template: `<input type="text" class="validate" ${TAG_MODEL} ${TAG_BINDINGS}>`
     }
   }

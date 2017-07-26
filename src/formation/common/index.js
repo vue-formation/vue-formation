@@ -1,26 +1,26 @@
-import animations from './animations'
 import Backdrop from './Backdrop'
+import buildLibrary from './buildLibrary'
 import columnWidths from './columnWidths'
 import compileTemplate from './compileTemplate'
 import constants from './constants'
 import dbg from './dbg'
 import defaultClass from './defaultClass'
 import ensureConfig from './ensureConfig'
-import * as dash from '../utils/litedash/dash'
+import dash from '../utils/litedash/dash.index'
 import evalEvent from './evalEvent'
 import evalProp from './evalProp'
 import eventHandler from './eventHandler'
-import extendMethods from './extendMethods'
-import extendProps from './extendProps'
+import extendComponent from './extendComponent'
 import extractBindings from './extractBindings'
+import getVueVersion from './getVueVersion'
 import makeTemplateBindings from './makeTemplateBindings'
 import mergeClass from './mergeClass'
-// import query from '../utils/litequery/liteutils.query'
+import query from '../utils/litequery/query.index'
 import nestedComponents from './nestedComponents'
 import registerComponents from './registerComponents'
 
-export { animations }
 export { Backdrop }
+export { buildLibrary }
 export { columnWidths }
 export { compileTemplate }
 export { constants }
@@ -31,18 +31,18 @@ export { dash }
 export { evalEvent }
 export { evalProp }
 export { eventHandler }
-export { extendMethods }
-export { extendProps }
+export { extendComponent }
 export { extractBindings }
+export { getVueVersion }
 export { makeTemplateBindings }
 export { mergeClass }
-// export { query }
+export { query }
 export { nestedComponents }
 export { registerComponents }
 
 export default {
-  animations,
   Backdrop,
+  buildLibrary,
   columnWidths,
   compileTemplate,
   constants,
@@ -53,12 +53,12 @@ export default {
   evalEvent,
   evalProp,
   eventHandler,
-  extendMethods,
-  extendProps,
+  extendComponent,
   extractBindings,
+  getVueVersion,
   makeTemplateBindings,
   mergeClass,
-//  query,
+  query,
   nestedComponents,
   registerComponents
 }

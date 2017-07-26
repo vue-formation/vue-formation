@@ -1,4 +1,10 @@
 /* eslint-disable */
 export default function dbg () {
-  return console.log.apply(console, [...arguments])
+  let args = [...arguments]
+  if (args.length) {
+    let msg = ['[vue-formation]:'].concat(args)
+    return args[0] instanceof Error
+      ? console.warn.apply(console, msg)
+      : console.log.apply(console, msg)
+  }
 }

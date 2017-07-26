@@ -33,7 +33,7 @@ export default {
                   text: 'Close',
                   on: {
                     click () {
-                      this.eventHub.$emit('mymodal.modal.hide')
+                      this.emitEvent('mymodal.modal.hide')
                     }
                   }
                 }
@@ -108,7 +108,7 @@ export default {
                       text: 'DEEP',
                       on: {
                         click () {
-                          this.eventHub.$emit('modal.show')
+                          this.emitEvent('mymodal.modal.show')
                         }
                       }
                     }

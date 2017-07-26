@@ -2,7 +2,7 @@
  * @author Branden Horiuchi <bhoriuchi@gmail.com>
  * @description Deep set Vue.js objects
  */
-import _ from './litedash/dash'
+import _ from './litedash/dash.index'
 // import Vue from 'vue'
 
 const INVALID_KEY_RX = /^\d|[^a-zA-Z0-9_]/gm
@@ -50,6 +50,8 @@ function getPaths (obj, current = '', paths = []) {
   return _.uniq(paths)
 }
 
+export const VUEX_MUTATION = 'VUEX_DEEP_SET'
+
 /**
  * converts a path string to one usable by deepModel
  * @param path
@@ -89,7 +91,7 @@ export function vueSet (obj, path, value, Vue) {
 export function vuexSet (path, value, Vue) {
   let store = _.get(this, '$store')
   if (!store) throw new Error('VueDeepSet: could not find vuex store object on instance')
-  store[store.commit ? 'commit' : 'dispatch']('VUEX_DEEP_SET', { path, value, Vue })
+  store[store.commit ? 'commit' : 'dispatch'](VUEX_MUTATION, { path, value, Vue })
 }
 
 /**

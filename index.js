@@ -359,6 +359,18 @@ function map(obj, fn) {
 map._accepts = [Object, Array];
 
 /* eslint-disable */
+function mapKeys(obj, fn) {
+  var newObj = {};
+  forEach(obj, function (v, k) {
+    var newKey = fn(v, k);
+    newObj[typeof newKey === 'string' ? newKey : k] = v;
+  });
+  return newObj;
+}
+
+mapKeys._accepts = [Object];
+
+/* eslint-disable */
 function isDate(obj) {
   return obj instanceof Date;
 }
@@ -410,6 +422,42 @@ function merge() {
 
 merge._accepts = [Object];
 merge._dependencies = ['dash.isHash', 'dash.forEach', 'dash.includes'];
+
+/* eslint-disable */
+function omitBy(obj, fn) {
+  var newObj = {};
+  if (!isHash(obj)) return newObj;
+  forEach(obj, function (v, k) {
+    if (!fn(v, k)) newObj[k] = v;
+  });
+  return newObj;
+}
+
+omitBy._accepts = [Object];
+omitBy._dependencies = ['dash.isHash', 'dash.forEach'];
+
+/* eslint-disable */
+function omit(obj, omits) {
+  omits = Array.isArray(omits) ? omits : [];
+  return omitBy(obj, function (v, k) {
+    return omits.indexOf(k) !== -1;
+  });
+}
+
+omit._accepts = [Object];
+omit._dependencies = ['dash.omitBy'];
+
+/* eslint-disable */
+function properCase(string) {
+  var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
+
+  if (!isString(string)) return '';
+  return string.replace(/[\s-_]+/g, '-').split('-').map(function (v) {
+    return v.charAt(0).toUpperCase() + v.slice(1).toLowerCase();
+  }).join(separator);
+}
+
+properCase._accepts = [String];
 
 /* eslint-disable */
 function identity(value) {
@@ -505,7 +553,7 @@ without._accepts = [Array];
 without._dependencies = ['dash.forEach', 'dash.includes'];
 
 /* eslint-disable */
-var _ = {
+var _dash = {
   forEach: forEach,
   get: get,
   has: has,
@@ -520,7 +568,10 @@ var _ = {
   kebabCase: kebabCase,
   keys: keys,
   map: map,
+  mapKeys: mapKeys,
   merge: merge,
+  omit: omit,
+  properCase: properCase,
   reduce: reduce,
   set: set$1,
   sum: sum,
@@ -530,82 +581,38 @@ var _ = {
   without: without,
   range: range,
   isHash: isHash,
+  omitBy: omitBy,
   identity: identity,
   isDate: isDate
 };
 
-var dash = Object.freeze({
-	forEach: forEach,
-	get: get,
-	has: has,
-	includes: includes,
-	intersection: intersection,
-	isArray: isArray,
-	isBoolean: isBoolean,
-	isFunction: isFunction,
-	isNumber: isNumber,
-	isObject: isObject,
-	isString: isString,
-	kebabCase: kebabCase,
-	keys: keys,
-	map: map,
-	merge: merge,
-	reduce: reduce,
-	set: set$1,
-	sum: sum,
-	toPath: toPath,
-	union: union,
-	uniq: uniq,
-	without: without,
-	range: range,
-	isHash: isHash,
-	identity: identity,
-	isDate: isDate,
-	default: _
-});
-
-var INCREMENT = 0.01;
-
-function calcTimeout(from, to, duration) {
-  return Math.ceil(duration / (Math.abs(to - from) / INCREMENT));
-}
-
-function fadeIn(el, options) {
-  el.style.opacity = 0;
-  options = (typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object' ? options : {};
-  var toOpacity = options.toOpacity || 1;
-  var ms = calcTimeout(0, toOpacity, options.duration || 200);
-
-  var linear = function linear() {
-    el.style.display = 'block';
-    el.style.opacity = +el.style.opacity + INCREMENT;
-
-    if (+el.style.opacity < toOpacity) {
-      setTimeout(linear, ms);
-    }
-  };
-  linear();
-}
-
-function fadeOut(el, options) {
-  options = (typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object' ? options : {};
-  var ms = calcTimeout(+el.style.opacity, 0, options.duration || 200);
-  var linear = function linear() {
-    el.style.opacity = +el.style.opacity - INCREMENT;
-
-    if (+el.style.opacity > 0) {
-      setTimeout(linear, ms);
-    } else {
-      el.style.display = 'none';
-    }
-  };
-  linear();
-}
-
-var animations = {
-  fadeIn: fadeIn,
-  fadeOut: fadeOut
+var DashChain = function DashChain(obj) {
+  this._value = obj;
 };
+
+DashChain.prototype.value = function () {
+  return this._value;
+};
+
+var dash = function dash(obj) {
+  return new DashChain(obj);
+};
+
+var _loop = function _loop(name) {
+  var fn = _dash[name];
+  dash[name] = fn;
+  if (fn._chainable !== false) {
+    DashChain.prototype[name] = function () {
+      var args = [this._value].concat([].concat(Array.prototype.slice.call(arguments)));
+      this._value = fn.apply(this, args);
+      return fn._terminates === true ? this._value : this;
+    };
+  }
+};
+
+for (var name in _dash) {
+  _loop(name);
+}
 
 function Backdrop$1(Vue$$1, version, vm) {
   var BackdropComponent = Vue$$1.extend({
@@ -656,59 +663,6 @@ function Backdrop$1(Vue$$1, version, vm) {
   };
 }
 
-function columnWidths(columns) {
-  var COL_LIMIT = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 12;
-
-  var filledFirst = false;
-  var unset = 0;
-  var runningCount = 0;
-  var widths = map(columns, function (col, idx) {
-    var remaining = columns.length - (idx + 1);
-    if (isNumber(col.colspan)) {
-      var currentWidth = col.colspan + runningCount + remaining > COL_LIMIT ? 1 : col.colspan;
-      runningCount += currentWidth;
-      return currentWidth;
-    }
-    unset++;
-    return 0;
-  });
-
-  if (unset) {
-    var sum$$1 = sum(widths);
-    var defWidth = Math.floor((COL_LIMIT - sum$$1) / unset);
-    var firstWidth = defWidth + COL_LIMIT % unset;
-    forEach(widths, function (width, i) {
-      if (!width) {
-        if (!filledFirst) {
-          widths[i] = firstWidth;
-        } else {
-          widths[i] = defWidth;
-        }
-      }
-    });
-  }
-  return widths;
-}
-
-function compileTemplate(info, frameworks, framework, widgetName, interpolations) {
-  var template = get(frameworks, '["' + framework + '"].components["' + widgetName + '"].template');
-  if (!template) {
-    template = '<div></div>';
-    console.error('[vue-formation]: unable to find component "' + widgetName + '" in current ' + framework + ' framework');
-  }
-
-  // if template is a function call it and pass the version
-  template = isFunction(template) ? template(info) : template;
-
-  forEach(interpolations, function (_ref) {
-    var tag = _ref.tag,
-        value = _ref.value;
-
-    template = template.replace(tag, value);
-  });
-  return template;
-}
-
 var BOOTSTRAP = 'bootstrap';
 var MATERIALIZE = 'materialize';
 var SEMANTICUI = 'semanticui';
@@ -734,25 +688,446 @@ var constants = {
   TAG_FOOT_COMPONENTS: TAG_FOOT_COMPONENTS
 };
 
+var BUTTON_CLASS_MAP = {
+  default: 'btn-default',
+  primary: 'btn-primary',
+  success: 'btn-success',
+  info: 'btn-info',
+  warning: 'btn-warning',
+  danger: 'btn-danger',
+  link: 'btn-link'
+};
+
+function columnClass(width) {
+  return ['col-sm-' + width];
+}
+
+var bootstrap = {
+  name: 'bootstrap',
+  maxCols: 12,
+  columnClass: columnClass,
+  buttonClassMap: BUTTON_CLASS_MAP,
+  components: {
+    A: {
+      template: '<a ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</a>'
+    },
+    Button: {
+      classMap: BUTTON_CLASS_MAP,
+      template: function template(f, binding, component) {
+        return '<button type="button" class="btn ' + f.common.defaultClass(BUTTON_CLASS_MAP, component) + '" ' + TAG_BINDINGS + '>\n          {{config.text}}\n          ' + TAG_COMPONENTS + '\n        </button>';
+      }
+    },
+    Container: {
+      template: '<div class="container" ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
+    },
+    Div: {
+      template: '<div ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
+    },
+    FormGrid: {
+      template: function template(_ref) {
+        var version = _ref.version;
+
+        return '<div ' + TAG_BINDINGS + '>\n          <form role="form">\n            <div v-for="(' + (version === 1 ? 'rIdx, row' : 'row, rIdx') + ') in config.rows">\n              <div class="row form-group">\n                <div v-for="(' + (version === 1 ? 'cIdx, col' : 'col, cIdx') + ') in row.columns" :class="columnClass(rIdx, cIdx)">\n                  <label style="width: 100%">\n                    {{col.label}}\n                    <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">\n                        *\n                    </span>\n                    ' + TAG_COMPONENTS + '\n                  </label>\n                </div>\n              </div>\n            </div>\n          </form>\n        </div>';
+      }
+    },
+    Modal: {
+      template: function template(_ref2) {
+        var version = _ref2.version;
+
+        return '<div ' + TAG_BINDINGS + '>\n          ' + (version === 1 ? '' : '<transition name="formation-fade">') + '\n          <div v-show="show" ' + (version === 1 ? 'transition="formation-fade-vue1x"' : '') + ' \n          :class="{ \'formation-modal-blur-area\': dismissable }" @click="dismiss" @keyup.esc="dismiss"\n          :style="{ zIndex: zIndex, position: \'fixed\', top: 0, left: 0, right: 0, bottom: 0, width: \'auto\', height: \'auto\' }">\n            <div class="modal-dialog">\n              <div class="modal-content">\n                <div class="modal-header" v-if="hasPath(config, \'header\')">\n                  <h4 class="modal-title" v-if="hasPath(config, \'header.text\')" v-text="config.header.text"></h4>\n                  ' + TAG_HEAD_COMPONENTS + '\n                </div>\n                <div class="modal-body">\n                  <p v-if="hasPath(config, \'body.text\')" v-text="config.body.text"></p>\n                  ' + TAG_COMPONENTS + '\n                </div>\n                <div class="modal-footer" v-if="hasPath(config, \'footer\')">\n                  ' + TAG_FOOT_COMPONENTS + '\n                  <button class="btn btn-default" v-if="hasPath(config, \'footer.closeButton\')" type="button" \n                  @click="hideModal" v-text="isString(config.footer.closeButton) ? config.footer.closeButton : \'Close\'"></button>\n                </div>\n              </div>\n            </div>\n          </div>\n          ' + (version === 1 ? '' : '</transition>') + '\n        </div>';
+      }
+    },
+    TextInput: {
+      template: '<input type="text" class="form-control" ' + TAG_MODEL + ' ' + TAG_BINDINGS + '>'
+    }
+  }
+};
+
+var BUTTON_CLASS_MAP$1 = {
+  default: 'teal',
+  primary: 'blue',
+  success: 'green',
+  info: 'cyan',
+  warning: 'amber',
+  danger: 'red',
+  link: 'btn-flat'
+};
+
+function columnClass$1(width) {
+  return ['s' + width];
+}
+
+var materialize = {
+  name: 'materialize',
+  maxCols: 12,
+  columnClass: columnClass$1,
+  buttonClassMap: BUTTON_CLASS_MAP$1,
+  components: {
+    A: {
+      template: '<a ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</a>'
+    },
+    Button: {
+      template: function template(f, binding, component) {
+        return '<button type="button" class="btn ' + f.common.defaultClass(BUTTON_CLASS_MAP$1, component) + '" ' + TAG_BINDINGS + '>\n          {{config.text}}\n          ' + TAG_COMPONENTS + '\n        </button>';
+      }
+    },
+    Container: {
+      template: '<div class="container" ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
+    },
+    Div: {
+      template: '<div ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
+    },
+    FormGrid: {
+      template: function template(_ref) {
+        var version = _ref.version;
+
+        return '<div ' + TAG_BINDINGS + '>\n          <form class="col s12">\n            <div v-for="(' + (version === 1 ? 'rIdx, row' : 'row, rIdx') + ') in config.rows" class="row">\n              <div v-for="(' + (version === 1 ? 'cIdx, col' : 'col, cIdx') + ') in row.columns" class="col input-field" :class="columnClass(rIdx, cIdx)">\n                ' + TAG_COMPONENTS + '\n                <label :class="{ active: isFocused[\'r\' + rIdx + \'c\' + cIdx] || value[col.config.model] || col.config.placeholder }">\n                  {{col.label}}\n                  <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">\n                      *\n                  </span>\n                </label>\n              </div>\n            </div>\n          </form>\n        </div>';
+      }
+    },
+    Modal: {
+      template: function template(_ref2) {
+        var version = _ref2.version;
+
+        return '<div ' + TAG_BINDINGS + '>\n          ' + (version === 1 ? '' : '<transition name="formation-fade">') + '\n          <div v-show="show" ' + (version === 1 ? 'transition="formation-fade-vue1x"' : '') + '\n          :class="{ \'formation-modal-blur-area\': dismissable }" @click="dismiss"\n          :style="{ position: \'fixed\', top: 0, left: 0, right: 0, bottom: 0, height: \'auto\', width: \'auto\', \'z-index\': zIndex }">\n            <div class="modal" style="display: block; top: 10%;">\n              <div class="modal-content">\n                <h4 v-if="hasPath(config, \'header.text\') && !hasPath(config, \'header.components\')"\n                v-text="config.header.text"></h4>\n                ' + TAG_HEAD_COMPONENTS + '\n                <p v-if="hasPath(config, \'body.text\')" v-text="config.body.text"></p>\n                ' + TAG_COMPONENTS + '\n              </div>\n              <div class="modal-footer" v-if="hasPath(config, \'footer\')">\n                ' + TAG_FOOT_COMPONENTS + '\n                <button class="btn teal" v-if="hasPath(config, \'footer.closeButton\')" type="button" \n                @click="hideModal" v-text="isString(config.footer.closeButton) ? config.footer.closeButton : \'Close\'"></button>\n              </div>\n            </div>\n          </div>\n          ' + (version === 1 ? '' : '</transition>') + '\n        </div>';
+      }
+    },
+    TextInput: {
+      template: '<input type="text" class="validate" ' + TAG_MODEL + ' ' + TAG_BINDINGS + '>'
+    }
+  }
+};
+
+var BUTTON_CLASS_MAP$2 = {
+  default: 'basic',
+  primary: 'primary',
+  success: 'positive',
+  info: 'teal',
+  warning: 'orange',
+  danger: 'negative',
+  link: 'basic'
+};
+
+function columnClass$2(width) {
+  var w = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen'];
+
+  return [w[width], 'wide', 'field'];
+}
+
+var semanticui = {
+  name: 'semanticui',
+  maxCols: 16,
+  columnClass: columnClass$2,
+  buttonClassMap: BUTTON_CLASS_MAP$2,
+  components: {
+    A: {
+      template: '<a ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</a>'
+    },
+    Button: {
+      template: function template(f, binding, component) {
+        return '<button type="button" class="ui button ' + f.common.defaultClass(BUTTON_CLASS_MAP$2, component) + '" ' + TAG_BINDINGS + '>\n          {{config.text}}\n          ' + TAG_COMPONENTS + '\n        </button>';
+      }
+    },
+    Container: {
+      template: '<div class="container" ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
+    },
+    Div: {
+      template: '<div ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
+    },
+    FormGrid: {
+      template: function template(_ref) {
+        var version = _ref.version;
+
+        return '<div ' + TAG_BINDINGS + '>\n          <form class="ui form">\n            <div class="field" v-for="(' + (version === 1 ? 'rIdx, row' : 'row, rIdx') + ') in config.rows">\n              <div class="fields">\n                <div v-for="(' + (version === 1 ? 'cIdx, col' : 'col, cIdx') + ') in row.columns" :class="columnClass(rIdx, cIdx)">\n                  <label style="width: 100%">\n                    {{col.label}}\n                    <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">\n                        *\n                    </span>\n                    ' + TAG_COMPONENTS + '\n                  </label>\n                </div>\n              </div>\n            </div>\n          </form>\n        </div>';
+      }
+    },
+    Modal: {
+      template: function template(_ref2) {
+        var version = _ref2.version;
+
+        return '<div ' + TAG_BINDINGS + '>\n          ' + (version === 1 ? '' : '<transition name="formation-fade">') + '\n          <div v-show="show" ' + (version === 1 ? 'transition="formation-fade-vue1x"' : '') + '\n          :class="{ \'formation-modal-blur-area\': dismissable }" @click="dismiss"\n          :style="{ position: \'fixed\', top: 0, left: 0, right: 0, bottom: 0, height: \'auto\', width: \'auto\', \'z-index\': zIndex }">\n            <div class="ui modal" style="display: block; top: 10%;">\n              <div class="header" v-if="hasPath(config, \'header.text\') && !hasPath(config, \'header.components\')"\n              v-text="config.header.text"></div>\n              <div class="header" v-if="hasPath(config, \'header.components\')">\n                ' + TAG_HEAD_COMPONENTS + '\n              </div>\n              <div class="content">\n                <p v-if="hasPath(config, \'body.text\')" v-text="config.body.text"></p>\n                ' + TAG_COMPONENTS + '\n              </div>\n              <div class="actions">\n                ' + TAG_FOOT_COMPONENTS + '\n                <button class="ui button basic" v-if="hasPath(config, \'footer.closeButton\')" type="button" \n                @click="hideModal" v-text="isString(config.footer.closeButton) ? config.footer.closeButton : \'Close\'"></button>\n              </div>\n            </div>\n          </div>\n          ' + (version === 1 ? '' : '</transition>') + '\n        </div>';
+      }
+    },
+    TextInput: {
+      template: '<div class="ui input"><input type="text" ' + TAG_MODEL + ' ' + TAG_BINDINGS + '></div>'
+    }
+  }
+};
+
+var baseFrameworks = {
+  bootstrap: bootstrap,
+  materialize: materialize,
+  semanticui: semanticui
+};
+
+function A(info) {
+  return info.f.common.extendComponent(info, [], {}, true);
+}
+
+function Button(info) {
+  return info.f.common.extendComponent(info, [], {}, true);
+}
+
+function Container(info) {
+  return info.f.common.extendComponent(info, [], {}, true);
+}
+
+function Div(info) {
+  return info.f.common.extendComponent(info, [], {}, true);
+}
+
+function FormGrid(info) {
+  var COL_LIMIT = dash.get(info.f.framework, 'maxCols', 12);
+  var colClasser = dash.get(info.f.framework, 'columnClass', function () {
+    return [];
+  });
+
+  return info.f.common.extendComponent(info, [{
+    tag: TAG_COMPONENTS,
+    value: '<component :is="kebab(\'formation-\' + col.type)"\n          :config="col.config || {}"\n          :components=\'col.components || []\'\n          ' + (info.f.version === 1 ? ':value.sync' : 'v-model') + '="value">\n        </component>'
+  }], {
+    methods: {
+      columnClass: function columnClass(rowIdx, colIdx) {
+        return colClasser(dash.get(info.f.common.columnWidths(dash.get(this.config, 'rows[' + rowIdx + '].columns'), COL_LIMIT), '[' + colIdx + ']', 1));
+      }
+    },
+    computed: {
+      _components: function _components() {
+        return this.config.rows.reduce(function (acc, row) {
+          return acc.concat(row.columns);
+        }, []);
+      }
+    },
+    data: function data() {
+      return {
+        isFocused: {}
+      };
+    },
+    created: function created() {
+      info.f.common.registerComponents(this, info.f, { components: this._components });
+    }
+  });
+}
+
+function Modal(info) {
+  return info.f.common.extendComponent(info, [{
+    tag: info.f.common.constants.TAG_HEAD_COMPONENTS,
+    value: info.f.common.nestedComponents(info.f.version, 'headerComponents')
+  }, {
+    tag: info.f.common.constants.TAG_COMPONENTS,
+    value: info.f.common.nestedComponents(info.f.version, 'bodyComponents')
+  }, {
+    tag: info.f.common.constants.TAG_FOOT_COMPONENTS,
+    value: info.f.common.nestedComponents(info.f.version, 'footerComponents')
+  }], {
+    methods: {
+      dismiss: function dismiss(e) {
+        if (e.target.classList.contains('formation-modal-blur-area')) {
+          this.hideModal();
+        }
+      },
+      showModal: function showModal() {
+        var _this = this;
+
+        this.emitEvent('backdrop.show', this._uid);
+        window.setTimeout(function () {
+          _this.show = true;
+        }, 100);
+      },
+      hideModal: function hideModal() {
+        var _this2 = this;
+
+        this.show = false;
+        window.setTimeout(function () {
+          _this2.emitEvent('backdrop.hide', _this2._uid);
+        }, 100);
+      }
+    },
+    computed: {
+      headerComponents: function headerComponents() {
+        return dash.get(this, 'config.header.components', []);
+      },
+      bodyComponents: function bodyComponents() {
+        return dash.get(this, 'config.body.components', []);
+      },
+      footerComponents: function footerComponents() {
+        return dash.get(this, 'config.footer.components', []);
+      }
+    },
+    data: function data() {
+      return {
+        show: false,
+        zIndex: this.config.zIndex || 9000,
+        dismissable: this.config.dismissable !== false
+      };
+    },
+    created: function created() {
+      var _this3 = this;
+
+      var name = this.config.name;
+
+      if (name) {
+        this.onEvent(name + '.modal.show', this.showModal);
+        this.onEvent(name + '.modal.hide', this.hideModal);
+      }
+
+      this.onEvent('modal.hide', this.hideModal);
+      this.onLocalEvent('Escape', function () {
+        if (_this3.show) _this3.hideModal();
+      });
+
+      // register the individual modal components
+      if (this.headerComponents.length) {
+        info.f.common.registerComponents(this, info.f, { components: this.headerComponents });
+      }
+      if (this.bodyComponents.length) {
+        info.f.common.registerComponents(this, info.f, { components: this.bodyComponents });
+      }
+      if (this.footerComponents.length) {
+        info.f.common.registerComponents(this, info.f, { components: this.footerComponents });
+      }
+    }
+  });
+}
+
+function TextInput(info) {
+  return info.f.common.extendComponent(info, [{
+    tag: info.f.common.constants.TAG_MODEL,
+    value: ' v-model="value[config.model]" '
+  }], {
+    methods: {
+      validate: function validate() {
+        return this.touched && this.valid;
+      }
+    },
+    computed: {
+      _value: function _value() {
+        return dash.has(this.config, 'model') ? this.value[this.config.model] : null;
+      }
+    },
+    watch: {
+      _value: function _value(val) {
+        this.touched = true;
+        this.valid = dash.isFunction(this.config.validate) ? this.config.validate.call(this, val) : true;
+      }
+    },
+    data: function data() {
+      return {
+        valid: false,
+        touched: false
+      };
+    }
+  });
+}
+
+var baseComponents = {
+  A: A,
+  Button: Button,
+  Container: Container,
+  Div: Div,
+  FormGrid: FormGrid,
+  Modal: Modal,
+  TextInput: TextInput
+};
+
+function buildLibrary$1(options, plugins) {
+  var frameworks = dash.merge({}, baseFrameworks, dash.get(options, 'frameworks', {}));
+  var components = dash.merge({}, baseComponents, dash.get(options, 'components', {}));
+
+  // process any plugins
+  dash.forEach(plugins, function (plugin) {
+    if (dash.isFunction(plugin.components)) dash.merge(components, plugin.components(common));
+    if (dash.has(plugin, 'frameworks')) dash.merge(frameworks, plugin.frameworks);
+  });
+
+  return { frameworks: frameworks, components: components };
+}
+
+function columnWidths(columns) {
+  var COL_LIMIT = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 12;
+
+  var filledFirst = false;
+  var unset = 0;
+  var runningCount = 0;
+  var widths = dash.map(columns, function (col, idx) {
+    var remaining = columns.length - (idx + 1);
+    if (dash.isNumber(col.colspan)) {
+      var currentWidth = col.colspan + runningCount + remaining > COL_LIMIT ? 1 : col.colspan;
+      runningCount += currentWidth;
+      return currentWidth;
+    }
+    unset++;
+    return 0;
+  });
+
+  if (unset) {
+    var sum = dash.sum(widths);
+    var defWidth = Math.floor((COL_LIMIT - sum) / unset);
+    var firstWidth = defWidth + COL_LIMIT % unset;
+    dash.forEach(widths, function (width, i) {
+      if (!width) {
+        if (!filledFirst) {
+          widths[i] = firstWidth;
+        } else {
+          widths[i] = defWidth;
+        }
+      }
+    });
+  }
+  return widths;
+}
+
+var compileTemplate = function (f, binding, component, name, interpolations) {
+  name = dash.properCase(name.replace(/^formation-/i, ''), '');
+  var template = dash.get(f.framework.components, name + '.template');
+  interpolations = dash.isArray(interpolations) ? interpolations : [];
+
+  if (!template) {
+    template = '<div></div>';
+    console.error('[vue-formation]: unable to find component "' + name + '" in current ' + f.frameworkName + ' framework');
+  }
+
+  // generate the template code if a function is passed. this is also an opportunity to add more
+  // interpolations and bindings
+  template = dash.isFunction(template) ? template(f, binding, component, name, interpolations) : template;
+
+  // add default interpolations, to override these the interpolation can be specified in the object
+  interpolations.push({
+    tag: TAG_BINDINGS,
+    value: ' ' + f.common.makeTemplateBindings(binding) + ' '
+  });
+
+  dash.forEach(interpolations, function (_ref) {
+    var tag = _ref.tag,
+        value = _ref.value;
+
+    template = template.replace(tag, value);
+  });
+  return template;
+};
+
 /* eslint-disable */
 function dbg() {
-  return console.log.apply(console, [].concat(Array.prototype.slice.call(arguments)));
+  var args = [].concat(Array.prototype.slice.call(arguments));
+  if (args.length) {
+    var msg = ['[vue-formation]:'].concat(args);
+    return args[0] instanceof Error ? console.warn.apply(console, msg) : console.log.apply(console, msg);
+  }
 }
 
 function mergeClass(c) {
   var def = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
   var obj = {};
-  c = isString(c) ? c.split(/\s+/) : c;
-  if (isArray(c)) {
-    forEach(c, function (n) {
+  c = dash.isString(c) ? c.split(/\s+/) : c;
+  if (dash.isArray(c)) {
+    dash.forEach(c, function (n) {
       obj[n] = true;
     });
-  } else if (isObject(c)) {
+  } else if (dash.isObject(c)) {
     obj = c;
   }
 
-  return merge({}, def, obj);
+  return dash.merge({}, def, obj);
 }
 
 function defaultClass(hive, component) {
@@ -762,16 +1137,16 @@ function defaultClass(hive, component) {
       type = _ref.type,
       attrs = _ref.attrs;
 
-  var classKeys = keys(mergeClass({}, get(attrs, 'class', {})));
-  var btnClassKeys = keys(hive);
-  return type ? hive[type] || hive.default : !intersection(classKeys, btnClassKeys).length ? hive.default : '';
+  var classKeys = dash.keys(mergeClass({}, dash.get(attrs, 'class', {})));
+  var btnClassKeys = dash.keys(hive);
+  return type ? hive[type] || hive.default : !dash.intersection(classKeys, btnClassKeys).length ? hive.default : '';
 }
 
 function ensureConfig(config) {
-  if (!isObject(config)) return { attrs: {}, data: {}, on: {} };
-  if (!isObject(config.attrs)) config.attrs = {};
-  if (!isObject(config.data)) config.data = {};
-  if (!isObject(config.on)) config.on = {};
+  if (!dash.isObject(config)) return { attrs: {}, data: {}, on: {} };
+  if (!dash.isObject(config.attrs)) config.attrs = {};
+  if (!dash.isObject(config.data)) config.data = {};
+  if (!dash.isObject(config.on)) config.on = {};
   return config;
 }
 
@@ -792,33 +1167,33 @@ var KEYMAP = {
 };
 
 function isKey(e, key) {
-  return includes(KEYMAP[key], e.key || e.code || e.keyCode || e.which);
+  return dash.includes(KEYMAP[key], e.key || e.code || e.keyCode || e.which);
 }
 
 function evalEvent(event, vm) {
-  if (isFunction(event)) return function (e) {
+  if (dash.isFunction(event)) return function (e) {
     return event.bind(vm)(e, vm.config, vm.value);
   };
-  if (!isObject(event)) return function () {
+  if (!dash.isObject(event)) return function () {
     return false;
   };
 
   var handler = event.handler,
       modifiers = event.modifiers;
 
-  handler = isFunction(handler) ? handler : function () {
+  handler = dash.isFunction(handler) ? handler : function () {
     return false;
   };
 
-  modifiers = isArray(modifiers) ? modifiers : [];
+  modifiers = dash.isArray(modifiers) ? modifiers : [];
 
   return function (e) {
-    var keys$$1 = [];
-    var modKeys = without(modifiers, 'stop', 'prevent', 'capture', 'self', 'once');
+    var keys = [];
+    var modKeys = dash.without(modifiers, 'stop', 'prevent', 'capture', 'self', 'once');
     var config = vm.config;
     var value = vm.value;
 
-    forEach(modifiers, function (mod) {
+    dash.forEach(modifiers, function (mod) {
       switch (mod) {
         case 'stop':
           e.stopPropagation();
@@ -832,37 +1207,37 @@ function evalEvent(event, vm) {
         default:
           // get combo modifier keys
           if (mod === 'ctrl' && (isKey(e, mod) || e.ctrlKey)) {
-            keys$$1.push(mod);
+            keys.push(mod);
           }
           if (mod === 'alt' && (isKey(e, mod) || e.altKey)) {
-            keys$$1.push(mod);
+            keys.push(mod);
           }
           if (mod === 'shift' && (isKey(e, mod) || e.shiftKey)) {
-            keys$$1.push(mod);
+            keys.push(mod);
           }
           if (mod === 'meta' && (isKey(e, mod) || e.metaKey)) {
-            keys$$1.push(mod);
+            keys.push(mod);
           }
 
           // get keycode number keys
-          if (isNumber(mod) && (e.keyCode === mod || e.which === mod)) {
-            keys$$1.push(mod);
+          if (dash.isNumber(mod) && (e.keyCode === mod || e.which === mod)) {
+            keys.push(mod);
           }
 
           // get keymap keys or strings
-          if (has(KEYMAP, mod)) {
+          if (dash.has(KEYMAP, mod)) {
             if (isKey(e, mod)) {
-              keys$$1.push(mod);
+              keys.push(mod);
             }
-          } else if (isString(mod) && (e.key === mod || e.code === mod)) {
-            keys$$1.push(mod);
+          } else if (dash.isString(mod) && (e.key === mod || e.code === mod)) {
+            keys.push(mod);
           }
           break;
       }
     });
 
     // check that the correct key combo was entered
-    if (modKeys.length && intersection(modKeys, keys$$1).length !== modKeys.length) return false;
+    if (modKeys.length && dash.intersection(modKeys, keys).length !== modKeys.length) return false;
 
     // call the original handler with hte
     handler.apply(vm, [e, config, value]);
@@ -880,22 +1255,22 @@ function evalProp(types, value, vm, config, data, defaultValue) {
 
       switch (type) {
         case Function:
-          if (isFunction(value)) return value(vm, config, data);
+          if (dash.isFunction(value)) return value(vm, config, data);
           break;
         case Boolean:
-          if (isBoolean(value)) return value;
+          if (dash.isBoolean(value)) return value;
           break;
         case String:
-          if (isString(value)) return value;
+          if (dash.isString(value)) return value;
           break;
         case Date:
-          if (isDate(value)) return value;
+          if (dash.isDate(value)) return value;
           break;
         case Number:
-          if (isNumber(value)) return value;
+          if (dash.isNumber(value)) return value;
           break;
         case Object:
-          if (isObject(value)) return JSON.stringify(value);
+          if (dash.isObject(value)) return JSON.stringify(value);
           break;
         default:
           break;
@@ -920,94 +1295,99 @@ function evalProp(types, value, vm, config, data, defaultValue) {
 }
 
 function eventHandler(name, event) {
-  var handler = get(this.config, 'on.' + name);
+  var handler = dash.get(this.config, 'on.' + name);
   return handler ? evalEvent(handler, this)(event) : null;
 }
 
-function extendMethods() {
-  var methods = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+function extendComponent(_ref, interpolations, def, extendComponents) {
+  var f = _ref.f,
+      binding = _ref.binding,
+      component = _ref.component,
+      name = _ref.name;
 
-  return merge({}, methods, {
-    eventHandler: eventHandler,
-    getAttr: function getAttr(name) {
-      return evalProp([Function, String, Boolean, Number, Object], this.config.attrs[name], this, this.config, this.value, null);
-    },
-    getData: function getData(name) {
-      return evalProp([Function, String, Boolean, Number, Object], this.config.data[name], this, this.config, this.value, null);
-    },
-    hasPath: function hasPath(obj, path) {
-      return has(obj, path);
-    },
-    hasAttr: function hasAttr(name) {
-      return has(this, 'config.attrs.' + name);
-    },
-    hasData: function hasData(name) {
-      return has(this, 'config.data.' + name);
-    },
-    hasEvent: function hasEvent(name) {
-      return has(this, 'config.on.' + name);
-    },
-    kebab: function kebab(name) {
-      return kebabCase(name);
-    },
-    isString: function isString$$1(val) {
-      return isString(val);
-    }
-  });
-}
+  var model = f.version === 1 ? { value: { type: Object, required: true, twoWay: true } } : { value: { type: Object, required: true }
 
-function extendProps(version) {
-  var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    // if extend components, add a components interpolation
+  };if (extendComponents) {
+    interpolations.push({
+      tag: f.common.constants.TAG_COMPONENTS,
+      value: f.common.nestedComponents(f.version)
+    });
+  }
 
-  var model = version === 1 ? {
-    value: {
-      type: Object,
-      required: true,
-      twoWay: true
-    }
-  } : {
-    value: {
-      type: Object,
-      required: true
-    }
-  };
-
-  return merge({}, props, model, {
-    config: {
-      type: Object,
-      default: function _default() {
-        return {};
+  var extended = {
+    name: name,
+    template: def.template || f.common.compileTemplate(f, binding, component, name, interpolations),
+    props: dash.merge({}, def.props, model, {
+      config: {
+        type: Object,
+        default: function _default() {
+          return {};
+        }
+      },
+      components: {
+        type: Array,
+        default: function _default() {
+          return [];
+        }
       }
-    },
-    components: {
-      type: Array
-    },
-    bindings: {
-      type: Object,
-      default: function _default() {
-        return {};
+    }),
+    methods: dash.merge({}, def.methods, {
+      eventHandler: f.common.eventHandler,
+      emitEvent: function emitEvent(event, value) {
+        f.eventHub.$emit(event, value);
+      },
+      onEvent: function onEvent(event, handler) {
+        f.eventHub.$on(event, handler);
+      },
+      offEvent: function offEvent(event, handler) {
+        f.eventHub.$off(event, handler);
+      },
+      emitLocalEvent: function emitLocalEvent(event, value) {
+        f.localHub.$emit(event, value);
+      },
+      onLocalEvent: function onLocalEvent(event, handler) {
+        f.localHub.$on(event, handler);
+      },
+      offLocalEvent: function offLocalEvent(event, handler) {
+        f.localHub.$off(event, handler);
+      },
+      getAttr: function getAttr(name) {
+        return f.common.evalProp([Function, String, Boolean, Number, Object], this.config.attrs[name], this, this.config, this.value, null);
+      },
+      getData: function getData(name) {
+        return f.common.evalProp([Function, String, Boolean, Number, Object], this.config.data[name], this, this.config, this.value, null);
+      },
+      hasPath: function hasPath(obj, path) {
+        return dash.has(obj, path);
+      },
+      hasAttr: function hasAttr(name) {
+        return dash.has(this, 'config.attrs.' + name);
+      },
+      hasData: function hasData(name) {
+        return dash.has(this, 'config.data.' + name);
+      },
+      hasEvent: function hasEvent(name) {
+        return dash.has(this, 'config.on.' + name);
+      },
+      kebab: function kebab(name) {
+        return dash.kebabCase(name);
+      },
+      isString: function isString(val) {
+        return dash.isString(val);
       }
-    },
-    version: {
-      type: Number,
-      default: version
-    },
-    register: {
-      type: Function
-    },
-    eventHub: {
-      type: Object
-    },
-    localHub: {
-      type: Object
-    },
-    framework: {
-      type: String
-    },
-    frameworks: {
-      type: Object
-    }
-  });
+    })
+
+    // if extend components add a modified created hook
+  };if (extendComponents) {
+    extended.created = function created() {
+      f.common.registerComponents(this, f, this);
+      if (dash.isFunction(def.created)) def.created.call(this);
+    };
+  }
+
+  // merge everything together, do not merge keys that have been manually extended
+  return dash.merge(extended, dash.omit(def, dash.keys(extended)));
 }
 
 /**
@@ -1026,26 +1406,30 @@ function extractBindings$1(component) {
 
   if (type) {
     types[type] = types[type] || { attrs: ['class'], data: [], on: [] };
-    if (attrs) types[type].attrs = union(types[type].attrs, keys(attrs));
-    if (data) types[type].data = union(types[type].data, keys(data));
-    if (on) types[type].on = union(types[type].on, keys(on));
+    if (attrs) types[type].attrs = dash.union(types[type].attrs, dash.keys(attrs));
+    if (data) types[type].data = dash.union(types[type].data, dash.keys(data));
+    if (on) types[type].on = dash.union(types[type].on, dash.keys(on));
   }
 
-  if (isArray(get(component, 'components'))) {
-    forEach(component.components, function (c) {
+  if (dash.isArray(dash.get(component, 'components'))) {
+    dash.forEach(component.components, function (c) {
       extractBindings$1(c, types);
     });
   }
-  if (isArray(get(component, 'rows'))) {
-    forEach(component.rows, function (row) {
-      if (isArray(get(row, 'columns'))) {
-        forEach(row.columns, function (col) {
+  if (dash.isArray(dash.get(component, 'rows'))) {
+    dash.forEach(component.rows, function (row) {
+      if (dash.isArray(dash.get(row, 'columns'))) {
+        dash.forEach(row.columns, function (col) {
           if (col.config) extractBindings$1(col, types);
         });
       }
     });
   }
   return types;
+}
+
+function getVueVersion$1(Vue$$1) {
+  return Number((dash.isString(Vue$$1.version) ? Vue$$1.version : '2.0.0').split('.')[0]);
 }
 
 function makeTemplateBindings(binding) {
@@ -1055,49 +1439,270 @@ function makeTemplateBindings(binding) {
 
   var bindings = [];
 
-  forEach(attrs, function (attr) {
+  dash.forEach(attrs, function (attr) {
     bindings.push(':' + attr + '="hasAttr(\'' + attr + '\') ? getAttr(\'' + attr + '\') : null"');
   });
 
-  forEach(data, function (datum) {
+  dash.forEach(data, function (datum) {
     bindings.push(':data-' + datum + '="hasData(\'' + datum + '\') ? getData(\'' + datum + '\') : null"');
   });
 
-  forEach(on, function (evt) {
+  dash.forEach(on, function (evt) {
     bindings.push('v-on:' + evt + '="hasEvent(\'' + evt + '\') ? eventHandler(\'' + evt + '\', $event) : null"');
   });
 
   return bindings.join(' ');
 }
 
-function nestedComponents(version) {
-  var componentsObject = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'components';
-
-  return '\n<component v-for="' + (version === 1 ? '(idx, c)' : '(c, idx)') + ' in ' + componentsObject + '"\n  :key="idx"\n  :is="kebab(\'formation-\' + c.type)"\n  :config="c.config || {}"\n  :components=\'c.components || []\'\n  :bindings="bindings"\n  :framework="framework"\n  :frameworks="frameworks"\n  :register="register"\n  :event-hub="eventHub"\n  :local-hub="localHub"\n  :version="' + version + '"\n  ' + (version === 1 ? ':value.sync' : 'v-model') + '="value">\n</component>';
+/* eslint-disable */
+function isArray$2(obj) {
+  return Array.isArray(obj);
 }
 
-var registerComponents$1 = function (Vue$$1, version, widgets) {
-  return function registerFormationComponents(vm, components, bindings, framework, frameworks, refresh) {
-    forEach(components, function (component) {
-      var type = component.type;
+isArray$2._accepts = ['ANY'];
 
-      var binding = get(bindings, type);
-      if (binding) {
-        forEach(widgets, function (widget, name) {
-          var typeName = kebabCase(name);
-          if (typeName === type && (!has(vm.$options.components, 'formation-' + typeName) || refresh)) {
-            vm.$options.components['formation-' + typeName] = Vue$$1.extend(widget(bindings[typeName], framework, frameworks, component, version));
+/* eslint-disable */
+function forEach$2(obj, fn) {
+  try {
+    if (isArray$2(obj)) {
+      var idx = 0;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = obj[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var val = _step.value;
+
+          if (fn(val, idx) === false) break;
+          idx++;
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
           }
-        });
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
       }
-    });
+    } else {
+      for (var key in obj) {
+        if (fn(obj[key], key) === false) break;
+      }
+    }
+  } catch (err) {
+    return;
+  }
+}
+
+forEach$2._accepts = [Object, Array];
+
+/* eslint-disable */
+var each = function each(fn) {
+  forEach$2(this.slice(0, this.length), function (v, k) {
+    return fn.bind(v)(k, v);
+  });
+};
+
+each._baseutil = true;
+
+/* eslint-disable */
+function mapWith(obj, fn) {
+  var newObj = [];
+  forEach$2(obj, function (v, k) {
+    var value = fn(v, k);
+    if (value !== undefined) newObj.push(value);
+  });
+  return newObj;
+}
+
+mapWith._accepts = [Object, Array];
+
+/* eslint-disable */
+function isObject$2(obj) {
+  return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null;
+}
+
+isObject$2._accepts = ['ANY'];
+
+/* eslint-disable */
+var mapNodes = function mapNodes(element, selector) {
+  return mapWith(element.querySelectorAll(selector), function (v) {
+    return isObject$2(v) ? v : undefined;
+  });
+};
+
+mapNodes._chainable = false;
+mapNodes._dependencies = ['dash.mapWith', 'dash.isObject'];
+
+/* eslint-disable */
+function union$2() {
+  var args = [].concat(Array.prototype.slice.call(arguments));
+  if (!args.length) return [];
+
+  try {
+    var u = args.reduce(function (prev, cur) {
+      if (!isArray$2(prev) || !isArray$2(cur)) return [];
+      return prev.concat(cur);
+    }, []);
+
+    return [].concat(toConsumableArray(new Set(u)));
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+union$2._accepts = ['ANY'];
+
+/* eslint-disable */
+var find = function find(selector) {
+  var results = [];
+  this.each(function () {
+    results = union$2(results, mapNodes(this, selector));
+  });
+  return this.init(results, this);
+};
+
+find._terminates = true;
+find._dependencies = ['query.mapNodes', 'query.each', 'dash.union'];
+
+/* eslint-disable */
+var _query = {
+  each: each,
+  find: find,
+  mapNodes: mapNodes
+};
+
+/* eslint new-cap: ["error", { "newIsCap": false }] */
+var infoName = 'liteutils';
+var infoVersion = '0.1.0';
+
+var arr = [];
+
+function htmlGenerator(html) {
+  var div = document.createElement('div');
+  div.innerHTML = html;
+  return div.childNodes;
+}
+
+var lQuery = function lQuery(selector, context) {
+  var _this = this;
+
+  var nodes = [];
+  context = context || document;
+
+  if (selector !== document) {
+    this.prevObject = context instanceof lQuery ? context : new query.fn.init(context);
+  }
+
+  if (Array.isArray(selector)) {
+    nodes = selector;
+  } else if (selector instanceof lQuery) {
+    nodes = selector.slice(0, nodes.length);
+  } else if (typeof selector === 'string') {
+    nodes = selector.match(/^</) ? htmlGenerator(selector) : mapNodes(context, selector);
+  } else {
+    nodes = [selector];
+  }
+
+  this.length = nodes.length;
+
+  forEach$2(nodes, function (node, idx) {
+    _this[idx] = node;
+  });
+};
+
+var query = function query(selector, context) {
+  return new query.fn.init(selector, context);
+};
+
+query.fn = {
+  init: function init(selector, context) {
+    lQuery.prototype = query.fn;
+    return new lQuery(selector, context);
+  }
+};
+
+query.event = {
+  active: []
+};
+
+query.uuid = function () {
+  return '' + infoName + Date.now();
+};
+
+query.Event = function Event(event, data, uuid) {
+  var _this2 = this;
+
+  classCallCheck(this, Event);
+
+  forEach$2(event, function (v, k) {
+    if (!k.match(/^[A-Z_]*$/)) _this2[k] = v;
+  });
+  this.originalEvent = event;
+  this.handlerId = uuid;
+  if (data) this.data = data;
+};
+
+forEach$2(_query, function (fn, name) {
+  if (fn._baseutil === true) query[name] = fn;
+  if (fn._chainable !== false) query.fn[name] = fn;
+});
+
+// extend array and iterator properties
+query.fn.splice = arr.splice;
+query.fn.slice = arr.slice;
+query.fn.sort = arr.sort;
+query.fn.push = arr.push;
+query.fn.length = 0;
+query.fn[infoName] = infoVersion;
+query.fn.$root = query;
+
+query.fn[Symbol.iterator] = function values() {
+  var _this3 = this;
+
+  var nextIndex = 0;
+  return {
+    next: function next() {
+      return nextIndex < _this3.length ? { value: _this3[nextIndex++], done: false } : { done: true };
+    }
   };
 };
 
-// import query from '../utils/litequery/liteutils.query'
+function nestedComponents(version) {
+  var componentsObject = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'components';
+
+  return '\n<component v-for="' + (version === 1 ? '(idx, c)' : '(c, idx)') + ' in ' + componentsObject + '"\n  :key="idx"\n  :is="kebab(\'formation-\' + c.type)"\n  :config="c.config || {}"\n  :components=\'c.components || []\'\n  ' + (version === 1 ? ':value.sync' : 'v-model') + '="value">\n</component>';
+}
+
+function registerComponents$1(vm, f, config, refresh) {
+  var bindings = f.common.extractBindings(config);
+  dash.forEach(config.components, function (component) {
+    if (!dash(component).get('type').isString().value()) return;
+
+    var shortName = dash.kebabCase(component.type.replace(/^formation-/i, '')).toLowerCase();
+    var name = 'formation-' + shortName;
+    var properName = dash.properCase(shortName, '');
+    var binding = bindings[shortName];
+    var obj = dash.get(f.components, properName);
+
+    if (binding && obj && (!dash.has(vm.$options.components, name) || refresh)) {
+      var c = obj({ f: f, binding: binding, component: component, name: name, properName: properName, shortName: shortName });
+      vm.$options.components[name] = f.vue.extend(c);
+    }
+  });
+}
+
 var common = {
-  animations: animations,
   Backdrop: Backdrop$1,
+  buildLibrary: buildLibrary$1,
   columnWidths: columnWidths,
   compileTemplate: compileTemplate,
   constants: constants,
@@ -1108,166 +1713,14 @@ var common = {
   evalEvent: evalEvent,
   evalProp: evalProp,
   eventHandler: eventHandler,
-  extendMethods: extendMethods,
-  extendProps: extendProps,
+  extendComponent: extendComponent,
   extractBindings: extractBindings$1,
+  getVueVersion: getVueVersion$1,
   makeTemplateBindings: makeTemplateBindings,
   mergeClass: mergeClass,
-  //  query,
+  query: query,
   nestedComponents: nestedComponents,
   registerComponents: registerComponents$1
-};
-
-var bootstrap = {
-  name: 'bootstrap',
-  maxCols: 12,
-  components: {
-    'a': {
-      template: '<a ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</a>'
-    },
-    'button': {
-      classMap: {
-        default: 'btn-default',
-        primary: 'btn-primary',
-        success: 'btn-success',
-        info: 'btn-info',
-        warning: 'btn-warning',
-        danger: 'btn-danger',
-        link: 'btn-link'
-      },
-      template: '<button type="button" class="btn ' + TAG_DEFAULT_CLASS + '" ' + TAG_BINDINGS + '>\n        <span v-if=\'config.iconClassLeft\' :class="config.iconClassLeft"></span>\n        <span v-if="config.text" v-text="config.text"></span>\n        <span v-if=\'config.iconClassRight\' :class="config.iconClassRight"></span>\n        <div v-if="config.html" v-html="config.html"></div>\n      </button>'
-    },
-    'container': {
-      template: '<div class="container" ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
-    },
-    'div': {
-      template: '<div ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
-    },
-    'form-grid': {
-      columnClass: function columnClass(width) {
-        return ['col-sm-' + width];
-      },
-      template: function template(_ref) {
-        var version = _ref.version;
-
-        return '<div ' + TAG_BINDINGS + '>\n          <form role="form">\n            <div v-for="(' + (version === 1 ? 'rIdx, row' : 'row, rIdx') + ') in config.rows">\n              <div class="row form-group">\n                <div v-for="(' + (version === 1 ? 'cIdx, col' : 'col, cIdx') + ') in row.columns" :class="columnClass(rIdx, cIdx)">\n                  <label style="width: 100%">\n                    {{col.label}}\n                    <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">\n                        *\n                    </span>\n                    ' + TAG_COMPONENTS + '\n                  </label>\n                </div>\n              </div>\n            </div>\n          </form>\n        </div>';
-      }
-    },
-    'modal': {
-      template: function template(_ref2) {
-        var version = _ref2.version;
-
-        return '<div ' + TAG_BINDINGS + '>\n          ' + (version === 1 ? '' : '<transition name="formation-fade">') + '\n          <div v-show="show" ' + (version === 1 ? 'transition="formation-fade-vue1x"' : '') + ' \n          :class="{ \'formation-modal-blur-area\': dismissable }" @click="dismiss" @keyup.esc="dismiss"\n          :style="{ zIndex: zIndex, position: \'fixed\', top: 0, left: 0, right: 0, bottom: 0, width: \'auto\', height: \'auto\' }">\n            <div class="modal-dialog">\n              <div class="modal-content">\n                <div class="modal-header" v-if="hasPath(config, \'header\')">\n                  <h4 class="modal-title" v-if="hasPath(config, \'header.text\')" v-text="config.header.text"></h4>\n                  ' + TAG_HEAD_COMPONENTS + '\n                </div>\n                <div class="modal-body">\n                  <p v-if="hasPath(config, \'body.text\')" v-text="config.body.text"></p>\n                  ' + TAG_COMPONENTS + '\n                </div>\n                <div class="modal-footer" v-if="hasPath(config, \'footer\')">\n                  ' + TAG_FOOT_COMPONENTS + '\n                  <button class="btn btn-default" v-if="hasPath(config, \'footer.closeButton\')" type="button" \n                  @click="hideModal" v-text="isString(config.footer.closeButton) ? config.footer.closeButton : \'Close\'"></button>\n                </div>\n              </div>\n            </div>\n          </div>\n          ' + (version === 1 ? '' : '</transition>') + '\n        </div>';
-      }
-    },
-    'text-input': {
-      template: '<input type="text" class="form-control" ' + TAG_MODEL + ' ' + TAG_BINDINGS + '>'
-    }
-  }
-};
-
-var materialize = {
-  name: 'materialize',
-  maxCols: 12,
-  components: {
-    'a': {
-      template: '<a ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</a>'
-    },
-    'button': {
-      classMap: {
-        default: 'teal',
-        primary: 'blue',
-        success: 'green',
-        info: 'cyan',
-        warning: 'amber',
-        danger: 'red',
-        link: 'btn-flat'
-      },
-      template: '<button type="button" class="btn ' + TAG_DEFAULT_CLASS + '" ' + TAG_BINDINGS + '>\n        <i v-if=\'config.iconClassLeft\' class="material-icons left" :class="config.iconClassLeft"></i>\n        <span v-if="config.text" v-text="config.text"></span>\n        <i v-if=\'config.iconClassRight\' class="material-icons right" :class="config.iconClassRight"></i>\n        <div v-if="config.html" v-html="config.html"></div>\n      </button>'
-    },
-    'container': {
-      template: '<div class="container" ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
-    },
-    'div': {
-      template: '<div ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
-    },
-    'form-grid': {
-      columnClass: function columnClass(width) {
-        return ['s' + width];
-      },
-      template: function template(_ref) {
-        var version = _ref.version;
-
-        return '<div ' + TAG_BINDINGS + '>\n          <form class="col s12">\n            <div v-for="(' + (version === 1 ? 'rIdx, row' : 'row, rIdx') + ') in config.rows" class="row">\n              <div v-for="(' + (version === 1 ? 'cIdx, col' : 'col, cIdx') + ') in row.columns" class="col input-field" :class="columnClass(rIdx, cIdx)">\n                ' + TAG_COMPONENTS + '\n                <label :class="{ active: isFocused[\'r\' + rIdx + \'c\' + cIdx] || value[col.config.model] || col.config.placeholder }">\n                  {{col.label}}\n                  <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">\n                      *\n                  </span>\n                </label>\n              </div>\n            </div>\n          </form>\n        </div>';
-      }
-    },
-    'modal': {
-      template: function template(_ref2) {
-        var version = _ref2.version;
-
-        return '<div ' + TAG_BINDINGS + '>\n          ' + (version === 1 ? '' : '<transition name="formation-fade">') + '\n          <div v-show="show" ' + (version === 1 ? 'transition="formation-fade-vue1x"' : '') + '\n          :class="{ \'formation-modal-blur-area\': dismissable }" @click="dismiss"\n          :style="{ position: \'fixed\', top: 0, left: 0, right: 0, bottom: 0, height: \'auto\', width: \'auto\', \'z-index\': zIndex }">\n            <div class="modal" style="display: block; top: 10%;">\n              <div class="modal-content">\n                <h4 v-if="hasPath(config, \'header.text\') && !hasPath(config, \'header.components\')"\n                v-text="config.header.text"></h4>\n                ' + TAG_HEAD_COMPONENTS + '\n                <p v-if="hasPath(config, \'body.text\')" v-text="config.body.text"></p>\n                ' + TAG_COMPONENTS + '\n              </div>\n              <div class="modal-footer" v-if="hasPath(config, \'footer\')">\n                ' + TAG_FOOT_COMPONENTS + '\n                <button class="btn teal" v-if="hasPath(config, \'footer.closeButton\')" type="button" \n                @click="hideModal" v-text="isString(config.footer.closeButton) ? config.footer.closeButton : \'Close\'"></button>\n              </div>\n            </div>\n          </div>\n          ' + (version === 1 ? '' : '</transition>') + '\n        </div>';
-      }
-    },
-    'text-input': {
-      template: '<input type="text" class="validate" ' + TAG_MODEL + ' ' + TAG_BINDINGS + '>'
-    }
-  }
-};
-
-var semanticui = {
-  name: 'semanticui',
-  maxCols: 16,
-  components: {
-    'a': {
-      template: '<a ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</a>'
-    },
-    'button': {
-      classMap: {
-        default: 'basic',
-        primary: 'primary',
-        success: 'positive',
-        info: 'teal',
-        warning: 'orange',
-        danger: 'negative',
-        link: 'basic'
-      },
-      template: '<button type="button" class="ui button ' + TAG_DEFAULT_CLASS + '" ' + TAG_BINDINGS + '>\n        <i v-if=\'config.iconClassLeft\' class="icon" :class="config.iconClassLeft"></i>\n        <span v-if="config.text" v-text="config.text"></span>\n        <i v-if=\'config.iconClassRight\' class="icon" :class="config.iconClassRight"></i>\n        <div v-if="config.html" v-html="config.html"></div>\n      </button>'
-    },
-    'container': {
-      template: '<div class="container" ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
-    },
-    'div': {
-      template: '<div ' + TAG_BINDINGS + '>' + TAG_COMPONENTS + '</div>'
-    },
-    'form-grid': {
-      columnClass: function columnClass(width) {
-        var w = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen'];
-
-        return [w[width], 'wide', 'field'];
-      },
-      template: function template(_ref) {
-        var version = _ref.version;
-
-        return '<div ' + TAG_BINDINGS + '>\n          <form class="ui form">\n            <div class="field" v-for="(' + (version === 1 ? 'rIdx, row' : 'row, rIdx') + ') in config.rows">\n              <div class="fields">\n                <div v-for="(' + (version === 1 ? 'cIdx, col' : 'col, cIdx') + ') in row.columns" :class="columnClass(rIdx, cIdx)">\n                  <label style="width: 100%">\n                    {{col.label}}\n                    <span v-if="config.decorateRequired !== false && col.required && col.label" class="text-danger">\n                        *\n                    </span>\n                    ' + TAG_COMPONENTS + '\n                  </label>\n                </div>\n              </div>\n            </div>\n          </form>\n        </div>';
-      }
-    },
-    'modal': {
-      template: function template(_ref2) {
-        var version = _ref2.version;
-
-        return '<div ' + TAG_BINDINGS + '>\n          ' + (version === 1 ? '' : '<transition name="formation-fade">') + '\n          <div v-show="show" ' + (version === 1 ? 'transition="formation-fade-vue1x"' : '') + '\n          :class="{ \'formation-modal-blur-area\': dismissable }" @click="dismiss"\n          :style="{ position: \'fixed\', top: 0, left: 0, right: 0, bottom: 0, height: \'auto\', width: \'auto\', \'z-index\': zIndex }">\n            <div class="ui modal" style="display: block; top: 10%;">\n              <div class="header" v-if="hasPath(config, \'header.text\') && !hasPath(config, \'header.components\')"\n              v-text="config.header.text"></div>\n              <div class="header" v-if="hasPath(config, \'header.components\')">\n                ' + TAG_HEAD_COMPONENTS + '\n              </div>\n              <div class="content">\n                <p v-if="hasPath(config, \'body.text\')" v-text="config.body.text"></p>\n                ' + TAG_COMPONENTS + '\n              </div>\n              <div class="actions">\n                ' + TAG_FOOT_COMPONENTS + '\n                <button class="ui button basic" v-if="hasPath(config, \'footer.closeButton\')" type="button" \n                @click="hideModal" v-text="isString(config.footer.closeButton) ? config.footer.closeButton : \'Close\'"></button>\n              </div>\n            </div>\n          </div>\n          ' + (version === 1 ? '' : '</transition>') + '\n        </div>';
-      }
-    },
-    'text-input': {
-      template: '<div class="ui input"><input type="text" ' + TAG_MODEL + ' ' + TAG_BINDINGS + '></div>'
-    }
-  }
-};
-
-var baseFrameworks = {
-  bootstrap: bootstrap,
-  materialize: materialize,
-  semanticui: semanticui
 };
 
 /*
@@ -1284,7 +1737,7 @@ var INVALID_KEY_RX = /^\d|[^a-zA-Z0-9_]/gm;
  * @returns {boolean|*}
  */
 function isHash$2(obj) {
-  return _.isObject(obj) && !_.isArray(obj) && !_.isDate(obj) && !_.isEmpty(obj);
+  return dash.isObject(obj) && !dash.isArray(obj) && !dash.isDate(obj) && !dash.isEmpty(obj);
 }
 
 /**
@@ -1314,15 +1767,17 @@ function getPaths(obj) {
   var paths = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
   if (isHash$2(obj)) {
-    _.forEach(obj, function (val, key) {
+    dash.forEach(obj, function (val, key) {
       var k = key.match(INVALID_KEY_RX) ? '["' + key + '"]' : '.' + key;
       var cur = ('' + current + k).replace(/^\./, '');
       paths.push(cur);
       if (isHash$2(val)) getPaths(val, cur, paths);
     });
   }
-  return _.uniq(paths);
+  return dash.uniq(paths);
 }
+
+var VUEX_MUTATION = 'VUEX_DEEP_SET';
 
 /**
  * converts a path string to one usable by deepModel
@@ -1338,13 +1793,13 @@ function getPaths(obj) {
  * @param value
  */
 function vueSet(obj, path, value, Vue$$1) {
-  var fields = _.isArray(path) ? path : _.toPath(path);
+  var fields = dash.isArray(path) ? path : dash.toPath(path);
   var prop = fields.shift();
 
   if (!fields.length) return Vue$$1.nextTick(function () {
     return Vue$$1.set(obj, prop, value);
   });
-  if (!_.has(obj, prop)) Vue$$1.set(obj, prop, _.isNumber(prop) ? [] : {});
+  if (!dash.has(obj, prop)) Vue$$1.set(obj, prop, dash.isNumber(prop) ? [] : {});
   Vue$$1.nextTick(function () {
     return vueSet(obj[prop], fields, value);
   });
@@ -1356,9 +1811,9 @@ function vueSet(obj, path, value, Vue$$1) {
  * @param value
  */
 function vuexSet(path, value, Vue$$1) {
-  var store = _.get(this, '$store');
+  var store = dash.get(this, '$store');
   if (!store) throw new Error('VueDeepSet: could not find vuex store object on instance');
-  store[store.commit ? 'commit' : 'dispatch']('VUEX_DEEP_SET', { path: path, value: value, Vue: Vue$$1 });
+  store[store.commit ? 'commit' : 'dispatch'](VUEX_MUTATION, { path: path, value: value, Vue: Vue$$1 });
 }
 
 /**
@@ -1389,18 +1844,18 @@ function extendMutation() {
 function vuexModel(vuexPath, Vue$$1) {
   var _this = this;
 
-  if (!_.isString(vuexPath)) throw new Error('VueDeepSet: invalid vuex path string');
+  if (!dash.isString(vuexPath)) throw new Error('VueDeepSet: invalid vuex path string');
 
   if ((typeof Proxy === 'undefined' ? 'undefined' : _typeof(Proxy)) === undefined) {
     var model = {};
-    var obj = _.get(this.$store.state, vuexPath);
-    _.forEach(getPaths(obj), function (path) {
+    var obj = dash.get(this.$store.state, vuexPath);
+    dash.forEach(getPaths(obj), function (path) {
       var propPath = pathJoin(vuexPath, path);
       Object.defineProperty(model, path, {
         configurable: true,
         enumerable: true,
-        get: function get$$1() {
-          return _.get(_this.$store.state, propPath);
+        get: function get() {
+          return dash.get(_this.$store.state, propPath);
         },
         set: function set$$1(value) {
           vuexSet.call(_this, propPath, value, Vue$$1);
@@ -1409,15 +1864,15 @@ function vuexModel(vuexPath, Vue$$1) {
     });
     return model;
   } else {
-    return new Proxy(_.get(this.$store.state, vuexPath, this.$store.state), {
-      get: function get$$1(target, property) {
-        return _.get(_this.$store.state, pathJoin(vuexPath, property));
+    return new Proxy(dash.get(this.$store.state, vuexPath, this.$store.state), {
+      get: function get(target, property) {
+        return dash.get(_this.$store.state, pathJoin(vuexPath, property));
       },
       set: function set$$1(target, property, value) {
         vuexSet.call(_this, pathJoin(vuexPath, property), value, Vue$$1);
         return true;
       },
-      has: function has$$1(target, property) {
+      has: function has(target, property) {
         return true;
       }
     });
@@ -1432,16 +1887,16 @@ function vuexModel(vuexPath, Vue$$1) {
 function vueModel(obj, Vue$$1) {
   var _this2 = this;
 
-  if (!_.isObject(obj)) throw new Error('VueDeepSet: invalid object');
+  if (!dash.isObject(obj)) throw new Error('VueDeepSet: invalid object');
 
   if (typeof Proxy === 'undefined') {
     var model = {};
-    _.forEach(getPaths(obj), function (path) {
+    dash.forEach(getPaths(obj), function (path) {
       Object.defineProperty(model, path, {
         configurable: true,
         enumerable: true,
-        get: function get$$1() {
-          return _.get(obj, path);
+        get: function get() {
+          return dash.get(obj, path);
         },
         set: function set$$1(value) {
           vueSet.call(_this2, obj, path, value, Vue$$1);
@@ -1451,14 +1906,14 @@ function vueModel(obj, Vue$$1) {
     return model;
   } else {
     return new Proxy(obj, {
-      get: function get$$1(target, property) {
-        return _.get(target, property);
+      get: function get(target, property) {
+        return dash.get(target, property);
       },
       set: function set$$1(target, property, value) {
         vueSet.call(_this2, target, property, value, Vue$$1);
         return true;
       },
-      has: function has$$1(target, property) {
+      has: function has(target, property) {
         return true;
       }
     });
@@ -1477,331 +1932,25 @@ function vueModel(obj, Vue$$1) {
  * @param Vue
  */
 
-function A(binding, framework, frameworks, component, version) {
-  var info = {
-    binding: binding,
-    framework: frameworks[framework],
-    component: component,
-    version: version
-  };
-
-  return {
-    template: compileTemplate(info, frameworks, framework, 'a', [{
-      tag: TAG_BINDINGS,
-      value: ' ' + makeTemplateBindings(binding) + ' '
-    }, {
-      tag: TAG_COMPONENTS,
-      value: nestedComponents(version)
-    }]),
-    name: 'formation-a',
-    props: extendProps(version),
-    methods: extendMethods({}),
-    created: function created() {
-      this.register(this, this.components, this.bindings, this.framework, this.frameworks);
-    }
-  };
-}
-
-function Button(binding, framework, frameworks, component, version) {
-  var classMap = get(frameworks, '["' + framework + '"].components.button.classMap', {});
-  var info = {
-    binding: binding,
-    framework: frameworks[framework],
-    component: component,
-    version: version
-  };
-
-  var template = compileTemplate(info, frameworks, framework, 'button', [{
-    tag: TAG_BINDINGS,
-    value: ' ' + makeTemplateBindings(binding) + ' '
-  }, {
-    tag: TAG_DEFAULT_CLASS,
-    value: defaultClass(classMap, component)
-  }]);
-
-  return {
-    template: template,
-    name: 'formation-button',
-    props: extendProps(version),
-    methods: extendMethods(),
-    created: function created() {
-      this.register(this, this.components, this.bindings, this.framework, this.frameworks);
-    },
-    data: function data() {
-      return {
-        renderShow: true
-      };
-    }
-  };
-}
-
-function Container(binding, framework, frameworks, component, version) {
-  var info = {
-    binding: binding,
-    framework: frameworks[framework],
-    component: component,
-    version: version
-  };
-
-  return {
-    template: compileTemplate(info, frameworks, framework, 'container', [{
-      tag: TAG_BINDINGS,
-      value: ' ' + makeTemplateBindings(binding) + ' '
-    }, {
-      tag: TAG_COMPONENTS,
-      value: nestedComponents(version)
-    }]),
-    name: 'formation-container',
-    props: extendProps(version),
-    methods: extendMethods(),
-    created: function created() {
-      this.register(this, this.components, this.bindings, this.framework, this.frameworks);
-    }
-  };
-}
-
-function Div(binding, framework, frameworks, component, version) {
-  var info = {
-    binding: binding,
-    framework: frameworks[framework],
-    component: component,
-    version: version
-  };
-
-  return {
-    template: compileTemplate(info, frameworks, framework, 'div', [{
-      tag: TAG_BINDINGS,
-      value: ' ' + makeTemplateBindings(binding) + ' '
-    }, {
-      tag: TAG_COMPONENTS,
-      value: nestedComponents(version)
-    }]),
-    name: 'formation-div',
-    props: extendProps(version),
-    methods: extendMethods(),
-    created: function created() {
-      this.register(this, this.components, this.bindings, this.framework, this.frameworks);
-    }
-  };
-}
-
-function FormGrid(binding, framework, frameworks, component, version) {
-  var f = get(frameworks, '["' + framework + '"]', {});
-  var COL_LIMIT = get(f, 'maxCols', 12);
-  var colClasser = get(f, 'components["form-grid"].columnClass', function () {
-    return [];
-  });
-  var info = {
-    binding: binding,
-    framework: frameworks[framework],
-    component: component,
-    version: version
-  };
-
-  return {
-    template: compileTemplate(info, frameworks, framework, 'form-grid', [{
-      tag: TAG_BINDINGS,
-      value: ' ' + makeTemplateBindings(binding) + ' '
-    }, {
-      tag: TAG_COMPONENTS,
-      value: '<component :is="kebab(\'formation-\' + col.type)"\n          :config="col.config || {}"\n          :components=\'col.components || []\'\n          :bindings="bindings"\n          :framework="framework"\n          :frameworks="frameworks"\n          :register="register"\n          :event-hub="eventHub"\n          :local-hub="localHub"\n          :version="' + version + '"\n          ' + (version === 1 ? ':value.sync' : 'v-model') + '="value"></component>'
-    }]),
-    name: 'formation-form-grid',
-    props: extendProps(version),
-    methods: extendMethods({
-      columnClass: function columnClass(rowIdx, colIdx) {
-        return colClasser(get(columnWidths(get(this.config, 'rows[' + rowIdx + '].columns'), COL_LIMIT), '[' + colIdx + ']', 1));
-      }
-    }),
-    computed: {
-      _components: function _components() {
-        return this.config.rows.reduce(function (acc, row) {
-          return acc.concat(row.columns);
-        }, []);
-      }
-    },
-    data: function data() {
-      return {
-        isFocused: {}
-      };
-    },
-    created: function created() {
-      this.register(this, this._components, extractBindings$1(this.config), this.framework, this.frameworks);
-    }
-  };
-}
-
-function Modal(binding, framework, frameworks, component, version) {
-  var info = {
-    binding: binding,
-    framework: frameworks[framework],
-    component: component,
-    version: version
-  };
-
-  return {
-    template: compileTemplate(info, frameworks, framework, 'modal', [{
-      tag: TAG_BINDINGS,
-      value: ' ' + makeTemplateBindings(binding) + ' '
-    }, {
-      tag: TAG_HEAD_COMPONENTS,
-      value: nestedComponents(version, 'headerComponents')
-    }, {
-      tag: TAG_COMPONENTS,
-      value: nestedComponents(version, 'bodyComponents')
-    }, {
-      tag: TAG_FOOT_COMPONENTS,
-      value: nestedComponents(version, 'footerComponents')
-    }]),
-    name: 'formation-modal',
-    props: extendProps(version),
-    computed: {
-      headerComponents: function headerComponents() {
-        return _.get(this, 'config.header.components', []);
-      },
-      bodyComponents: function bodyComponents() {
-        return _.get(this, 'config.body.components', []);
-      },
-      footerComponents: function footerComponents() {
-        return _.get(this, 'config.footer.components', []);
-      }
-    },
-    methods: extendMethods({
-      dismiss: function dismiss(e) {
-        if (e.target.classList.contains('formation-modal-blur-area')) {
-          this.hideModal();
-        }
-      },
-      showModal: function showModal() {
-        var _this = this;
-
-        this.eventHub.$emit('backdrop.show', this._uid);
-        window.setTimeout(function () {
-          _this.show = true;
-        }, 100);
-      },
-      hideModal: function hideModal() {
-        var _this2 = this;
-
-        this.show = false;
-        window.setTimeout(function () {
-          _this2.eventHub.$emit('backdrop.hide', _this2._uid);
-        }, 100);
-      }
-    }),
-    created: function created() {
-      var _this3 = this;
-
-      var name = this.config.name;
-
-      if (name) {
-        this.eventHub.$on(name + '.modal.show', this.showModal);
-        this.eventHub.$on(name + '.modal.hide', this.hideModal);
-      }
-      this.eventHub.$on('modal.show', this.showModal);
-      this.eventHub.$on('modal.hide', this.hideModal);
-      this.localHub.$on('Escape', function () {
-        if (_this3.show) _this3.hideModal();
-      });
-
-      // register the individual modal components
-      if (this.headerComponents.length) {
-        this.register(this, this.headerComponents, extractBindings$1(this.config.header), this.framework, this.frameworks);
-      }
-      if (this.bodyComponents.length) {
-        this.register(this, this.bodyComponents, extractBindings$1(this.config.body), this.framework, this.frameworks);
-      }
-      if (this.footerComponents.length) {
-        this.register(this, this.footerComponents, extractBindings$1(this.config.footer), this.framework, this.frameworks);
-      }
-    },
-    data: function data() {
-      return {
-        show: false,
-        zIndex: this.config.zIndex || 9000,
-        dismissable: this.config.dismissable !== false
-      };
-    }
-  };
-}
-
-function TextInput(binding, framework, frameworks, component, version) {
-  var info = {
-    binding: binding,
-    framework: frameworks[framework],
-    component: component,
-    version: version
-  };
-
-  return {
-    template: compileTemplate(info, frameworks, framework, 'text-input', [{
-      tag: TAG_MODEL,
-      value: ' v-model="value[config.model]" '
-    }, {
-      tag: TAG_BINDINGS,
-      value: ' ' + makeTemplateBindings(binding) + ' '
-    }]),
-    name: 'formation-text-input',
-    props: extendProps(version),
-    methods: extendMethods({
-      validate: function validate() {
-        return this.touched && this.valid;
-      }
-    }),
-    created: function created() {
-      this.register(this, this.components, extractBindings$1(this.config), this.framework, this.frameworks);
-    },
-
-    computed: {
-      _value: function _value() {
-        return has(this.config, 'model') ? this.value[this.config.model] : null;
-      }
-    },
-    watch: {
-      _value: function _value(val) {
-        this.touched = true;
-        this.valid = isFunction(this.config.validate) ? this.config.validate.call(this, val) : true;
-      }
-    },
-    data: function data() {
-      return {
-        valid: false,
-        touched: false
-      };
-    }
-  };
-}
-
-var baseWidgets = {
-  A: A,
-  Button: Button,
-  Container: Container,
-  Div: Div,
-  FormGrid: FormGrid,
-  Modal: Modal,
-  TextInput: TextInput
-};
-
 var extractBindings$$1 = common.extractBindings;
-var registerComponents = common.registerComponents;
+var registerComponents$$1 = common.registerComponents;
 var _dbg = common.dbg;
 var Backdrop$$1 = common.Backdrop;
+var getVueVersion$$1 = common.getVueVersion;
+var buildLibrary$$1 = common.buildLibrary;
 
 
 function formation(Vue$$1, options, plugins) {
-  var VUE_VERSION = Number((isString(Vue$$1.version) ? Vue$$1.version : '2.0.0').split('.')[0]);
-  var frameworks = merge({}, baseFrameworks, get(options, 'frameworks', {}));
-  var widgets = merge({}, baseWidgets, get(options, 'components', {}));
+  var VUE_VERSION = getVueVersion$$1(Vue$$1);
+  var DEBUG = Boolean(dash.get(options, 'slient', !Vue$$1.config.silent));
 
-  // process any plugins
-  forEach(plugins, function (plugin) {
-    if (isFunction(plugin.components)) merge(widgets, plugin.components(common));
-    if (has(plugin, 'frameworks')) merge(frameworks, plugin.frameworks);
-  });
+  var _buildLibrary = buildLibrary$$1(options, plugins),
+      frameworks = _buildLibrary.frameworks,
+      components = _buildLibrary.components;
 
   return {
     name: 'formation',
-    template: '\n      <div :class="[\'formation\']">\n        <div v-if="compiled" :class="rootClass">\n          <component v-for="' + (VUE_VERSION === 1 ? '(idx, c)' : '(c, idx)') + ' in config.components || []"\n          :key="idx"\n          :is="\'formation-\' + c.type"\n          :config="c.config || {}"\n          :components="c.components || []"\n          :bindings="_bindings"\n          :framework="framework"\n          :frameworks="frameworks"\n          :register="register"\n          :event-hub="eventHub"\n          :local-hub="localHub"\n          :version="' + VUE_VERSION + '"\n          ' + (VUE_VERSION === 1 ? ':value.sync' : 'v-model') + '="modelData"></component>\n        </div>\n      </div>',
+    template: '\n      <div class="formation formation-root">\n        <div v-if="compiled" :class="[\'formation-\' + framework, \'formation-framework\']">\n          <component v-for="' + (VUE_VERSION === 1 ? '(idx, c)' : '(c, idx)') + ' in config.components || []"\n          :key="idx"\n          :is="\'formation-\' + c.type"\n          :config="c.config || {}"\n          :components="c.components || []"\n          ' + (VUE_VERSION === 1 ? ':value.sync' : 'v-model') + '="modelData"></component>\n        </div>\n      </div>',
     props: {
       value: {
         type: Object,
@@ -1828,7 +1977,7 @@ function formation(Vue$$1, options, plugins) {
         type: String,
         default: BOOTSTRAP,
         validator: function validator(value) {
-          return has(frameworks, value);
+          return dash.has(frameworks, value);
         }
       },
       eventHub: {
@@ -1839,64 +1988,49 @@ function formation(Vue$$1, options, plugins) {
       },
       debug: {
         type: Boolean,
-        default: false
+        default: DEBUG
       }
     },
     vuex: VUE_VERSION === 1 ? {} : undefined,
     created: function created() {
-      var _this = this;
-
-      this.dbg('Vue', VUE_VERSION);
-
-      // check vuex mutation has been included
-      if (this.vuex) {
-        if (!has(this, '$store._mutations.VUEX_DEEP_SET')) {
-          console.warn('[vue-formation]: unable to find formation mutation "VUEX_DEEP_SET", ' + 'please ensure it is included during the Vuex store initialization');
-        }
+      // check if vuex mutation has been included
+      if (this.vuex && !dash.has(this, '$store._mutations["' + VUEX_MUTATION + '"]')) {
+        this.dbg(new Error('unable to find formation mutation "' + VUEX_MUTATION + '", ' + 'please ensure it is included during the Vuex store initialization. Defaulting to object model'));
       }
 
-      // this bit of code is used to re-render the child-components should the framework change
-      this.eventHub.$on('render.components', function () {
-        return _this.render();
-      });
-      if (this.name) this.eventHub.$on(this.name + '.render.components', function () {
-        return _this.render();
-      });
-      this.eventHub.$emit(this.name + '.render.components');
-
-      // watch for backdrop events
-      this.$root.$on('backdrop.show', this.createBackdrop);
-      this.eventHub.$on('backdrop.show', function (requestedBy) {
-        _this.$root.$emit('backdrop.show', _this.name + '-' + requestedBy);
-      });
-      this.eventHub.$on('backdrop.hide', function (requestedBy) {
-        _this.$root.$emit('backdrop.hide', _this.name + '-' + requestedBy);
-      });
-
-      document.addEventListener('keyup', this.domKeyupListener);
+      this.createEventListeners();
     },
     beforeDestroy: function beforeDestroy() {
-      this.$root.$off('backdrop.show', this.createBackdrop);
-      document.removeEventListener('keyup', this.domKeyupListener);
+      this.removeEventListeners();
     },
 
     computed: {
-      rootClass: function rootClass() {
-        return ['formation', 'formation-' + this.framework];
-      },
       modelData: function modelData() {
-        return this.vuex ? this.vuexModel(this.vuex, Vue$$1) : this.vueModel(this.value, Vue$$1);
+        return this.vuex && dash.has(this, '$store._mutations["' + VUEX_MUTATION + '"]') ? vuexModel.call(this, this.vuex, Vue$$1) : vueModel.call(this, this.value, Vue$$1);
       },
       _bindings: function _bindings() {
         return extractBindings$$1(this._config);
       },
       _config: function _config() {
         return this.config;
+      },
+      formationRoot: function formationRoot() {
+        return {
+          vue: Vue$$1,
+          vm: this,
+          root: this.$root,
+          version: VUE_VERSION,
+          framework: this.frameworks[this.framework],
+          frameworks: this.frameworks,
+          frameworkName: this.framework,
+          eventHub: this.eventHub,
+          localHub: this.localHub,
+          components: this.components,
+          common: common
+        };
       }
     },
     methods: {
-      vueModel: vueModel,
-      vuexModel: vuexModel,
       render: function render() {
         this.updateComponents(true);
         this.compiled = false;
@@ -1905,11 +2039,12 @@ function formation(Vue$$1, options, plugins) {
       dbg: function dbg$$1() {
         if (this.debug) _dbg.apply(this, [].concat(Array.prototype.slice.call(arguments)));
       },
-      register: function register(vm, components, bindings, framework, frameworks, refresh) {
-        return registerComponents(Vue$$1, VUE_VERSION, widgets)(vm, components, bindings, framework, frameworks, refresh);
+      register: function register(vm, c, bindings, framework, frameworks, refresh) {
+        return registerComponents$$1(Vue$$1, VUE_VERSION, components)(vm, c, bindings, framework, frameworks, refresh);
       },
       updateComponents: function updateComponents(refresh) {
-        this.register(this, this._config.components, this._bindings, this.framework, this.frameworks, refresh);
+        registerComponents$$1(this, this.formationRoot, this._config, refresh);
+        // this.register(this, this._config.components, this._bindings, this.framework, this.frameworks, refresh)
       },
       createBackdrop: function createBackdrop(requestedBy) {
         /*
@@ -1930,6 +2065,33 @@ function formation(Vue$$1, options, plugins) {
           case 27:
             this.localHub.$emit('Escape');
         }
+      },
+      createEventListeners: function createEventListeners() {
+        var _this = this;
+
+        // this bit of code is used to re-render the child-components should the framework change
+        this.eventHub.$on('render.components', function () {
+          return _this.render();
+        });
+        if (this.name) this.eventHub.$on(this.name + '.render.components', function () {
+          return _this.render();
+        });
+        this.eventHub.$emit(this.name + '.render.components');
+
+        // watch for backdrop events
+        this.$root.$on('backdrop.show', this.createBackdrop);
+        this.eventHub.$on('backdrop.show', function (requestedBy) {
+          _this.$root.$emit('backdrop.show', _this.name + '-' + requestedBy);
+        });
+        this.eventHub.$on('backdrop.hide', function (requestedBy) {
+          _this.$root.$emit('backdrop.hide', _this.name + '-' + requestedBy);
+        });
+
+        document.addEventListener('keyup', this.domKeyupListener);
+      },
+      removeEventListeners: function removeEventListeners() {
+        this.$root.$off('backdrop.show', this.createBackdrop);
+        document.removeEventListener('keyup', this.domKeyupListener);
       }
     },
     watch: {
@@ -1940,6 +2102,7 @@ function formation(Vue$$1, options, plugins) {
     data: function data() {
       return {
         frameworks: frameworks,
+        components: components,
         compiled: true,
         localHub: new Vue$$1()
       };

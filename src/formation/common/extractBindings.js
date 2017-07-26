@@ -1,4 +1,4 @@
-import * as _ from '../utils/litedash/dash'
+import _ from '../utils/litedash/dash.index'
 
 /**
  * extracts attributes, data, and events from the config and creates

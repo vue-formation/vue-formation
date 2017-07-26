@@ -1,4 +1,4 @@
-import * as _ from '../utils/litedash/dash'
+import _ from '../utils/litedash/dash.index'
 
 export default function columnWidths (columns, COL_LIMIT = 12) {
   let filledFirst = false

@@ -4,10 +4,11 @@ var path = require('path')
 var config = {
   query: {
     minify: false,
-    dest: path.resolve(__dirname, '../src/formation/utils/litequery/liteutils.query.js'),
+    dest: path.resolve(__dirname, '../src/formation/utils/litequery/lquery.js'),
     compileDir: path.resolve(__dirname, '../src/formation/utils/litequery'),
     eslint: false,
     babelrc: false,
+    postClean: false,
     include: [
       'each',
       'find'
@@ -15,10 +16,11 @@ var config = {
   },
   dash: {
     minify: false,
-    dest: path.resolve(__dirname, '../src/formation/utils/litedash/liteutils.dash.js'),
+    dest: path.resolve(__dirname, '../src/formation/utils/litedash/ldash.js'),
     compileDir: path.resolve(__dirname, '../src/formation/utils/litedash'),
     eslint: false,
     babelrc: false,
+    postClean: false,
     include: [
       'forEach',
       'get',
@@ -34,7 +36,10 @@ var config = {
       'kebabCase',
       'keys',
       'map',
+      'mapKeys',
       'merge',
+      'omit',
+      'properCase',
       'reduce',
       'set',
       'sum',

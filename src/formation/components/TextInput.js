@@ -1,41 +1,16 @@
-import * as _ from '../utils/litedash/dash'
-import {
-  makeTemplateBindings,
-  extendMethods,
-  extendProps,
-  extractBindings,
-  compileTemplate
-} from '../common/index'
-import { TAG_BINDINGS, TAG_MODEL } from '../common/constants'
+import _ from '../utils/litedash/dash.index'
 
-export default function TextInput (binding, framework, frameworks, component, version) {
-  let info = {
-    binding,
-    framework: frameworks[framework],
-    component,
-    version
-  }
-
-  return {
-    template: compileTemplate(info, frameworks, framework, 'text-input', [
-      {
-        tag: TAG_MODEL,
-        value: ' v-model="value[config.model]" '
-      },
-      {
-        tag: TAG_BINDINGS,
-        value: ` ${makeTemplateBindings(binding)} `
-      }
-    ]),
-    name: 'formation-text-input',
-    props: extendProps(version),
-    methods: extendMethods({
+export default function TextInput (info) {
+  return info.f.common.extendComponent(info, [
+    {
+      tag: info.f.common.constants.TAG_MODEL,
+      value: ' v-model="value[config.model]" '
+    }
+  ], {
+    methods: {
       validate () {
         return this.touched && this.valid
       }
-    }),
-    created () {
-      this.register(this, this.components, extractBindings(this.config), this.framework, this.frameworks)
     },
     computed: {
       _value () {
@@ -56,5 +31,5 @@ export default function TextInput (binding, framework, frameworks, component, ve
         touched: false
       }
     }
-  }
+  })
 }

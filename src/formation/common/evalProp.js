@@ -1,4 +1,4 @@
-import * as _ from '../utils/litedash/dash'
+import _ from '../utils/litedash/dash.index'
 
 export default function evalProp (types, value, vm, config, data, defaultValue) {
   for (let type of types) {

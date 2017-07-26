@@ -1,20 +1,19 @@
-import * as _ from '../utils/litedash/dash'
+import _ from '../utils/litedash/dash.index'
 
-export default function (Vue, version, widgets) {
-  return function registerFormationComponents (vm, components, bindings, framework, frameworks, refresh) {
-    _.forEach(components, (component) => {
-      let { type } = component
-      let binding = _.get(bindings, type)
-      if (binding) {
-        _.forEach(widgets, (widget, name) => {
-          let typeName = _.kebabCase(name)
-          if (typeName === type && (!_.has(vm.$options.components, `formation-${typeName}`) || refresh)) {
-            vm.$options.components[`formation-${typeName}`] = Vue.extend(
-              widget(bindings[typeName], framework, frameworks, component, version)
-            )
-          }
-        })
-      }
-    })
-  }
+export default function registerComponents (vm, f, config, refresh) {
+  let bindings = f.common.extractBindings(config)
+  _.forEach(config.components, component => {
+    if (!_(component).get('type').isString().value()) return
+
+    let shortName = _.kebabCase(component.type.replace(/^formation-/i, '')).toLowerCase()
+    let name = `formation-${shortName}`
+    let properName = _.properCase(shortName, '')
+    let binding = bindings[shortName]
+    let obj = _.get(f.components, properName)
+
+    if (binding && obj && (!_.has(vm.$options.components, name) || refresh)) {
+      let c = obj({ f, binding, component, name, properName, shortName })
+      vm.$options.components[name] = f.vue.extend(c)
+    }
+  })
 }
