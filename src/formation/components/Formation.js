@@ -1,6 +1,5 @@
 import _ from '../utils/litedash/dash.index'
 import common from '../common/index'
-import { BOOTSTRAP } from '../common/constants'
 import { vueModel, vuexModel, VUEX_MUTATION } from '../utils/vue-deepset'
 let {
   extractBindings,
@@ -14,13 +13,13 @@ let {
 export default function formation (Vue, options, plugins) {
   const VUE_VERSION = getVueVersion(Vue)
   const DEBUG = Boolean(_.get(options, 'slient', !Vue.config.silent))
-  let { frameworks, components } = buildLibrary(options, plugins)
+  let { components } = buildLibrary(options, plugins)
 
   return {
     name: 'formation',
     template: `
       <div class="formation formation-root">
-        <div v-if="compiled" :class="['formation-' + framework, 'formation-framework']">
+        <div v-if="compiled" :class="['formation-' + framework.name, 'formation-framework']">
           <component v-for="${VUE_VERSION === 1 ? '(idx, c)' : '(c, idx)'} in config.components || []"
           :key="idx"
           :is="'formation-' + c.type"
@@ -53,10 +52,10 @@ export default function formation (Vue, options, plugins) {
         }
       },
       framework: {
-        type: String,
-        default: BOOTSTRAP,
+        type: Object,
+        required: true,
         validator (value) {
-          return _.has(frameworks, value)
+          return _.has(value, 'name')
         }
       },
       eventHub: {
@@ -103,9 +102,8 @@ export default function formation (Vue, options, plugins) {
           vm: this,
           root: this.$root,
           version: VUE_VERSION,
-          framework: this.frameworks[this.framework],
-          frameworks: this.frameworks,
-          frameworkName: this.framework,
+          framework: this.framework,
+          frameworkName: this.framework.name,
           eventHub: this.eventHub,
           localHub: this.localHub,
           components: this.components,
@@ -122,12 +120,8 @@ export default function formation (Vue, options, plugins) {
       dbg () {
         if (this.debug) dbg.apply(this, [...arguments])
       },
-      register (vm, c, bindings, framework, frameworks, refresh) {
-        return registerComponents(Vue, VUE_VERSION, components)(vm, c, bindings, framework, frameworks, refresh)
-      },
       updateComponents (refresh) {
         registerComponents(this, this.formationRoot, this._config, refresh)
-        // this.register(this, this._config.components, this._bindings, this.framework, this.frameworks, refresh)
       },
       createBackdrop (requestedBy) {
         /*
@@ -178,7 +172,6 @@ export default function formation (Vue, options, plugins) {
     },
     data () {
       return {
-        frameworks,
         components,
         compiled: true,
         localHub: new Vue()

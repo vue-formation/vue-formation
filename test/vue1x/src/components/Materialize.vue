@@ -1,9 +1,10 @@
 <template lang="pug">
   div
-    formation(framework="materialize", :value.sync="fdata.fModel", :config="fdata.fConfig")
+    formation(:framework="framework", :value.sync="fdata.fModel", :config="fdata.fConfig")
 </template>
 
 <script type="text/babel">
+  import framework from '../../../../src/formation/frameworks/materialize'
   import fdata from '../../../../src/formation/data/config'
 
   export default {
@@ -12,7 +13,8 @@
     },
     data () {
       return {
-        fdata
+        fdata,
+        framework
       }
     }
   }

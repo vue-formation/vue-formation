@@ -13,10 +13,13 @@
     "build:css": "cp src/formation/vue-formation.css vue-formation.css",
     "build:pre": "cp -f build/.build.babelrc src/formation/.babelrc",
     "build:post": "cp -f build/.dev.babelrc src/formation/.babelrc",
-    "build:browser": "browserify index.js -s VueFormation > vue-formation.js",
-    "build:browser:min": "browserify index.js -s VueFormation | uglifyjs > vue-formation.min.js",
-    "build:node": "rollup -c build/rollup.config.js",
-    "build:dist": "npm run build:pre && npm run build:node && npm run build:browser && npm run build:browser:min && npm run build:post && npm run build:css",
+    "build:browser": "browserify dist/webpack/vue-formation.js -s VueFormation > dist/browser/vue-formation.js",
+    "build:bootstrap:browser": "browserify dist/webpack/frameworks/bootstrap.js -s VueFormation > dist/browser/frameworks/bootstrap.js",
+    "build:bootstrap:browser:min": "browserify dist/webpack/frameworks/bootstrap.js -s VueFormation | uglifyjs > dist/browser/frameworks/bootstrap.min.js",
+    "build:browser:min": "browserify dist/webpack/vue-formation.js -s VueFormation | uglifyjs > dist/browser/vue-formation.min.js",
+    "build:webpack": "rollup -c build/rollup.config.js",
+    "build:bootstrap:webpack": "rollup -c build/rollup.config.bootstrap.js",
+    "build:dist": "npm run build:pre && npm run build:webpack && npm run build:browser && npm run build:browser:min && npm run build:bootstrap:webpack && npm run build:bootstrap:browser && npm run build:bootstrap:browser:min && npm run build:post && npm run build:css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "browserify": {
